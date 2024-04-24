@@ -1,6 +1,6 @@
 # Everything about Unix/Linux they didn't teach you 
 
-In this section, I want to talk about some basic setup on your HPC system.
+In this section, I want to talk about some basic setup in order to interact with an HPC system.
 
 ## Learning Objectives
 

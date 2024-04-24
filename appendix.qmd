@@ -1,0 +1,143 @@
+# Appendix
+
+The appendix contains multiple sections that I wanted to refer to, but there's not a really good place for them.
+
+## Other Useful `dx-toolkit` commands
+
+The link to the [`dx` commands](https://documentation.dnanexus.com/user/helpstrings-of-sdk-command-line-utilities) page is your friend for understanding everything that you do on the platform. We'll talk about some of the most important commands. 
+
+### `dx api`
+
+Sometimes there are [actually API calls](https://documentation.dnanexus.com/developer/api/api-directory) that you will need to run directly with `dx api`, since they don't have a `dx-toolkit` equivalent.  
+
+You'll use `dx api` to run these.
+
+For example, there are some flags you can set within a project, and you can set them with `dx api`:
+
+```
+dx api project-B0VK6F6gpqG6z7JGkbqQ000Q update '{"description": "desc"}'
+```
+
+### `dx cp`
+
+We used this when we set up our project, to copy from the public project into our own project. Copying has a specific definition on the platform: it means *copying files from one project to another project*. 
+
+### `dx pwd`/`dx cd`/`dx ls`/`dx tree`
+
+These commands are for navigating the project. `dx pwd` will give the present working directory of the project. `dx cd` lets us change directories, `dx ls` will list the contents of your current folder, and `dx tree` will show the overall file structure of your current folder.
+
+Be really careful when running `dx tree` on UKB RAP, especially the bulk folder. It is a big ask of the metadata server.
+
+### `dx mkdir`/`dx upload`/`dx download`/`dx head`
+
+These are the file manipulation and creation commands. 
+
+
+### `dx env`
+
+When you run this by itself, it will give you the environment variables associated with your project. 
+
+There are some times when you'll need to change some environment variables
+
+
+
+## Starting ttyd
+
+
+:::{.callout-note}
+## Why not just use `ttyd` for the entire course?
+
+If `ttyd` is so great, why don't we use it for the entire course? 
+
+`ttyd` covers a number of use cases, not just for learning. The main difference with ttyd and using a shell on your computer is that ttyd starts with a project context - that is, you need to specify the project before you start up the `ttyd` app. 
+
+This context makes `ttyd` a little inflexible, especially when we are creating and administering new projects from the command-line. 
+
+:::
+
+## Named Arguments {#sec-named}
+
+In general, ordered arguments can be difficult to remember, and sometimes you have way too many parameters.
+
+What about named arguments? Let's modify `sam_run.sh` to use named arguments. 
+
+```{bash}
+#| filename: "sam_run_named.sh"
+#| eval: false
+#!/bin/bash
+
+while [ $# -gt 0 ]; do
+    if [[ $1 == "--"* ]]; then
+        v="${1/--/}"
+        declare "$v"="$2"
+        shift
+    fi
+    shift
+done
+
+samtools ${input_file} > ${output_file}
+```
+
+The magic of setting up the positional arguments happens in the `while` block above. It looks for any string arguments that follow our script name that begin with `--` - then it puts the value of that into the named variables.
+
+In this case, our script is expecting an `--input-file` and an `--output_file` arguments.
+
+### Running our script with named arguments
+
+```{bash}
+#| eval: false
+
+./sam_run_named.sh --input_file "" --output_file ""
+```
+
+
+:::{.callout-note}
+## Test Yourself
+
+How would we modify the following script to use named arguments?
+
+
+```
+
+```
+:::
+
+:::{.callout-note collapse="true"}
+## Answer
+
+:::
+
+### For more info
+
+<https://keestalkstech.com/2022/03/named-arguments-in-a-bash-script/>
+
+
+
+## Environment Variables {#sec-environment}
+
+### `$PATH`
+
+The `$PATH` variable is one of the most important environment variables we'll set on your local machine. It specifies the directories where executables and binaries can be found. This is important when you install dx-toolkit to interact with the DNAnexus platform. 
+
+In general, you want to append paths to the `$PATH` variable, rather than overwriting it. This is because other processes may add to the `$PATH` variable as well, so you don't want to interfere with those processes. Adding to our `$PATH` variable depends on the different operating systems.
+
+### Mac/Linux
+
+The fastest way to add a directory to your path is to use the `export` command in your `.bash_profile`, or `.bashrc` file. For example, if the directory you want to add is `/opt/homebrew/bin/`, you'd edit your `.bash_profile` file and add the following line:
+
+```
+export PATH=$PATH:/opt/homebrew/bin/
+```
+
+Note that spacing matters in Bash scripting, especially in assigning variable names. 
+
+### Other Environment Variables
+
+We'll see that `dx-toolkit` defines a certain number of environmental variables and we can view them using `dx env`. These include:
+
+- Current Project
+- Current User
+- Current Directory in Project
+- API token used to access the platform
+- etc. 
+---

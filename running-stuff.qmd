@@ -1,0 +1,21 @@
+# Running Executables on HPC
+
+Ok, we've gotten comfortable navigating around the home filesystem. Now how do we run executables on files?
+
+## Your toolchain
+
+
+
+## Environment Modules
+
+### Tip: Always Use Versioning
+
+## Docker Containers
+
+## Useful Utilities
+
+### `screen` or `tmux` keep your session open
+
+
+
+

@@ -1,0 +1,241 @@
+# Everything about Unix/Linux they didn't teach you 
+
+In this section, I want to talk about some basic setup on your HPC system.
+
+## Learning Objectives
+
+After reading this chapter, you should be able to:
+
+- **Setup** your terminal to connect to an HPC system
+- **Navigate** the HPC filesystem using both *absolute* and *relative* paths
+- **Find** and **set** environment variables in an HPC system
+- **Modify** your `$PATH` variable to include the path to an executable
+- **Use** `which` to identify which version of an executable you're using
+- **Articulate** basic HPC architecture
+- **Identify** the shared filesystems associated with your cluster
+
+## Terminal setup
+
+We'll be running all of these scripts on our own machine. We'll be using the command-line for most of these.
+
+If you are on Linux/Mac, you'll be working with the terminal. 
+If you are on Windows, I recommend you install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server.
+
+On your machine, I recommend using a text editor to edit the scripts in your terminal. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in ones such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
+
+## Navigating the Unix/Linux filesystem
+
+We'll start out our Unix/Linux journey talking about the filesystem, which has some quirks we need to be aware of.
+
+### Going `/home`: `~/`
+
+There is one important shortcut you should always remember: `~/` is shorthand for your own home directory.
+
+Depending on the linux distribution, this can be a different location. On the FH filesystem, when I use `~/`, it maps to:
+
+`/home/tladera2`
+
+The home directory is also important because it is where your configuration files live, such as `.bashrc` (see below).
+
+### Absolute versus relative paths
+
+Absolute paths contain all the information needed to find a file in a file system from the root `/` directory. For example, this would be an absolute path:
+
+```
+/home/tladera2/immuno_project/raw_data/tcr_data.fasta
+```
+
+Absolute paths always start with `/`, because that is the root directory.
+
+Relative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path *relative* to that directory. Relative paths are really helpful because things don't break when you move your folder or files. 
+
+If my current path is my home directory `/home/tladera2/immuno_project/`, then the relative path to that same file would be:
+
+```
+raw_data/tcr_data.fasta
+```
+
+Note that this relative path does not start with a `/`, because our current directory isn't the root directory. 
+
+You may have seen relative paths such as `../another_directory/` - these mean to go up a directory in the file hierarchy, and then look in that directory for the `another_directory/` directory. I try to avoid using relative paths like these.
+
+In general for portability and reproducibility, you will want to use relative paths **within a directory**, and avoid using relative paths like `../../my_folder`, where you are navigating up. In general, use relative paths to navigate down. 
+
+Using absolute paths in your scripts will probably break them
+
+### Keep Everything in a Folder
+
+With the exception of reference genomes, you should be keeping your scripts and files in a single directory, and use relative paths to refer to them.
+
+Within that directory, there are multiple approaches. The easiest is to keep your executable scripts in the top directory, and raw data in a separate directory, such as:
+
+```
+
+```
+
+
+### Moving Things Around
+
+A lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster. 
+
+You're probably familiar with `mv`, which lets you move files around in Unix. One thing to keep in mind when you're `mv`ing things to a new folder that there is a difference between:
+
+```bash
+mv log.txt my_folder   ## renames log.txt to my_folder
+```
+
+and
+
+```bash
+mv log.txt my_folder/  ## moves log.txt to be in my_folder
+```
+This is one thing that trips me up all the time. 
+
+This is one situation where using a GUI such as Motuz can be very helpful. 
+
+### Things I always forget: the difference between `/home/mydir/`  and `home/mydir/`
+
+Some things that trip me up all the time. The difference between 
+
+```bash
+/home/mydir/    #absolute path
+```
+and 
+
+```bash
+home/mydir/`    #relative path
+```
+The first one is an *absolute path*, and the second is a *relative path*. 
+
+## Environment Variables
+
+Environment variables are variables which can be seen globally in the Linux system across executables. 
+
+You can get a list of all set environment variables by using the `env` command. Here's an example from my own system:
+
+```bash
+env
+```
+```
+SHELL=/bin/bash
+NVM_INC=/home/tladera2/.nvm/versions/node/v21.7.1/include/node
+WSL_DISTRO_NAME=Ubuntu
+NAME=2QM6TV3
+PWD=/home/tladera2
+LOGNAME=tladera2
+[....]
+```
+
+One common environment variable you may have seen is `$JAVA_HOME`, which is used to find the Java Software Development Kit (SDK). (I usually encounter it when a software application yells at me when I haven't set it.)
+
+You can see whether an environment variable is set using `echo`, such as 
+
+```bash
+echo $PATH
+```
+
+```
+/home/tladera2/.local/bin:/home/tladera2/gems/bin:/home/tladera2/.nvm/versions/node/v21.7.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/ [....]
+```
+
+### Setting Environment Variables
+
+In Bash, we use the `export` command to declare an environment variable. For example, if we wanted to declare the environment variable `$SAMTOOLS_PATH` we'd do the following:
+
+```bash
+export SAMTOOLS_PATH="/home/tladera2/miniconda/bin/"
+```
+
+One thing to note is that spacing matters when you declare environment variables. For example, this won't declare the `$SAMTOOLS_PATH` variable:
+
+```bash
+export SAMTOOLS_PATH = "/home/tladera2/miniconda/bin/"
+```
+
+Another thing to note is that we declare environment variables differently than we use then. If we wanted to use `$SAMTOOLS_PATH` we'd use a dollar sign (`$`) in front of it:
+
+```bash
+#!/bin/bash/
+$SAMTOOLS_PATH/samtools view -c $input_file
+```
+In this case, the value of `$SAMTOOLS_PATH` will be expanded (substituted) to give:
+
+```bash
+#!/bin/bash/
+/home/tladera2/miniconda/bin/samtools view -c $input_file
+```
+
+### A Very Special Environment Variable: `$PATH`
+
+The most important environment variable is the `$PATH` variable. This variable is important because it determines where to search for software executables. 
+
+We add to the `$PATH` by appending to it. You might have seen the following bit of code in your `.bashrc`:
+
+```bash
+export PATH=$PATH:/home/tladera2/samtools/
+```
+
+We are adding the path `/home/tladera2/samtools/` to our `$PATH` environment variable. Note that how we refer to the `PATH` variable is different depending on which side the variable is on of the equals sign. 
+
+We declare the variable using `export PATH` and we append to the variable using `$PATH`. This is something that trips me up all the time. 
+
+:::{.callout-note}
+## For FH Users
+
+In general, when you use environment modules on `gizmo`, you do not need to modify your `$PATH` variable. You mostly need to modify it when you are compiling executables so that the system can find them. Be sure to use `which` to see where the environment module is actually located:
+
+`which samtools`
+:::
+
+### `.bashrc` versus `.bash_profile`
+
+Ok, what's the difference between `.bashrc` and `.bash_profile`?
+
+The main difference is when these two files are sourced. `bash_profile` is used when you do an interactive login, and `.bashrc` is used for non-interactive shells.
+
+`.bashrc` should contain the environment variables that you use all the time, such as `$PATH` and `$JAVA_HOME` for example. You can get the best of both worlds by including the following line in your `.bash_profile`:
+
+```bash
+source ~/.bashrc
+```
+
+## Working with Shell Scripts
+
+> Note that I'm only covering bash scripting (hence the name of the book). Each shell has different conventions.
+
+When you are writing shell scripts, there's a few things to know to make them executable. 
+
+### The she-bang: `#!`
+
+If you've looked at a shell script and seen the following:
+
+```bash
+#| filename: samcount.sh
+#!/bin/bash
+samtools view -c $1 > $1.counts.txt
+```
+
+the `#!` is known as a she-bang - it's a signal to Linux what shell interpreter to use when running the script on the command line.
+
+### Making things executable: `chmod`
+
+Now we have our shell script, we will need to make it executable. We can do this using `chmod`
+
+```bash
+chmod +x samcount.sh
+```
+
+Now we can run it using:
+
+```bash
+./samcount.sh bam_file.bam
+```
+
+Because the script is not on our `$PATH`, then we need to specify the location of the script using `./`. 
+
+Note that you can always execute scripts using the `bash` command, even if they're not made executable on your filesystem
+
+```bash
+bash samcount.sh bam_file.bam
+```
+

@@ -1,0 +1,11 @@
+# Testing Scripts Using Interactive Shell
+
+You might wonder how to test a script will work on a worker. That's what interactive shells are for.
+
+With an interactive shell, we open a bash prompt on a worker. We can directly test our script out on the worker and debug it.
+
+## Grabbing an interactive shell
+
+## `grabnode`
+
+On the FH system, we can use a command called `grabnode`, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node. 

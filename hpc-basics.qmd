@@ -21,6 +21,9 @@ Let's establish the terminology we need to talk about HPC computing.
 - **Software Environment** - everything needed to run a piece of software on a brand new computer. For example, this would include installing R, but also all of its dependencies as well. 
 - **Executable** - software on the HPC. 
 - **Shared Filesystem** - Part of the platform that stores our files and other objects. We'll see that these other objects include applets, databases, and other object types.
+- **SLURM** - The workload manager of the HPC. Commands in **SLURM** such as `srun`, (see @sec-srun) kick off the processes on executing jobs on the **worker nodes**
+- **Interactive Analysis** - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to *non-interactive* analysis, which is done via scripts.
+
 
 ## Understanding the key players
 
@@ -41,7 +44,7 @@ Our main point of access to either the HPC cluster is going to be our computer.
 
 ### Key Players in HPC
 
-Let's contrast our view of local computing with the key players in the DNAnexus platform (@fig-dnanexus-players).
+Let's contrast our view of local computing with the key players in the DNAnexus platform (@fig-hpc-architecture).
 
 ![Key Players in HPC](images/hpc_architecture.png){#fig-hpc-architecture}
 
@@ -49,8 +52,6 @@ Let's contrast our view of local computing with the key players in the DNAnexus 
 - **Head Node** - Although there are many parts, we can treat the DNAnexus platform as a single entity that we interact with. Our request gets sent to the platform, and given availability, it will grant access to a temporary DNAnexus Worker. Also contains **project storage**.
 - **Worker Node** - A temporary machine that comes from a pool of available machines. We'll see that it starts out as a blank slate.
 - **Shared Filesystem** A distributed filesystem that can be seen by all of the nodes in the cluster.
-- **SLURM** - The workload manager of the HPC. Commands in **SLURM** such as `srun`, (see below) kick off the processes on executing jobs on the **worker nodes**
-- **Interactive Analysis** - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to *non-interactive* analysis, which is done via scripts.
 
 :::{.callout-note}
 ## For Fred Hutch Users
@@ -61,7 +62,7 @@ The nodes from `gizmo` all have names like `gizmoj6`, depending on their archite
 :::
 
 
-## Sequence of Events of Running a Job
+## Sequence of Events of Running a Job {#sec-srun}
 
 Let's run through the order of operations of running a job on the platform. Let's focus on running an aligner (BWA-MEM) on a FASTQ file. Our output will be a .BAM (aligned reads) file.
 

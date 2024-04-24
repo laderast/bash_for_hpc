@@ -496,8 +496,6 @@ In our bash script, `my_bash_script.sh`, we're using positional argument (for si
 We'll see when we build apps that our executable scripts need to be written as bash scripts. This means that if we want to run R code, we need to wrap it in a bash script.
 :::
 
-
-
 ## What you learned in this chapter
 
 Whew, this was a whirlwind tour. Keep this chapter in mind when you're working with the platform - the bash programming patterns will serve you well. We'll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.

@@ -15,6 +15,7 @@ book:
     - "running-stuff.qmd"
     - "scripting-basics.qmd"
     - "interactive_shell.qmd"
+    - "r-commandline.qmd"
 #    - "04-doing-work-with-dx-run.qmd"
 #    - "05-batch-processing.qmd"
 #    - "06-JSON.qmd"

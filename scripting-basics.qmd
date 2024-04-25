@@ -223,14 +223,14 @@ So for our first file, `01-scripting-basics.qmd`, we are substituting that for `
 
 ```{bash}
 #| eval: false
-'head 01-scripting-basics.qmd; echo "---\n"'
+'head hpc-basics.qmd; echo "---\n"'
 ```
 
 For our second file, `cloud-computing-basics.qmd`, we would substitute that for the `%`:
 
 ```{bash}
 #| eval: false
-'head cloud-computing-basics.qmd; echo "---\n"'
+'head hpc-basics.qmd; echo "---\n"'
 ```
 
 Until we cycle through all of the files in our list.
@@ -282,7 +282,9 @@ ls data/*.json | xargs -I% sh -c "tail %; echo '---\n'"
 :::{.callout-note}
 ## Why this is important on the platform
 
-We'll use this to execute batch jobs using `dx run`. This especially becomes powerful on the platform when we use `dx find files` to list files in our HPC project.  
+We can use `xargs` to execute small batch jobs on a small number of files. This especially becomes powerful on the platform when we use `ls` to list files in our HPC project.
+
+Note that as we *graduate* to workflow tools like WDL/Nextflow, there are other mechanisms for running jobs on multiple files (such as WDL/Cromwell) that we should move to.
 :::
 
 ### For more information
@@ -452,4 +454,3 @@ Whew, this was a whirlwind tour. Keep this chapter in mind when you're working w
 - Setting up bash scripts with positional arguments
 - Iterating over a list of files using `xargs`
 - How to use bash variables and variable expansions
-- Wrapping an R Script in a bash script

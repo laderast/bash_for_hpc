@@ -23,6 +23,23 @@ If you are on Windows, I recommend you install [Windows Subsystem for Linux](htt
 
 On your machine, I recommend using a text editor to edit the scripts in your terminal. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in ones such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
 
+## Where Am I?
+
+One of the confusing things about working on HPC is that sometimes you have a shell open on the head node, but oftentimes, you are on a worker node. 
+
+Your totem for telling which node you're in is `hostname`, which will give you the host name of the machine you're on.
+
+For example, if I used `grabnode` to grab a `gizmo` node for interactive work, I can check which node I'm in by using:
+
+```bash
+hostname
+```
+
+```
+gizmok164
+```
+If you're confused about which node you're in, remember `hostname`
+
 ## Navigating the Unix/Linux filesystem
 
 We'll start out our Unix/Linux journey talking about the filesystem, which has some quirks we need to be aware of.
@@ -42,14 +59,14 @@ The home directory is also important because it is where your configuration file
 Absolute paths contain all the information needed to find a file in a file system from the root `/` directory. For example, this would be an absolute path:
 
 ```
-/home/tladera2/immuno_project/raw_data/tcr_data.fasta
+/fh/fast/laderas_t/immuno_project/raw_data/tcr_data.fasta
 ```
 
 Absolute paths always start with `/`, because that is the root directory.
 
 Relative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path *relative* to that directory. Relative paths are really helpful because things don't break when you move your folder or files. 
 
-If my current path is my home directory `/home/tladera2/immuno_project/`, then the relative path to that same file would be:
+If my current path the directory `/fh/fast/laderas_t/immuno_project/`, then the relative path to that same file would be:
 
 ```
 raw_data/tcr_data.fasta
@@ -61,18 +78,13 @@ You may have seen relative paths such as `../another_directory/` - these mean to
 
 In general for portability and reproducibility, you will want to use relative paths **within a directory**, and avoid using relative paths like `../../my_folder`, where you are navigating up. In general, use relative paths to navigate down. 
 
-Using absolute paths in your scripts will probably break them
-
 ### Keep Everything in a Folder
 
-With the exception of reference genomes, you should be keeping your scripts and files in a single directory, and use relative paths to refer to them.
+We need to talk about code and data organization. For the FH system, we have a `/home/` directory, and if we have generated research data, a `/fh/fast/` directory.
 
-Within that directory, there are multiple approaches. The easiest is to keep your executable scripts in the top directory, and raw data in a separate directory, such as:
+Ideally, we want to make the naming conventions of our code and our data as similar as possible.
 
-```
-
-```
-
+The requirements of bioinformatics analysis usually require a huge amount of data. 
 
 ### Moving Things Around
 
@@ -105,7 +117,7 @@ and
 ```bash
 home/mydir/`    #relative path
 ```
-The first one is an *absolute path*, and the second is a *relative path*. 
+The first one is an *absolute path*, and the second is a *relative path*. If you're getting `file not found` messages, check to make sure the path is the right format.
 
 ## Environment Variables
 
@@ -238,4 +250,8 @@ Note that you can always execute scripts using the `bash` command, even if they'
 ```bash
 bash samcount.sh bam_file.bam
 ```
+
+## Useful Utilities
+
+### `screen` or `tmux`: keep your session open
 

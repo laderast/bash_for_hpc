@@ -94,7 +94,7 @@
     "href": "hpc-basics.html#learning-objectives",
     "title": "2  HPC Basics",
     "section": "",
-    "text": "Define key players in both local computing and HPC\nArticulate key differences between local computing and HPC\nDescribe the sequence of events in launching jobs in the DNAnexus cloud\nDifferentiate local storage from shared storage",
+    "text": "Define key players in both local computing and HPC\nArticulate key differences between local computing and HPC\nDescribe the sequence of events in launching jobs in the DNAnexus cloud\nDifferentiate local storage from shared storage and articulate the advantages of shared storage.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -104,7 +104,7 @@
     "href": "hpc-basics.html#important-terminology",
     "title": "2  HPC Basics",
     "section": "2.2 Important Terminology",
-    "text": "2.2 Important Terminology\nLet’s establish the terminology we need to talk about HPC computing.\n\nToolchain - a piece of software and its dependencies needed to run on a computer. For example, cromwell (a workflow runner), and java.\nSoftware Environment - everything needed to run a piece of software on a brand new computer. For example, this would include installing R, but also all of its dependencies as well.\nExecutable - software on the HPC.\nShared Filesystem - Part of the platform that stores our files and other objects. We’ll see that these other objects include applets, databases, and other object types.\nSLURM - The workload manager of the HPC. Commands in SLURM such as srun, (see Section 2.4) kick off the processes on executing jobs on the worker nodes\nInteractive Analysis - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to non-interactive analysis, which is done via scripts.",
+    "text": "2.2 Important Terminology\nLet’s establish the terminology we need to talk about HPC computing.\n\nToolchain - a piece of software and its dependencies needed to run on a computer. For example, cromwell (a workflow runner), and java.\nSoftware Environment - everything needed to run a piece of software on a brand new computer. For example, this would include installing tidyverse, but also all of its dependencies (R) as well. A toolchain is similar, but might not contain all system dependencies.\nExecutable - software that is available on the HPC.\nShared Filesystem - Part of the platform that stores our files and other objects. We’ll see that these other objects include applets, databases, and other object types.\nSLURM - The workload manager of the HPC. Commands in SLURM such as srun, (see Section 2.4) kick off the processes on executing jobs on the worker nodes.\nInteractive Analysis - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to non-interactive analysis, which is done via scripts.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -114,7 +114,7 @@
     "href": "hpc-basics.html#understanding-the-key-players",
     "title": "2  HPC Basics",
     "section": "2.3 Understanding the key players",
-    "text": "2.3 Understanding the key players\nIn order to understand what’s going on with HPC, we will have to change our mental model of computing.\nLet’s contrast the key players in local computing with the key players in HPC.\n\n2.3.1 Key Players in Local Computing\n\n\n\n\n\n\nFigure 2.1: Local Computing\n\n\n\n\nOur Machine\n\nWhen we run an analysis or process files on our computer, we are in control of all aspects of our computer. We are able to install a software environment, such as R or Python, and then execute scripts/notebooks that reside on our computer on data that’s on our computer.\nOur main point of access to either the HPC cluster is going to be our computer.\n\n\n2.3.2 Key Players in HPC\nLet’s contrast our view of local computing with the key players in the DNAnexus platform (Figure 2.2).\n\n\n\n\n\n\nFigure 2.2: Key Players in HPC\n\n\n\n\nOur Machine - We interact with the platform via the dx-toolkit installed on our machine. When we utilize cloud resources, we request them from our own computer using commands from the dx toolkit.\nHead Node - Although there are many parts, we can treat the DNAnexus platform as a single entity that we interact with. Our request gets sent to the platform, and given availability, it will grant access to a temporary DNAnexus Worker. Also contains project storage.\nWorker Node - A temporary machine that comes from a pool of available machines. We’ll see that it starts out as a blank slate.\nShared Filesystem A distributed filesystem that can be seen by all of the nodes in the cluster.\n\n\n\n\n\n\n\nFor Fred Hutch Users\n\n\n\nThe gizmo cluster at Fred Hutch actually has 3 head nodes called rhino (rhino01, rhino02, rhino03) that are high spec machines (70+ cores, lots of memory). You can run jobs on these nodes, but be aware that others may be running jobs here as well.\nThe nodes from gizmo all have names like gizmoj6, depending on their architecture.",
+    "text": "2.3 Understanding the key players\nIn order to understand what’s going on with HPC, we will have to change our mental model of computing.\nLet’s contrast the key players in local computing with the key players in HPC.\n\n2.3.1 Key Players in Local Computing\n\n\n\n\n\n\nFigure 2.1: Local Computing\n\n\n\n\nOur Machine\n\nWhen we run an analysis or process files on our computer, we are in control of all aspects of our computer. We are able to install a software environment, such as R or Python, and then execute scripts/notebooks that reside on our computer on data that’s on our computer.\nOur main point of access to either the HPC cluster is going to be our computer.\n\n\n2.3.2 Key Players in HPC\nLet’s contrast our view of local computing with the key players in the DNAnexus platform (Figure 2.2).\n\n\n\n\n\n\nFigure 2.2: Key Players in HPC\n\n\n\n\nOur Machine - We interact with the platform via the dx-toolkit installed on our machine. When we utilize cloud resources, we request them from our own computer using commands from the dx toolkit.\nHead Node - Although there are many parts, we can treat the DNAnexus platform as a single entity that we interact with. Our request gets sent to the platform, and given availability, it will grant access to a temporary DNAnexus Worker. Also contains project storage.\nWorker Node - A temporary machine that comes from a pool of available machines. We’ll see that it starts out as a blank slate.\nShared Filesystem A distributed filesystem that can be seen by all of the nodes in the cluster. Our scripts and data live here.\n\n\n\n\n\n\n\nFor Fred Hutch Users\n\n\n\nThe gizmo cluster at Fred Hutch actually has 3 head nodes called rhino (rhino01, rhino02, rhino03) that are high spec machines (70+ cores, lots of memory). You can run jobs on these nodes, but be aware that others may be running jobs here as well.\nThe nodes from gizmo all have names like gizmoj6, depending on their architecture.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -200,6 +200,16 @@
     ]
   },
   {
+    "objectID": "intro-unix.html#useful-utilities",
+    "href": "intro-unix.html#useful-utilities",
+    "title": "3  Everything about Unix/Linux they didn’t teach you",
+    "section": "3.6 Useful Utilities",
+    "text": "3.6 Useful Utilities\n\n3.6.1 screen or tmux keep your session open",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
+    ]
+  },
+  {
     "objectID": "running-stuff.html",
     "href": "running-stuff.html",
     "title": "4  Running Executables on HPC",
@@ -214,7 +224,7 @@
     "href": "running-stuff.html#environment-modules",
     "title": "4  Running Executables on HPC",
     "section": "4.2 Environment Modules",
-    "text": "4.2 Environment Modules\n\n4.2.1 Tip: Always Use Versioning",
+    "text": "4.2 Environment Modules\n\n\n\n\n\n\nFor FH Users\n\n\n\n\n\n\n\n4.2.1 Tip: Always Use Versioning\n\n\n4.2.2 Tip: module purge when you’re done\n\n\n4.2.3 Full Script Example\n#| eval: false\n#| filename: example_script.sh\n#!/bin/bash\nmodule load SAMtools/1.19.2-GCC-13.2.0\nsamtools view -c $1 &gt; $1.counts.txt\nmodule purge",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]

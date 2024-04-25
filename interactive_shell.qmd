@@ -6,6 +6,90 @@ With an interactive shell, we open a bash prompt on a worker. We can directly te
 
 ## Grabbing an interactive shell
 
-## `grabnode`
+When you're testing code
+
+:::{.callout}
+## For FH Users: `grabnode`
 
 On the FH system, we can use a command called `grabnode`, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node. 
+
+```{bash}
+#| eval: false
+tladera2@rhino01:~$ grabnode
+```
+
+`grabnode` will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. 
+
+```
+How many CPUs/cores would you like to grab on the node? [1-36] 8
+How much memory (GB) would you like to grab? [160] 8
+Please enter the max number of days you would like to grab this node: [1-7] 1
+Do you need a GPU ? [y/N]n
+
+You have requested 8 CPUs on this node/server for 1 days or until you type exit.
+
+Warning: If you exit this shell before your jobs are finished, your jobs
+on this node/server will be terminated. Please use sbatch for larger jobs.
+
+Shared PI folders can be found in: /fh/fast, /fh/scratch and /fh/secure.
+
+Requesting Queue: campus-new cores: 8 memory: 8 gpu: NONE
+srun: job 40898906 queued and waiting for resources
+```
+
+After a little bit, you'll arrive at a new prompt:
+
+```
+(base) tladera2@gizmok164:~$
+```
+
+If you're doing interactive analysis that is going to span over a few days, I recommend that you use `screen` or `tmux`.
+
+:::
+
+## Containers
+
+### Pulling a Docker Container
+
+Let's pull a docker container from the Docker registry. Note we have to specify `docker://` when we pull the container.
+
+```
+ apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
+```
+
+## Opening a Shell in a Docker Container
+
+When you're getting started, opening a shell using Apptainer can help you test out things like filepaths and how they're accessed in the container. 
+
+You can open an Apptainer shell in a container using `apptainer shell`. Remember to use `docker://` before the container name. For example:
+
+```
+apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1
+```
+
+This will open a Bash shell in the container. Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpoints).
+
+### Testing out bind points in containers {#sec-bindpoints}
+
+One thing to keep in mind is that every container has its own filesystem. One of the hardest things to wrap your head around for containers is how their filesystem works, and how to access files that are outside of the container filesystem. We'll call any filesystems outside of the container *external filesystems* to make the discussion a little easier.
+
+By default, the containers have access to your current working directory. We could make this where our scripts live, but because our data is elsewhere, we'll need to specify that location. 
+
+```{mermaid}
+flowchart LR
+  subgraph External Filesystem
+    direction LR
+    A[Container Filesystem\n/mydata]
+    B["External Directory\n/fh/fast/mydata/"] --> C
+    C --> B
+    A -->C(Bind Point)
+    C --> A
+  end
+```
+
+The main mechanism we have in Apptainer to access the external filesystem are *bind points*. Much like mounting a drive, we can bind folders from the external filesystem using these bind points. 
+
+I think of them as "tunnels" that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them into the mount point.
+
+Say my data lives in `/fh/fast/mydata/`. Then I can specify a bind point in my `apptainer shell` and `apptainer run` commands.
+

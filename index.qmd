@@ -10,6 +10,10 @@ Specifically, this book shows you a path to get started with processing data on 
 
 Our goal is to showcase the "glue" skills that help you do bioinformatics reproducibly on a High Performance Computing Cluster.
 
+## Why Bash?
+
+Bash is used as the default shell for many different bioinformatics containers and applications. So writing bash scripts can help you in many different situations where you need to automate a series of steps.
+
 ## Learning Objectives for this Book
 
 After reading and doing the exercises in this book, you should be able to:

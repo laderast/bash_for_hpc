@@ -1,6 +1,8 @@
 # Running Executables on HPC
 
-Ok, we've gotten comfortable navigating around the home filesystem. Now how do we run executables on files?
+Ok, we've gotten comfortable navigating around the HPC filesystem. Now how do we run executables on files?
+
+
 
 ## Your toolchain
 
@@ -8,13 +10,38 @@ Ok, we've gotten comfortable navigating around the home filesystem. Now how do w
 
 ## Environment Modules
 
+Before you install your own versions of software, it's important to realize that this problem may be solved for you.
+
+Your first stop should be looking for environment modules on the HPC. 
+
+:::{.callout}
+## For FH Users
+
+
+:::
+
 ### Tip: Always Use Versioning
+
+
+### Tip: `module purge` when you're done
+
+
+### Full Script Example
+
+```{bash}
+#| eval: false
+#| filename: example_script.sh
+#!/bin/bash
+module load SAMtools/1.19.2-GCC-13.2.0
+samtools view -c $1 > $1.counts.txt
+module purge
+```
+
 
 ## Docker Containers
 
-## Useful Utilities
 
-### `screen` or `tmux` keep your session open
+
 
 
 

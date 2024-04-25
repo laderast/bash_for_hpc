@@ -210,7 +210,7 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Define</strong> key players in both local computing and HPC</li>
 <li><strong>Articulate</strong> key differences between local computing and HPC</li>
 <li><strong>Describe</strong> the sequence of events in launching jobs in the DNAnexus cloud</li>
-<li><strong>Differentiate</strong> local storage from shared storage</li>
+<li><strong>Differentiate</strong> local storage from shared storage and <strong>articulate</strong> the advantages of shared storage.</li>
 </ol>
 </section>
 <section id="important-terminology" class="level2" data-number="2.2">
@@ -218,10 +218,10 @@ ul.task-list li input[type="checkbox"] {
 <p>Let’s establish the terminology we need to talk about HPC computing.</p>
 <ul>
 <li><strong>Toolchain</strong> - a piece of software and its dependencies needed to run on a computer. For example, <code>cromwell</code> (a workflow runner), and <code>java</code>.</li>
-<li><strong>Software Environment</strong> - everything needed to run a piece of software on a brand new computer. For example, this would include installing R, but also all of its dependencies as well.</li>
-<li><strong>Executable</strong> - software on the HPC.</li>
+<li><strong>Software Environment</strong> - everything needed to run a piece of software on a brand new computer. For example, this would include installing <code>tidyverse</code>, but also all of its dependencies (<code>R</code>) as well. A <em>toolchain</em> is similar, but might not contain all system dependencies.</li>
+<li><strong>Executable</strong> - software that is available on the HPC.</li>
 <li><strong>Shared Filesystem</strong> - Part of the platform that stores our files and other objects. We’ll see that these other objects include applets, databases, and other object types.</li>
-<li><strong>SLURM</strong> - The workload manager of the HPC. Commands in <strong>SLURM</strong> such as <code>srun</code>, (see <a href="#sec-srun" class="quarto-xref"><span>Section 2.4</span></a>) kick off the processes on executing jobs on the <strong>worker nodes</strong></li>
+<li><strong>SLURM</strong> - The workload manager of the HPC. Commands in <strong>SLURM</strong> such as <code>srun</code>, (see <a href="#sec-srun" class="quarto-xref"><span>Section 2.4</span></a>) kick off the processes on executing jobs on the <strong>worker nodes</strong>.</li>
 <li><strong>Interactive Analysis</strong> - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to <em>non-interactive</em> analysis, which is done via scripts.</li>
 </ul>
 </section>
@@ -264,7 +264,7 @@ Figure&nbsp;2.2: Key Players in HPC
 <li><strong>Our Machine</strong> - We interact with the platform via the dx-toolkit installed on our machine. When we utilize cloud resources, we request them from our own computer using commands from the dx toolkit.</li>
 <li><strong>Head Node</strong> - Although there are many parts, we can treat the DNAnexus platform as a single entity that we interact with. Our request gets sent to the platform, and given availability, it will grant access to a temporary DNAnexus Worker. Also contains <strong>project storage</strong>.</li>
 <li><strong>Worker Node</strong> - A temporary machine that comes from a pool of available machines. We’ll see that it starts out as a blank slate.</li>
-<li><strong>Shared Filesystem</strong> A distributed filesystem that can be seen by all of the nodes in the cluster.</li>
+<li><strong>Shared Filesystem</strong> A distributed filesystem that can be seen by all of the nodes in the cluster. Our scripts and data live here.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">

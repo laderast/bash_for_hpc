@@ -1,0 +1,96 @@
+# Running a R script on the command line
+
+## The Basic Process
+
+1. Specify named arguments for your R script.
+1. Wrap running `Rscript` in a bash file, passing on arguments to the R Script
+1. Use `bash` to execute your bash script, with appropriate arguments.
+
+:::{.callout}
+## For FH Users
+
+In your bash script you'll need to load the appropriate environment module (usually at least `fhR`):
+
+```
+module load fhR/4.3.3-foss-2023b
+```
+
+You can also run things from the Bioconductor / Rocker containers using Apptainer.
+:::
+
+## Using `Rscript` on the command-line
+
+Let's talk about wrapping R scripts in a Bash script. This might seem like an extra layer of redundancy, but remember that we need to specify our software environment before we run something, so our bash script lets us do that.
+
+Our main executable for running R on the command-line is `Rscript`. 
+
+When we run R on the command line, it will look something like this:
+
+```bash
+Rscript process_data.R --input_file=my_genome_file.vcf
+```
+Note that you can have named inputs when you run on the command line, 
+
+## Wrapping it up in a bash script
+
+Say you have an R Script you need to run on the command line. In our bash script, we can do the following:
+
+```{bash}
+#| filename: "scripting-basics/wrap_r_script.sh"
+#| eval: false
+#!/bin/bash
+Rscript process_data.R input_file="${1}"
+```
+
+This calls `Rscript`, which is the command line executable, to run our R script. Note that we have a named argument called `input_file` and it is done differently than in Bash - how do we use this in our R Script?
+
+### Using Named Arguments in an R script
+
+We can pass arguments from our bash script to our R script by using `commandArgs()` - this will populate a list of named arguments (such as `CSVFILE`) that are passed into the R Script. We assign the output of `commandArgs()` into the `args` object.
+
+We refer to our `CSVFILE` argument as `args$CSVFILE` in our script.
+
+```{r}
+#| eval: false
+#| filename: "scripting-basics/r_script.R"
+library(tidyverse)
+
+args <- commandArgs()
+# Use arg$CSVFILE in read.csv
+csv_file <- read.csv(file=args$input_file)
+
+# Do some work with csv_file
+csv_filtered <- csv_file |> dplyr::filter()
+
+# Write output
+write.csv(csv_filtered, file = paste0(args$CSVFILE, "_filtered.csv"))
+```
+
+### Running our R Script
+
+Now that we've set it up, we can run the R script from the command line as follows:
+
+```{bash}
+#| eval: false
+bash my_bash_script.sh my_csvfile.csv 
+```
+
+In our bash script, `my_bash_script.sh`, we're using positional argument (for simplicity) to specify our csvfile, and then passing the positional argument to named ones (`CSVFILE`) for `my_r_script.R`.
+
+## Quarto Documents
+
+Quarto is the next generation of RMarkdown and supports a number of output formats.
+
+You might want to apply a workflow that you've built in a quarto document. 
+
+The main difference is that you'd use `quarto run` rather than `Rscript run`. 
+
+```{bash}
+#| eval: false
+#!/bin/bash
+quarto run my_quarto_doc.qmd 
+```
+
+## Apptainer
+
+Apptainer (previous Singularity) is a secure way to run Docker containers on a HPC system. The commands are very similar to Docker, but aren't.

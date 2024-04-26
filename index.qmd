@@ -18,10 +18,12 @@ Bash is used as the default shell for many different bioinformatics containers a
 
 After reading and doing the exercises in this book, you should be able to:
 
+-   **Articulate** basic HPC architecture concepts and why they're useful in your work
+-   **Utilize** basic SLURM commands to understand the architecture of your HPC cluster
 -   **Apply** bash scripting to your own work
 -   **Leverage** bash scripting to execute jobs on HPC
 -   **Execute** batch processing of multiple files in a project
--   **Manage** software dependencies reproducibly using container-based technologies such as Docker
+-   **Manage** software dependencies reproducibly using container-based technologies such as Docker or environment modules
 
 
 ## What is not covered
@@ -30,7 +32,7 @@ This book is not meant to be a substitute for excellent books such as [Data Scie
 
 ## Notes
 
-This is a very opinionated journey through Bash shell scripting, workflow languages, and reproduciblity. This is written from the perspective of a user.
+This is a very opinionated journey through Bash shell scripting, workflow languages, and reproduciblity. This is written from the perspective of a user, especially on HPC systems that utilize SLURM.
 
 It is designed to build on each of the concepts in a gradual manner. Where possible, we link to the official HPC documentation. 
 
@@ -67,4 +69,4 @@ Just be aware that this is not my primary job - I'll try to be as responsive as 
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />[Bash for Bioinformatics]{xmlns:dct="http://purl.org/dc/terms/" property="dct:title"} by <a xmlns:cc="http://creativecommons.org/ns#" href="https://laderast.github.io/bash_for_bioinformatics" property="cc:attributionName" rel="cc:attributionURL">Ted Laderas</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/laderast/bash_for_bioinformatics" rel="dct:source">https://github.com/laderast/bash_for_bioinformatics</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />[Bash for HPC]{xmlns:dct="http://purl.org/dc/terms/" property="dct:title"} by <a xmlns:cc="http://creativecommons.org/ns#" href="https://laderast.github.io/bash_for_bioinformatics" property="cc:attributionName" rel="cc:attributionURL">Ted Laderas</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/laderast/bash_for_bioinformatics" rel="dct:source">https://github.com/laderast/bash_for_hpc</a>.

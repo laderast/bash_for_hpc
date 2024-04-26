@@ -15,7 +15,7 @@ In your bash script you'll need to load the appropriate environment module (usua
 module load fhR/4.3.3-foss-2023b
 ```
 
-You can also run things from the Bioconductor / Rocker containers using Apptainer.
+You can also run things from the Bioconductor / Rocker containers using Apptainer (@sec-fh-apptainer).
 :::
 
 ## Using `Rscript` on the command-line
@@ -91,6 +91,6 @@ The main difference is that you'd use `quarto run` rather than `Rscript run`.
 quarto run my_quarto_doc.qmd 
 ```
 
-## Apptainer
+## Apptainer {#sec-apptainer}
 
 Apptainer (previous Singularity) is a secure way to run Docker containers on a HPC system. The commands are very similar to Docker, but aren't.

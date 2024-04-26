@@ -28,7 +28,7 @@ Your first stop should be looking for environment modules on the HPC.
 
 ### Full Script Example
 
-```{bash}
+```bash
 #| eval: false
 #| filename: example_script.sh
 #!/bin/bash
@@ -38,7 +38,7 @@ module purge
 ```
 
 
-## Docker Containers
+## Running Docker Containers
 
 
 

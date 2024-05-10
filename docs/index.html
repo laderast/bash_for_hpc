@@ -155,6 +155,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-commandline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -167,13 +173,14 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#learning-objectives-for-this-book" id="toc-learning-objectives-for-this-book" class="nav-link" data-scroll-target="#learning-objectives-for-this-book"><span class="header-section-number">1.1</span> Learning Objectives for this Book</a></li>
-  <li><a href="#what-is-not-covered" id="toc-what-is-not-covered" class="nav-link" data-scroll-target="#what-is-not-covered"><span class="header-section-number">1.2</span> What is not covered</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">1.3</span> Notes</a></li>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"><span class="header-section-number">1.4</span> Prerequisites</a></li>
-  <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors"><span class="header-section-number">1.5</span> Contributors</a></li>
-  <li><a href="#want-to-be-a-contributor" id="toc-want-to-be-a-contributor" class="nav-link" data-scroll-target="#want-to-be-a-contributor"><span class="header-section-number">1.6</span> Want to be a Contributor?</a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><span class="header-section-number">1.7</span> License</a></li>
+  <li><a href="#why-bash" id="toc-why-bash" class="nav-link" data-scroll-target="#why-bash"><span class="header-section-number">1.1</span> Why Bash?</a></li>
+  <li><a href="#learning-objectives-for-this-book" id="toc-learning-objectives-for-this-book" class="nav-link" data-scroll-target="#learning-objectives-for-this-book"><span class="header-section-number">1.2</span> Learning Objectives for this Book</a></li>
+  <li><a href="#what-is-not-covered" id="toc-what-is-not-covered" class="nav-link" data-scroll-target="#what-is-not-covered"><span class="header-section-number">1.3</span> What is not covered</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">1.4</span> Notes</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"><span class="header-section-number">1.5</span> Prerequisites</a></li>
+  <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors"><span class="header-section-number">1.6</span> Contributors</a></li>
+  <li><a href="#want-to-be-a-contributor" id="toc-want-to-be-a-contributor" class="nav-link" data-scroll-target="#want-to-be-a-contributor"><span class="header-section-number">1.7</span> Want to be a Contributor?</a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><span class="header-section-number">1.8</span> License</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -221,28 +228,34 @@ ul.task-list li input[type="checkbox"] {
 <p>This is a book that is meant to bring you (a budding bioinformaticist) beyond the foundational shell scripting skills learned from a shell scripting course such as <a href="https://swcarpentry.github.io/shell-novice/">the Software Carpentries Shell Course</a>.</p>
 <p>Specifically, this book shows you a path to get started with processing data on a High Performance Computing cluster, and setting you on the road to making a reproducible workflow using WDL.</p>
 <p>Our goal is to showcase the “glue” skills that help you do bioinformatics reproducibly on a High Performance Computing Cluster.</p>
-<section id="learning-objectives-for-this-book" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="learning-objectives-for-this-book"><span class="header-section-number">1.1</span> Learning Objectives for this Book</h2>
+<section id="why-bash" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="why-bash"><span class="header-section-number">1.1</span> Why Bash?</h2>
+<p>Bash is used as the default shell for many different bioinformatics containers and applications. So writing bash scripts can help you in many different situations where you need to automate a series of steps.</p>
+</section>
+<section id="learning-objectives-for-this-book" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="learning-objectives-for-this-book"><span class="header-section-number">1.2</span> Learning Objectives for this Book</h2>
 <p>After reading and doing the exercises in this book, you should be able to:</p>
 <ul>
+<li><strong>Articulate</strong> basic HPC architecture concepts and why they’re useful in your work</li>
+<li><strong>Utilize</strong> basic SLURM commands to understand the architecture of your HPC cluster</li>
 <li><strong>Apply</strong> bash scripting to your own work</li>
 <li><strong>Leverage</strong> bash scripting to execute jobs on HPC</li>
 <li><strong>Execute</strong> batch processing of multiple files in a project</li>
-<li><strong>Manage</strong> software dependencies reproducibly using container-based technologies such as Docker</li>
+<li><strong>Manage</strong> software dependencies reproducibly using container-based technologies such as Docker or environment modules</li>
 </ul>
 </section>
-<section id="what-is-not-covered" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="what-is-not-covered"><span class="header-section-number">1.2</span> What is not covered</h2>
+<section id="what-is-not-covered" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="what-is-not-covered"><span class="header-section-number">1.3</span> What is not covered</h2>
 <p>This book is not meant to be a substitute for excellent books such as <a href="https://datascienceatthecommandline.com/2e/">Data Science on the Command Line</a>. This book focuses on the essential Bash shell skills that will help you on the DNAnexus platform.</p>
 </section>
-<section id="notes" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="notes"><span class="header-section-number">1.3</span> Notes</h2>
-<p>This is a very opinionated journey through Bash shell scripting, workflow languages, and reproduciblity. This is written from the perspective of a user.</p>
+<section id="notes" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="notes"><span class="header-section-number">1.4</span> Notes</h2>
+<p>This is a very opinionated journey through Bash shell scripting, workflow languages, and reproduciblity. This is written from the perspective of a user, especially on HPC systems that utilize SLURM.</p>
 <p>It is designed to build on each of the concepts in a gradual manner. Where possible, we link to the official HPC documentation.</p>
 <p>At each step, you’ll be able to do useful things with your data. We will focus on skills and programming patterns that are useful.</p>
 </section>
-<section id="prerequisites" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">1.4</span> Prerequisites</h2>
+<section id="prerequisites" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">1.5</span> Prerequisites</h2>
 <p>Before you tackle this book, you should be able to accomplish the following:</p>
 <ul>
 <li>Open and utilize a shell. This section from the Missing Semester of your CS Education is very helpful: <a href="https://missing.csail.mit.edu/2020/course-shell/" class="uri">https://missing.csail.mit.edu/2020/course-shell/</a></li>
@@ -250,12 +263,12 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>We recommend reviewing a course such as the <a href="https://swcarpentry.github.io/shell-novice/">Software Carpentry course for Shell Scripting</a> before getting started with this book. <a href="https://missing.csail.mit.edu/">The Missing Semester of your CS Education</a> is another great introduction/resource.</p>
 </section>
-<section id="contributors" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="contributors"><span class="header-section-number">1.5</span> Contributors</h2>
+<section id="contributors" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="contributors"><span class="header-section-number">1.6</span> Contributors</h2>
 <p>TBD.</p>
 </section>
-<section id="want-to-be-a-contributor" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="want-to-be-a-contributor"><span class="header-section-number">1.6</span> Want to be a Contributor?</h2>
+<section id="want-to-be-a-contributor" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="want-to-be-a-contributor"><span class="header-section-number">1.7</span> Want to be a Contributor?</h2>
 <p>This is the first draft of this book. It’s not going to be perfect, and we need help. Specifically, we need help with testing the setup and the exercises.</p>
 <p>If you have an problem, you can file it as an issue using <a href="https://github.com/laderast/bash_for_bioinformatics/issues/new/choose">this link</a>.</p>
 <p>In your issue, please note the following:</p>
@@ -267,9 +280,9 @@ ul.task-list li input[type="checkbox"] {
 <p>If you’re quarto/GitHub savvy, you can fork and file a pull request for typos/edits. If you’re not, you can file an issue.</p>
 <p>Just be aware that this is not my primary job - I’ll try to be as responsive as I can.</p>
 </section>
-<section id="license" class="level2" data-number="1.7">
-<h2 data-number="1.7" class="anchored" data-anchor-id="license"><span class="header-section-number">1.7</span> License</h2>
-<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"></a><br><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Bash for Bioinformatics</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://laderast.github.io/bash_for_bioinformatics" property="cc:attributionName" rel="cc:attributionURL">Ted Laderas</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br>Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/laderast/bash_for_bioinformatics" rel="dct:source">https://github.com/laderast/bash_for_bioinformatics</a>.</p>
+<section id="license" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="license"><span class="header-section-number">1.8</span> License</h2>
+<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"></a><br><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Bash for HPC</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://laderast.github.io/bash_for_bioinformatics" property="cc:attributionName" rel="cc:attributionURL">Ted Laderas</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br>Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/laderast/bash_for_bioinformatics" rel="dct:source">https://github.com/laderast/bash_for_hpc</a>.</p>
 
 
 </section>

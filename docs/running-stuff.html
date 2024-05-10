@@ -188,6 +188,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-commandline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -205,11 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tip-module-purge-when-youre-done" id="toc-tip-module-purge-when-youre-done" class="nav-link" data-scroll-target="#tip-module-purge-when-youre-done"><span class="header-section-number">4.2.2</span> Tip: <code>module purge</code> when you’re done</a></li>
   <li><a href="#full-script-example" id="toc-full-script-example" class="nav-link" data-scroll-target="#full-script-example"><span class="header-section-number">4.2.3</span> Full Script Example</a></li>
   </ul></li>
-  <li><a href="#docker-containers" id="toc-docker-containers" class="nav-link" data-scroll-target="#docker-containers"><span class="header-section-number">4.3</span> Docker Containers</a></li>
-  <li><a href="#useful-utilities" id="toc-useful-utilities" class="nav-link" data-scroll-target="#useful-utilities"><span class="header-section-number">4.4</span> Useful Utilities</a>
-  <ul class="collapse">
-  <li><a href="#screen-or-tmux-keep-your-session-open" id="toc-screen-or-tmux-keep-your-session-open" class="nav-link" data-scroll-target="#screen-or-tmux-keep-your-session-open"><span class="header-section-number">4.4.1</span> <code>screen</code> or <code>tmux</code> keep your session open</a></li>
-  </ul></li>
+  <li><a href="#running-docker-containers" id="toc-running-docker-containers" class="nav-link" data-scroll-target="#running-docker-containers"><span class="header-section-number">4.3</span> Running Docker Containers</a></li>
   </ul>
 </nav>
     </div>
@@ -235,12 +237,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Ok, we’ve gotten comfortable navigating around the home filesystem. Now how do we run executables on files?</p>
+<p>Ok, we’ve gotten comfortable navigating around the HPC filesystem. Now how do we run executables on files?</p>
 <section id="your-toolchain" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="your-toolchain"><span class="header-section-number">4.1</span> Your toolchain</h2>
 </section>
 <section id="environment-modules" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="environment-modules"><span class="header-section-number">4.2</span> Environment Modules</h2>
+<p>Before you install your own versions of software, it’s important to realize that this problem may be solved for you.</p>
+<p>Your first stop should be looking for environment modules on the HPC.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -270,16 +274,10 @@ For FH Users
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="docker-containers" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="docker-containers"><span class="header-section-number">4.3</span> Docker Containers</h2>
-</section>
-<section id="useful-utilities" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="useful-utilities"><span class="header-section-number">4.4</span> Useful Utilities</h2>
-<section id="screen-or-tmux-keep-your-session-open" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="screen-or-tmux-keep-your-session-open"><span class="header-section-number">4.4.1</span> <code>screen</code> or <code>tmux</code> keep your session open</h3>
+<section id="running-docker-containers" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="running-docker-containers"><span class="header-section-number">4.3</span> Running Docker Containers</h2>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

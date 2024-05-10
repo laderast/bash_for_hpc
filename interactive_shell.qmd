@@ -4,11 +4,34 @@ You might wonder how to test a script will work on a worker. That's what interac
 
 With an interactive shell, we open a bash prompt on a worker. We can directly test our script out on the worker and debug it.
 
+Even if you aren't going to use Apptainer in your work, I recommend getting into an interactive shell in a container at least once or twice to learn about the container filesystem and how you connect it to the external filesystem.
+
+## Learning Objectives
+
+After reading this, you will be able to:
+
+- **Articulate** reasons why interactive shells make testing code easier
+- **Open** an interactive shell on a worker node
+- **Open** an interactive shell on a Docker Container
+- **Articulate** how to connect container filesystems to the external filesystem
+
 ## Grabbing an interactive shell
 
-When you're testing code
+When you're testing code that's going to run on a worker node, you need to be aware of what the worker node sees. 
 
-:::{.callout}
+It's also important in estimating how long our tasks are going to run since we can test how long a task runs for a representative dataset. 
+
+Confusingly, depending on On a SLURM system, the way to open interactive shells on a node has changed. Check your version first:
+
+```bash
+srun --version
+```
+
+If the version is past 20.11, we can open an interactive shell on a worker with `salloc`. 
+
+
+
+:::{.callout-note}
 ## For FH Users: `grabnode`
 
 On the FH system, we can use a command called `grabnode`, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node. 
@@ -18,7 +41,7 @@ On the FH system, we can use a command called `grabnode`, which will let us requ
 tladera2@rhino01:~$ grabnode
 ```
 
-`grabnode` will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. 
+`grabnode` will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. Here, I'm grabbing a node with 8 cores, 8 Gb of memory, using it for 1 day, and no GPU.
 
 ```
 How many CPUs/cores would you like to grab on the node? [1-36] 8
@@ -44,7 +67,11 @@ After a little bit, you'll arrive at a new prompt:
 ```
 
 If you're doing interactive analysis that is going to span over a few days, I recommend that you use `screen` or `tmux`.
+:::
 
+:::{.callout}
+## Remember `hostname`
+When you are doing interactive analysis, it is easy to forget in which node you're working in. Just as a quick check, I use `hostname` to remind myself whether I'm in `rhino`, `gizmo`, or within an apptainer container.
 :::
 
 ## Containers
@@ -54,42 +81,87 @@ If you're doing interactive analysis that is going to span over a few days, I re
 Let's pull a docker container from the Docker registry. Note we have to specify `docker://` when we pull the container.
 
 ```
- apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
+apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
 ## Opening a Shell in a Docker Container
 
-When you're getting started, opening a shell using Apptainer can help you test out things like filepaths and how they're accessed in the container. 
+When you're getting started, opening a shell using Apptainer can help you test out things like filepaths and how they're accessed in the container. It's hard to get an intuition for how this works until you can see the limited view from the container.
 
 You can open an Apptainer shell in a container using `apptainer shell`. Remember to use `docker://` before the container name. For example:
 
-```
+```{bash}
+#| eval:false
 apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
-This will open a Bash shell in the container. Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpoints).
+This will open a Bash shell in the container. Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpaths).
 
-### Testing out bind points in containers {#sec-bindpoints}
+### Testing out bind paths in containers {#sec-bindpaths}
 
-One thing to keep in mind is that every container has its own filesystem. One of the hardest things to wrap your head around for containers is how their filesystem works, and how to access files that are outside of the container filesystem. We'll call any filesystems outside of the container *external filesystems* to make the discussion a little easier.
+One thing to keep in mind is that every container has its own filesystem. One of the hardest things to wrap your head around for containers is how their filesystems work, and how to access files that are outside of the container filesystem. We'll call any filesystems outside of the container *external filesystems* to make the discussion a little easier.
 
-By default, the containers have access to your current working directory. We could make this where our scripts live, but because our data is elsewhere, we'll need to specify that location. 
+By default, the containers have access to your current working directory. We could make this where our scripts live (such as `/home/tladera2/`), but because our data is elsewhere, we'll need to specify that location (`/fh/fast/mylab/`) as well.
+
+The main mechanism we have in Apptainer to access the external filesystem are *bind paths*. Much like mounting a drive, we can bind directories from the external filesystem using these bind points. 
 
 ```{mermaid}
 flowchart LR
-  subgraph External Filesystem
     direction LR
-    A[Container Filesystem\n/mydata]
-    B["External Directory\n/fh/fast/mydata/"] --> C
-    C --> B
-    A -->C(Bind Point)
-    C --> A
-  end
+    A[Container Filesystem\n/mydata/]
+    A --write-->C("--bind /fh/fast/mydata/:/mydata/")
+    C --read--> A
+    B["External Directory\n/fh/fast/mydata/"] --read--> C
+    C --write--> B
 ```
 
-The main mechanism we have in Apptainer to access the external filesystem are *bind points*. Much like mounting a drive, we can bind folders from the external filesystem using these bind points. 
-
-I think of them as "tunnels" that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them into the mount point.
+I think of bind paths as "tunnels" that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them using the bind path.
 
 Say my data lives in `/fh/fast/mydata/`. Then I can specify a bind point in my `apptainer shell` and `apptainer run` commands.
 
+We can do this with the `--bind` option:
+
+```{bash}
+#| eval:false
+apptainer shell --bind /fh/fast/mydata:/mydata docker://biocontainers/samtools:v1.9-4-deb_cv1
+```
+
+Note that the bind syntax doesn't have the trailing slash. That is, note that it is:
+
+```
+--bind /fh/fast/mydata: ....
+```
+Rather than
+
+```
+--bind /fh/fast/mydata/: ....
+```
+
+Now our `/fh/fast/mydata/` folder will be available as `/mydata/` in my container. We can read and write files to this bind point.
+
+:::{.callout}
+## WDL makes this way easier
+
+A major point of failure with apptainer scripting is when our scripts aren't using the right bind points. 
+
+This is one reason we recommend writing WDL Workflows and a workflow engine (such as Cromwell) to run your workflows, since you don't have to worry about them, because they are handled by the workflow engine.
+:::
+
+### Testing in the Apptainer Shell
+
+Ok, now we have a bind point, so now we can test our script in the shell. For example, we can see if we are invoking `samtools` in the correct way and that our bind points work.
+
+```{bash}
+#| eval:false
+samtools view -c /mydata/my_bam_file.bam > /mydata/bam_counts.txt
+```
+
+Trying out scripts in the container is the best way to understand what the container can and can't see.
+
+### Exiting the container when you're done
+
+You can `exit`, like any shell you open. You should be out of the container. Confirm by using `hostname` to make sure you're out of the container.
+
+### More Info
+- [Carpentries Section on Apptainer Paths](https://hsf-training.github.io/hsf-training-singularity-webpage/07-file-sharing/index.html) - this is an excellent resource if you want to dive deeper into undestanding container filesystems and bind points.
+- [More about bind paths and other options](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html).

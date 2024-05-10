@@ -253,5 +253,51 @@ bash samcount.sh bam_file.bam
 
 ## Useful Utilities
 
+The following section outlines some useful unix utilities that can be very helpful when you're working in bash. Most of these should be available in HPC systems by default.
+
+### Text editors: `vim` or `nano`
+
+In general, we recommend connecting an editor such as VS Code via SSH to make it easier to edit files. But sometimes you just need to edit a file on the system directly.
+
+That's what `nano` and `vim` are for. Of these, `nano` has the smallest learning curve, since it works like most editors. `vim` is powerful, but there is a steep learning curve associated with it. 
+
 ### `screen` or `tmux`: keep your session open
+
+{{< video https://youtu.be/fYWszwc-LXM >}}
+
+Oftentimes, when you are running something interactive on a system, you'll have to leave your shell open. Otherwise, your running job will terminate.
+
+You can use `screen` or `tmux`, which are known as window managers, to keep your sessions open on a remote machine. We'll talk about `screen`.
+
+![](images/start_screen.png)
+
+`screen` works by starting a new bash shell. You can tell this because your bash prompt will change.
+
+The key of working remotely with `screen` is that you can then request an `hpc` node. 
+
+For FH users, you can request a `gizmo` node using `grabnode`. We can then check we're on the `gizmo` node by using `hostname`.
+
+If we have something running on this node, we can keep it running by *detaching* the screen session. Once we are detached, we should check that we're back in `rhino` by using `hostname`. Now we can log out and our job will keep running.
+
+![](images/reattach_screen.png)
+
+If we need to get back into that `screen` session, we can use 
+
+```bash
+screen ls
+```
+To list the number of sessions. Once we've
+
+### The `Tab` key
+
+Never underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files, 
+
+### `squeue -u <username>`
+
+Sometimes you will want to know where you are in the queue of all the other jobs that are in the run queue in SLURM. You can use `squeue` with `-u` (username) option to look for your username. For example:
+
+```{bash}
+#| eval: false
+squeue -u tladera2
+```
 

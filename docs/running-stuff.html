@@ -204,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#your-toolchain" id="toc-your-toolchain" class="nav-link active" data-scroll-target="#your-toolchain"><span class="header-section-number">4.1</span> Your toolchain</a></li>
+  <li><a href="#a-empty-environment" id="toc-a-empty-environment" class="nav-link active" data-scroll-target="#a-empty-environment"><span class="header-section-number">4.1</span> A empty environment</a></li>
   <li><a href="#environment-modules" id="toc-environment-modules" class="nav-link" data-scroll-target="#environment-modules"><span class="header-section-number">4.2</span> Environment Modules</a>
   <ul class="collapse">
   <li><a href="#tip-always-use-versioning-for-environment-modules" id="toc-tip-always-use-versioning-for-environment-modules" class="nav-link" data-scroll-target="#tip-always-use-versioning-for-environment-modules"><span class="header-section-number">4.2.1</span> Tip: Always Use Versioning for Environment Modules</a></li>
@@ -238,13 +238,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Ok, we’ve gotten comfortable navigating around the HPC filesystem. Now how do we run executables on files?</p>
-<section id="your-toolchain" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="your-toolchain"><span class="header-section-number">4.1</span> Your toolchain</h2>
+<p>Let’s talk about the two problems: 1) How do we find executables on a cluster, and</p>
+<section id="a-empty-environment" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="a-empty-environment"><span class="header-section-number">4.1</span> A empty environment</h2>
+<p>Remember, we can poke around and see whether <code>samtools</code> is installed on the machine using <code>which</code>:</p>
+<pre><code>which samtools</code></pre>
+<p>If <code>samtools</code> is available, it will give the path. If it isn’t, you will have an empty response.</p>
+<p>So if we don’t have <code>samtools</code> immediately available, how do we discover it?</p>
 </section>
 <section id="environment-modules" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="environment-modules"><span class="header-section-number">4.2</span> Environment Modules</h2>
 <p>Before you install your own versions of software, it’s important to realize that this problem may be solved for you.</p>
-<p>Your first stop should be looking for environment modules on the HPC.</p>
+<p>Your first stop should be looking for environment modules on the HPC. Not all HPCs have these, but if they have them, this should be your first stop to find executables.</p>
+<p><code>lmod</code> is a system for loading and unloading software modules. The commands all start with <code>module</code>, and there are a number of ones that are useful for you.</p>
+<ul>
+<li><code>module avail</code></li>
+<li><code>module load</code></li>
+<li><code>module purge</code></li>
+</ul>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -255,7 +266,7 @@ For FH Users
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>On the FH cluster, <code>ml</code> is a handy command that combines <code>module load</code> and <code>module avail</code></p>
 </div>
 </div>
 <section id="tip-always-use-versioning-for-environment-modules" class="level3" data-number="4.2.1">
@@ -266,16 +277,18 @@ For FH Users
 </section>
 <section id="full-script-example" class="level3" data-number="4.2.3">
 <h3 data-number="4.2.3" class="anchored" data-anchor-id="full-script-example"><span class="header-section-number">4.2.3</span> Full Script Example</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: example_script.sh</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load SAMtools/1.19.2-GCC-13.2.0</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is an example of a full script that uses environment modules.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: example_script.sh</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load SAMtools/1.19.2-GCC-13.2.0</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="running-docker-containers" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="running-docker-containers"><span class="header-section-number">4.3</span> Running Docker Containers</h2>
+<p>If there is not a</p>
 
 
 </section>

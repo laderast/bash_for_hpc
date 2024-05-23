@@ -326,7 +326,7 @@ Remember <code>hostname</code>
 <p>You can open an Apptainer shell in a container using <code>apptainer shell</code>. Remember to use <code>docker://</code> before the container name. For example:</p>
 <pre class="{bash}"><code>#| eval:false
 apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
-<p>This will open a Bash shell in the container. Once you’re in the container, you can test code, especially seeing whether your files can be seen by the container (see <a href="#sec-bindpaths" class="quarto-xref"><span class="quarto-unresolved-ref">sec-bindpaths</span></a>).</p>
+<p>This will open a Bash shell in the container. Once you’re in the container, you can test code, especially seeing whether your files can be seen by the container (see <a href="#sec-bindpaths" class="quarto-xref"><span>Section 6.4.1</span></a>).</p>
 <section id="sec-bindpaths" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="sec-bindpaths"><span class="header-section-number">6.4.1</span> Testing out bind paths in containers</h3>
 <p>One thing to keep in mind is that every container has its own filesystem. One of the hardest things to wrap your head around for containers is how their filesystems work, and how to access files that are outside of the container filesystem. We’ll call any filesystems outside of the container <em>external filesystems</em> to make the discussion a little easier.</p>

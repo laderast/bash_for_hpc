@@ -195,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-cloud" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">HPC Basics</span></span></h1>
+<h1 class="title"><span id="sec-HPC" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">HPC Basics</span></span></h1>
 </div>
 
 
@@ -272,7 +272,7 @@ Figure&nbsp;2.2: Key Players in HPC
 </figure>
 </div>
 <ul>
-<li><strong>Our Machine</strong> - We interact with the platform via the dx-toolkit installed on our machine. When we utilize cloud resources, we request them from our own computer using commands from the dx toolkit.</li>
+<li><strong>Our Machine</strong> - We interact with the platform via the dx-toolkit installed on our machine. When we utilize HPC resources, we request them from our own computer using commands from the dx toolkit.</li>
 <li><strong>Head Node</strong> - Although there are many parts, we can treat the HPC cluster as a single entity that we interact with. Our request gets sent to the platform, and given availability, it will grant access to a temporary worker. Also contains <strong>project storage</strong>.</li>
 <li><strong>Worker Node</strong> - A temporary machine that comes from a pool of available machines in the cluster. We’ll see that it starts out as a blank slate, and we need to establish a <em>software environment</em> to run things on a worker.</li>
 <li><strong>Shared Filesystem</strong> A distributed filesystem that can be seen by all of the nodes in the cluster. Our scripts and data live here.</li>
@@ -319,7 +319,7 @@ Figure&nbsp;2.3: Order of Operations
 <h3 data-number="2.4.1" class="anchored" data-anchor-id="key-differences-with-local-computing"><span class="header-section-number">2.4.1</span> Key Differences with local computing</h3>
 <p>As you might have surmised, running a job on the HPC platform is very different from computing on your local computer.</p>
 <ol type="1">
-<li>We don’t own the worker machine, we only have temporary access to it. A lot of the complications of running cloud computations comes from this.</li>
+<li>We don’t own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.</li>
 <li>We have to be explicit what kind of machine we want. We’ll talk much more about this in terms of machine types.</li>
 </ol>
 </section>

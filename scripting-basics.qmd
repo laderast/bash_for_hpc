@@ -153,7 +153,7 @@ A really common pattern is taking a delimited list of files and doing something 
 
 :::{.callout-warning}
 ## Don't `xargs` for HPC jobs
-
+  
 You might be tempted to use `xargs` with `srun` to work on a bunch of files. It's worth trying once so you can see the mechanics of how jobs are processes.
 
 In general, I don't recommend it in practice because if you spawn 1000 jobs using `xargs`, there's no real mechanism to terminate that 1000 jobs, except one by one. With `sbatch`, all your jobs in batch mode run as *subjobs*

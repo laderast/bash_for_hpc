@@ -219,12 +219,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#setting-environment-variables" id="toc-setting-environment-variables" class="nav-link" data-scroll-target="#setting-environment-variables"><span class="header-section-number">3.5.1</span> Setting Environment Variables</a></li>
   <li><a href="#a-very-special-environment-variable-path" id="toc-a-very-special-environment-variable-path" class="nav-link" data-scroll-target="#a-very-special-environment-variable-path"><span class="header-section-number">3.5.2</span> A Very Special Environment Variable: <code>$PATH</code></a></li>
-  <li><a href="#bashrc-versus-.bash_profile" id="toc-bashrc-versus-.bash_profile" class="nav-link" data-scroll-target="#bashrc-versus-.bash_profile"><span class="header-section-number">3.5.3</span> <code>.bashrc</code> versus <code>.bash_profile</code></a></li>
+  <li><a href="#making-your-own-environment-variables" id="toc-making-your-own-environment-variables" class="nav-link" data-scroll-target="#making-your-own-environment-variables"><span class="header-section-number">3.5.3</span> Making your own environment variables</a></li>
+  <li><a href="#bashrc-versus-.bash_profile" id="toc-bashrc-versus-.bash_profile" class="nav-link" data-scroll-target="#bashrc-versus-.bash_profile"><span class="header-section-number">3.5.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></a></li>
   </ul></li>
   <li><a href="#working-with-shell-scripts" id="toc-working-with-shell-scripts" class="nav-link" data-scroll-target="#working-with-shell-scripts"><span class="header-section-number">3.6</span> Working with Shell Scripts</a>
   <ul class="collapse">
   <li><a href="#the-she-bang" id="toc-the-she-bang" class="nav-link" data-scroll-target="#the-she-bang"><span class="header-section-number">3.6.1</span> The she-bang: <code>#!</code></a></li>
   <li><a href="#making-things-executable-chmod" id="toc-making-things-executable-chmod" class="nav-link" data-scroll-target="#making-things-executable-chmod"><span class="header-section-number">3.6.2</span> Making things executable: <code>chmod</code></a></li>
+  <li><a href="#user-access-groups" id="toc-user-access-groups" class="nav-link" data-scroll-target="#user-access-groups"><span class="header-section-number">3.6.3</span> User Access: Groups</a></li>
   </ul></li>
   <li><a href="#useful-utilities" id="toc-useful-utilities" class="nav-link" data-scroll-target="#useful-utilities"><span class="header-section-number">3.7</span> Useful Utilities</a>
   <ul class="collapse">
@@ -274,9 +276,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="terminal-setup" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="terminal-setup"><span class="header-section-number">3.2</span> Terminal setup</h2>
-<p>We’ll be running all of these scripts on our own machine. We’ll be using the command-line for most of these.</p>
-<p>If you are on Linux/Mac, you’ll be working with the terminal. If you are on Windows, I recommend you install <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux</a>, and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server.</p>
-<p>On your machine, I recommend using a text editor to edit the scripts in your terminal. Good ones include <a href="https://code.visualstudio.com/">Visual Studio Code (VS Code)</a>, or built in ones such as <code>nano</code>. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.</p>
+<p>If you are on Linux/Mac, you’ll be working with the terminal. On Windows, you’ll need a terminal program such as <a href="">PuTTY</a> to connect to the remote servers.</p>
+<p>In our examples, we’re going to be connecting to the Fred Hutch servers <code>rhino</code> and the associated cluster, <code>gizmo</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t Forget the VPN!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Many HPC systems are behind an organization’s VPN, so you’ll need a VPN client like Cisco Secure Client to get into your VPN.</p>
+<p>FH Users: you’ll connect to <code>rhino</code> to gain access to the HPC system.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A Little More Advanced
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are on Windows, you can install <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux</a>, and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server. I prefer this route, but PuTTY works great as well.</p>
+</div>
+</div>
+<p>On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include <a href="https://code.visualstudio.com/">Visual Studio Code (VS Code)</a>, or built in ones such as <code>nano</code>. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.</p>
 </section>
 <section id="where-am-i" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="where-am-i"><span class="header-section-number">3.3</span> Where Am I?</h2>
@@ -285,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For example, if I used <code>grabnode</code> to grab a <code>gizmo</code> node for interactive work, I can check which node I’m in by using:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>gizmok164</code></pre>
-<p>If you’re confused about which node you’re in, remember <code>hostname</code></p>
+<p>If you’re confused about which node you’re in, remember <code>hostname</code>. It will save you from making mistakes.</p>
 </section>
 <section id="navigating-the-unixlinux-filesystem" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="navigating-the-unixlinux-filesystem"><span class="header-section-number">3.4</span> Navigating the Unix/Linux filesystem</h2>
@@ -306,14 +335,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If my current path the directory <code>/fh/fast/laderas_t/immuno_project/</code>, then the relative path to that same file would be:</p>
 <pre><code>raw_data/tcr_data.fasta</code></pre>
 <p>Note that this relative path does not start with a <code>/</code>, because our current directory isn’t the root directory.</p>
-<p>You may have seen relative paths such as <code>../another_directory/</code> - these mean to go up a directory in the file hierarchy, and then look in that directory for the <code>another_directory/</code> directory. I try to avoid using relative paths like these.</p>
+<p>You may have seen relative paths such as <code>../another_directory/</code> - the <code>..</code> means to go up a directory in the file hierarchy, and then look in that directory for the <code>another_directory/</code> directory. I try to avoid using relative paths like these.</p>
 <p>In general for portability and reproducibility, you will want to use relative paths <strong>within a directory</strong>, and avoid using relative paths like <code>../../my_folder</code>, where you are navigating up. In general, use relative paths to navigate down.</p>
 </section>
 <section id="keep-everything-in-a-folder" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="keep-everything-in-a-folder"><span class="header-section-number">3.4.3</span> Keep Everything in a Folder</h3>
 <p>We need to talk about code and data organization. For the FH system, we have a <code>/home/</code> directory, and if we have generated research data, a <code>/fh/fast/</code> directory.</p>
 <p>Ideally, we want to make the naming conventions of our code and our data as similar as possible.</p>
-<p>The requirements of bioinformatics analysis usually require a huge amount of data.</p>
+<p>The requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.</p>
 </section>
 <section id="moving-things-around" class="level3" data-number="3.4.4">
 <h3 data-number="3.4.4" class="anchored" data-anchor-id="moving-things-around"><span class="header-section-number">3.4.4</span> Moving Things Around</h3>
@@ -331,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/mydir/</span>    <span class="co">#absolute path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">home/mydir/</span><span class="kw">`</span>    <span class="co">#relative path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The first one is an <em>absolute path</em>, and the second is a <em>relative path</em>. If you’re getting <code>file not found</code> messages, check to make sure the path is the right format.</p>
+<p>The first one is an <em>absolute path</em>, and the second is a <em>relative path</em>. Your clue is the leading <code>/</code> at the beginning of a path. If you’re getting <code>file not found</code> messages, check to make sure the path is the right format.</p>
 </section>
 </section>
 <section id="environment-variables" class="level2" data-number="3.5">
@@ -385,12 +414,21 @@ For FH Users
 </div>
 </div>
 </section>
-<section id="bashrc-versus-.bash_profile" class="level3" data-number="3.5.3">
-<h3 data-number="3.5.3" class="anchored" data-anchor-id="bashrc-versus-.bash_profile"><span class="header-section-number">3.5.3</span> <code>.bashrc</code> versus <code>.bash_profile</code></h3>
+<section id="making-your-own-environment-variables" class="level3" data-number="3.5.3">
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="making-your-own-environment-variables"><span class="header-section-number">3.5.3</span> Making your own environment variables</h3>
+<p>One of the difficulties with working on a cluster is that your scripts may be in one filesystem (<code>/home/</code>), and your data might be in another filesystem (<code>/fh/fast/</code>). And it might be recommended that you transfer over files to a faster-access filesystem (<code>/fh/temp/</code>) to process them.</p>
+<p>You can set your own environment variables for use in your own scripts. For example, we might define a <code>$TCR_FILE_HOME</code> variable:</p>
+<pre><code>export TCR_FILE_HOME=/fh/fast/my_tcr_project/</code></pre>
+<p>to save us some typing across our scripts. We can use this new environment variable like any other existing environment variable:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/Bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">my_file_location</span><span class="op">=</span><span class="va">$TCR_FILE_HOME</span>/fasta_files/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="bashrc-versus-.bash_profile" class="level3" data-number="3.5.4">
+<h3 data-number="3.5.4" class="anchored" data-anchor-id="bashrc-versus-.bash_profile"><span class="header-section-number">3.5.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></h3>
 <p>Ok, what’s the difference between <code>.bashrc</code> and <code>.bash_profile</code>?</p>
 <p>The main difference is when these two files are sourced. <code>bash_profile</code> is used when you do an interactive login, and <code>.bashrc</code> is used for non-interactive shells.</p>
 <p><code>.bashrc</code> should contain the environment variables that you use all the time, such as <code>$PATH</code> and <code>$JAVA_HOME</code> for example. You can get the best of both worlds by including the following line in your <code>.bash_profile</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="working-with-shell-scripts" class="level2" data-number="3.6">
@@ -402,20 +440,44 @@ For FH Users
 <section id="the-she-bang" class="level3" data-number="3.6.1">
 <h3 data-number="3.6.1" class="anchored" data-anchor-id="the-she-bang"><span class="header-section-number">3.6.1</span> The she-bang: <code>#!</code></h3>
 <p>If you’ve looked at a shell script and seen the following:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: samcount.sh</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: samcount.sh</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>the <code>#!</code> is known as a she-bang - it’s a signal to Linux what shell interpreter to use when running the script on the command line.</p>
 </section>
 <section id="making-things-executable-chmod" class="level3" data-number="3.6.2">
 <h3 data-number="3.6.2" class="anchored" data-anchor-id="making-things-executable-chmod"><span class="header-section-number">3.6.2</span> Making things executable: <code>chmod</code></h3>
 <p>Now we have our shell script, we will need to make it executable. We can do this using <code>chmod</code></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x samcount.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x samcount.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now we can run it using:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./samcount.sh</span> bam_file.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./samcount.sh</span> bam_file.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Because the script is not on our <code>$PATH</code>, then we need to specify the location of the script using <code>./</code>.</p>
-<p>Note that you can always execute scripts using the <code>bash</code> command, even if they’re not made executable on your filesystem</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> samcount.sh bam_file.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that you can always execute scripts using the <code>bash</code> command, even if they’re not executable for you on your filesystem. You will still need read access.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> samcount.sh bam_file.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Much more info about file permissions is here: <a href="https://carpentries-incubator.github.io/shell-extras/04-permissions/">Permissions (at the Carpentries)</a></p>
+</section>
+<section id="user-access-groups" class="level3" data-number="3.6.3">
+<h3 data-number="3.6.3" class="anchored" data-anchor-id="user-access-groups"><span class="header-section-number">3.6.3</span> User Access: Groups</h3>
+<p>The groups that you are a member of essentially control access to other files that you don’t own.</p>
+<p>You can see which groups you are a member of by using <code>groups</code>. For example, on my local Windows Subsystem for Linux filesystem, I am a member of the following groups.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">groups</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>tladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why Singularity and Not Docker
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we talk more about software environments, we’ll talk about Docker.</p>
+<p>Docker requires root-level access to run processes on a machine. There is a special <code>docker</code> group that has pretty much root-level access.</p>
+<p>On a shared system such as an HPC cluster, we don’t want to grant such access to individual users.</p>
+<p>Enter <a href="https://sylabs.io/docs/">Singularity</a>, which was designed for HPC clusters from the ground up. You can run Docker/Singularity containers on a shared system without needing root-level access.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="useful-utilities" class="level2" data-number="3.7">
@@ -437,13 +499,33 @@ For FH Users
 <p>For FH users, you can request a <code>gizmo</code> node using <code>grabnode</code>. We can then check we’re on the <code>gizmo</code> node by using <code>hostname</code>.</p>
 <p>If we have something running on this node, we can keep it running by <em>detaching</em> the screen session. Once we are detached, we should check that we’re back in <code>rhino</code> by using <code>hostname</code>. Now we can log out and our job will keep running.</p>
 <p><img src="images/reattach_screen.png" class="img-fluid"></p>
-<p>If we need to get back into that <code>screen</code> session, we can use</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To list the number of sessions. Once we’ve</p>
+<p>If we need to get back into that <code>screen</code> session, we can use:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To list the number of sessions:</p>
+<pre><code>There is a screen on:
+        37096.pts-321.rhino01   (05/10/2024 10:21:54 AM)        (Detached)
+1 Socket in /run/screen/S-tladera2.</code></pre>
+<p>Once we’ve found the id for our screen session (in this case it’s <code>37096</code>), we can <em>reattach</em> to the screen session using:</p>
+<pre><code>screen -r 37096</code></pre>
+<p>And we’ll be back in our screen session! Handy, right?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+For FH Users
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that if you logout from <code>rhino</code>, you’ll need to log back into the same <code>rhino</code> node to access your screen session.</p>
+<p>For example, if my screen session was on <code>rhino01</code>, I’d need to ssh back into <code>rhino01</code>, not <code>rhino02</code> or <code>rhino03</code>.</p>
+</div>
+</div>
 </section>
 <section id="the-tab-key" class="level3" data-number="3.7.3">
 <h3 data-number="3.7.3" class="anchored" data-anchor-id="the-tab-key"><span class="header-section-number">3.7.3</span> The <code>Tab</code> key</h3>
-<p>Never underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files,</p>
+<p>Never underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files and save you a lot of typing.</p>
 </section>
 <section id="squeue--u-username" class="level3" data-number="3.7.4">
 <h3 data-number="3.7.4" class="anchored" data-anchor-id="squeue--u-username"><span class="header-section-number">3.7.4</span> <code>squeue -u &lt;username&gt;</code></h3>

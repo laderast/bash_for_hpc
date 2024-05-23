@@ -16,12 +16,24 @@ After reading this chapter, you should be able to:
 
 ## Terminal setup
 
-We'll be running all of these scripts on our own machine. We'll be using the command-line for most of these.
+If you are on Linux/Mac, you'll be working with the terminal. On Windows, you'll need a terminal program such as [PuTTY]() to connect to the remote servers.
 
-If you are on Linux/Mac, you'll be working with the terminal. 
-If you are on Windows, I recommend you install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server.
+In our examples, we're going to be connecting to the Fred Hutch servers `rhino` and the associated cluster, `gizmo`. 
 
-On your machine, I recommend using a text editor to edit the scripts in your terminal. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in ones such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
+:::{.callout-tip}
+## Don't Forget the VPN!
+
+Many HPC systems are behind an organization's VPN, so you'll need a VPN client like Cisco Secure Client to get into your VPN.
+
+FH Users: you'll connect to `rhino` to gain access to the HPC system. 
+:::
+
+:::{.callout-note}
+## A Little More Advanced
+If you are on Windows, you can install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server. I prefer this route, but PuTTY works great as well.
+:::
+
+On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in ones such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
 
 ## Where Am I?
 
@@ -38,7 +50,7 @@ hostname
 ```
 gizmok164
 ```
-If you're confused about which node you're in, remember `hostname`
+If you're confused about which node you're in, remember `hostname`. It will save you from making mistakes.
 
 ## Navigating the Unix/Linux filesystem
 
@@ -74,7 +86,7 @@ raw_data/tcr_data.fasta
 
 Note that this relative path does not start with a `/`, because our current directory isn't the root directory. 
 
-You may have seen relative paths such as `../another_directory/` - these mean to go up a directory in the file hierarchy, and then look in that directory for the `another_directory/` directory. I try to avoid using relative paths like these.
+You may have seen relative paths such as `../another_directory/` - the `..` means to go up a directory in the file hierarchy, and then look in that directory for the `another_directory/` directory. I try to avoid using relative paths like these.
 
 In general for portability and reproducibility, you will want to use relative paths **within a directory**, and avoid using relative paths like `../../my_folder`, where you are navigating up. In general, use relative paths to navigate down. 
 
@@ -84,7 +96,7 @@ We need to talk about code and data organization. For the FH system, we have a `
 
 Ideally, we want to make the naming conventions of our code and our data as similar as possible.
 
-The requirements of bioinformatics analysis usually require a huge amount of data. 
+The requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.
 
 ### Moving Things Around
 
@@ -117,7 +129,7 @@ and
 ```bash
 home/mydir/`    #relative path
 ```
-The first one is an *absolute path*, and the second is a *relative path*. If you're getting `file not found` messages, check to make sure the path is the right format.
+The first one is an *absolute path*, and the second is a *relative path*. Your clue is the leading `/` at the beginning of a path. If you're getting `file not found` messages, check to make sure the path is the right format.
 
 ## Environment Variables
 
@@ -199,6 +211,22 @@ In general, when you use environment modules on `gizmo`, you do not need to modi
 `which samtools`
 :::
 
+### Making your own environment variables
+
+One of the difficulties with working on a cluster is that your scripts may be in one filesystem (`/home/`), and your data might be in another filesystem (`/fh/fast/`). And it might be recommended that you transfer over files to a faster-access filesystem (`/fh/temp/`) to process them.
+
+You can set your own environment variables for use in your own scripts. For example, we might define a `$TCR_FILE_HOME` variable:
+
+```
+export TCR_FILE_HOME=/fh/fast/my_tcr_project/
+```
+to save us some typing across our scripts. We can use this new environment variable like any other existing environment variable:
+
+```bash
+#!/bin/Bash
+export my_file_location=$TCR_FILE_HOME/fasta_files/
+```
+
 ### `.bashrc` versus `.bash_profile`
 
 Ok, what's the difference between `.bashrc` and `.bash_profile`?
@@ -245,11 +273,40 @@ Now we can run it using:
 
 Because the script is not on our `$PATH`, then we need to specify the location of the script using `./`. 
 
-Note that you can always execute scripts using the `bash` command, even if they're not made executable on your filesystem
+Note that you can always execute scripts using the `bash` command, even if they're not executable for you on your filesystem. You will still need read access.
 
 ```bash
 bash samcount.sh bam_file.bam
 ```
+Much more info about file permissions is here: [Permissions (at the Carpentries)](https://carpentries-incubator.github.io/shell-extras/04-permissions/)
+
+### User Access: Groups
+
+The groups that you are a member of essentially control access to other files that you don't own.
+
+You can see which groups you are a member of by using `groups`. For example, on my local Windows Subsystem for Linux filesystem, I am a member of the following groups.
+
+```bash
+groups
+```
+
+```
+tladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev
+```
+
+As an HPC user, you will usually not have root-level access to the cluster. Again, because it is a shared resource, this is a good thing. The trick is knowing how to install software and add it to your path, or run software containers with new software on a shared system.
+
+:::{.callout-note}
+## Why Singularity and Not Docker
+
+When we talk more about software environments, we'll talk about Docker.
+
+Docker requires root-level access to run processes on a machine. There is a special `docker` group that has pretty much root-level access. 
+
+On a shared system such as an HPC cluster, we don't want to grant such access to individual users.
+
+Enter [Singularity](https://sylabs.io/docs/), which was designed for HPC clusters from the ground up. You can run Docker/Singularity containers on a shared system without needing root-level access. 
+:::
 
 ## Useful Utilities
 
@@ -281,16 +338,37 @@ If we have something running on this node, we can keep it running by *detaching*
 
 ![](images/reattach_screen.png)
 
-If we need to get back into that `screen` session, we can use 
+If we need to get back into that `screen` session, we can use: 
 
 ```bash
-screen ls
+screen -ls
 ```
-To list the number of sessions. Once we've
+To list the number of sessions:
+
+```
+There is a screen on:
+        37096.pts-321.rhino01   (05/10/2024 10:21:54 AM)        (Detached)
+1 Socket in /run/screen/S-tladera2.
+```
+
+ Once we've found the id for our screen session (in this case it's `37096`), we can *reattach* to the screen session using:
+
+ ```
+screen -r 37096
+ ```
+And we'll be back in our screen session! Handy, right?
+
+:::{.callout-note}
+## For FH Users
+
+Note that if you logout from `rhino`, you'll need to log back into the same `rhino` node to access your screen session.
+
+For example, if my screen session was on `rhino01`, I'd need to ssh back into `rhino01`, not `rhino02` or `rhino03`.
+:::
 
 ### The `Tab` key
 
-Never underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files, 
+Never underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files and save you a lot of typing.
 
 ### `squeue -u <username>`
 

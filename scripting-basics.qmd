@@ -6,7 +6,7 @@
 1. **Utilize** positional *arguments* to generalize our scripts
 1. **Articulate** the *three streams* of a command line utility
 1. **Define** variables for use in a bash script  
-1. **Iterate** a script over a set of files using `xargs` or `for` loops
+1. **Iterate** a script over a set of files using `xargs` loops
 1. **Wrap** executables and scripts in R/Python into a Bash script
 
 
@@ -16,7 +16,7 @@ Bash scripting is often referred to as a useful "glue language" on the internet.
 
 We are going to cover Bash scripting because it is the main shell that is available to us on HPC machines, which are Ubuntu-based.
 
-We will be using Bash scripts as "glue" for multiple applications in cloud computing, including:
+We will be using Bash scripts as "glue" for multiple applications in HPC computing, including:
 
 1. **Wrapping scripts** from other languages such as R or Python so we can run them using `dx run` on a app such as Swiss Army Knife
 1. **Naming** outputs according to file input names
@@ -151,6 +151,16 @@ We'll use pipes and pipelines not only in starting a bunch of jobs using batch s
 
 A really common pattern is taking a delimited list of files and doing something with them. We can do some useful things such as seeing the first few lines of a set of files, or doing some sort of processing with the set of jobs.
 
+:::{.callout-warning}
+## Don't `xargs` for HPC jobs
+
+You might be tempted to use `xargs` with `srun` to work on a bunch of files. It's worth trying once so you can see the mechanics of how jobs are processes.
+
+In general, I don't recommend it in practice because if you spawn 1000 jobs using `xargs`, there's no real mechanism to terminate that 1000 jobs, except one by one. With `sbatch`, all your jobs in batch mode run as *subjobs*
+
+Again, this is a good reason to use a workflow runner in your day to day work. You don't have to worry about jobs and subjobs. It takes a little setup, but it will make your life easier in general.
+:::
+
 Let's start out with a list of files:
 
 ```{bash}
@@ -161,11 +171,6 @@ ls data/*.sh
 
 ```
 data/batch-on-worker.sh
-data/dx-find-data-class.sh
-data/dx-find-data-field.sh
-data/dx-find-data-name.sh
-data/dx-find-path.sh
-data/dx-find-xargs.sh
 ```
 
 Now we have a list of files, let's look at the first few lines of each of them, and print a separator `---` for each.
@@ -187,15 +192,6 @@ dx run swiss-army-knife \
   -iin="data/chr3.vcf.gz" \
   -icmd=${cmd_to_run}
 ---
-
-#!/bin/bash
-
-dx find data --class file --brief
----
-
-dx find data --property field_id=23148 --brief
----
-
 dx find data --name "*.bam" --brief
 ---
 ```
@@ -226,7 +222,7 @@ So for our first file, `01-scripting-basics.qmd`, we are substituting that for `
 'head hpc-basics.qmd; echo "---\n"'
 ```
 
-For our second file, `cloud-computing-basics.qmd`, we would substitute that for the `%`:
+For our second file, `hpc-basics.qmd`, we would substitute that for the `%`:
 
 ```{bash}
 #| eval: false
@@ -253,8 +249,6 @@ As you cycle through lists of files, keep in mind this basic pattern (@fig-xargs
 #| eval: false
 ls <wildcard> | xargs -I% sh -c "<command to run> %"
 ```
-We will leverage this pattern when we get to batch processing files (@sec-batch).
-
 
 :::{.callout-note}
 ## Test Yourself
@@ -284,7 +278,9 @@ ls data/*.json | xargs -I% sh -c "tail %; echo '---\n'"
 
 We can use `xargs` to execute small batch jobs on a small number of files. This especially becomes powerful on the platform when we use `ls` to list files in our HPC project.
 
-Note that as we *graduate* to workflow tools like WDL/Nextflow, there are other mechanisms for running jobs on multiple files (such as WDL/Cromwell) that we should move to.
+Note that as we *graduate* to workflow tools like WDL/Nextflow, there are other mechanisms for running jobs on multiple files (such as WDL/Cromwell) that we should move to. 
+
+Trust me; you don't want to have to handle iterating through a huge directory and handling when routines give an error, or your jobs get interrupted. Rerunning and resuming failed jobs are what workflow runner tools excel at. 
 :::
 
 ### For more information
@@ -342,7 +338,7 @@ We're storing the command we want to run in the `${my_cmd}` variable. Here we're
 
 ### `basename` can be very handy when on workers
 
-If we are processing a bunch of files on a worker that we have specified using `dxFUSE` (@sec-dxfuse), we need a way to get the bare filename from a `dxfuse` path. We will take advantage of this when we run process multiple files on the worker.
+If we are processing a bunch of files on a worker, we need a way to get the bare filename from a `dxfuse` path. We will take advantage of this when we run process multiple files on the worker.
 
 For example:
 
@@ -356,7 +352,7 @@ This will return:
 dx-run-script.sh
 ```
 
-Which can be really handy when we name our outputs. 
+Which can be really handy when we name our outputs. This command is so handy it is used in WDL. 
 
 ## Quoting and Escaping Filenames in Bash
 

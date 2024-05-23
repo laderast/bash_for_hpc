@@ -28,24 +28,20 @@ As you can see, knowing Bash is extremely helpful when running jobs on HPC.
 
 Say we have [`samtools`](http://www.htslib.org/doc/samtools-stats.html) installed on our own machine. Let's start with a basic script and build from there. We'll call it  `sam_run.sh`. With `nano`, a text editor, we'll start a very basic bash script and build its capabilities out.
 
-```{bash}
-#| eval: false 
-#| filename: scripting-basics/sam_run.sh
+```bash
 #!/bin/bash/
 samtools stats $1 > $2
 ```
 
 Let's take a look at the command that we're running first. We're going to run `samtools stats`, which will give us statistics on an incoming `bam` or `sam` file and save it in a file. We want to be able to run our script like this:
 
-```{bash}
-#| eval: false
+```bash
 bash sam_run my_file.bam out_stats.txt
 ```
 
 When we run it like that, `sam_run.sh` will run `samtools stat` like this:
 
-```{bash}
-#| eval: false
+```bash
 samtools stats my_file.bam > out_stats.txt
 ```
 
@@ -64,9 +60,7 @@ So, to unpack our script, we are substituting our first argument for the `$1`, a
 
 How would we rewrite `sam_run.sh` if we wanted to specify the output file as the first argument and the bam file as the second argument?
 
-```{bash}
-#| eval: false
-#| filename: scripting-basics/sam_run.sh 
+```bash
 #!/bin/bash/
 samtools stats $1 > $2
 ```
@@ -77,16 +71,14 @@ samtools stats $1 > $2
 
 For this script, we would switch the positions of `$1` and `$2`.
 
-```{bash}
-#| eval: false
+```bash
 #!/bin/bash/
 samtools stats $2 > $1
 ```
 
 And we would run `sam_run.sh` like this:
 
-```{bash}
-#| eval: false
+```bash
 bash sam_run.sh my_file.bam out_stats.txt
 ```
 :::
@@ -154,9 +146,9 @@ A really common pattern is taking a delimited list of files and doing something 
 :::{.callout-warning}
 ## Don't `xargs` for HPC jobs
   
-You might be tempted to use `xargs` with `srun` to work on a bunch of files. It's worth trying once so you can see the mechanics of how jobs are processes.
+You might be tempted to use `xargs` with `srun` to work on a bunch of files. It's worth trying once so you can see the mechanics of how jobs are processed.
 
-In general, I don't recommend it in practice because if you spawn 1000 jobs using `xargs`, there's no real mechanism to terminate that 1000 jobs, except one by one. With `sbatch`, all your jobs in batch mode run as *subjobs*
+In general, I don't recommend it in practice because if you spawn 1000 jobs using `xargs`, there's no real mechanism to terminate that 1000 jobs, except one by one. With `sbatch`, all your jobs in batch mode run as *subjobs*, which means you can terminate the parent job to terminate all of the subjobs.
 
 Again, this is a good reason to use a workflow runner in your day to day work. You don't have to worry about jobs and subjobs. It takes a little setup, but it will make your life easier in general.
 :::
@@ -164,8 +156,7 @@ Again, this is a good reason to use a workflow runner in your day to day work. Y
 
 Let's start out with a list of files:
 
-```{bash}
-#| eval: false
+```bash
 source ~/.bashrc #| hide_line
 ls data/*.sh
 ```
@@ -176,12 +167,12 @@ data/batch-on-worker.sh
 
 Now we have a list of files, let's look at the first few lines of each of them, and print a separator `---` for each.
 
-```{bash}
-#| eval: false
+```bash
 #| filename: scripting-basics/xargs_example.sh
 source ~/.bashrc #| hide_line
 ls data/*.sh | xargs -I% sh -c 'head %; echo "\n---\n"'
 ```
+
 ```
 #!/bash/bin
 
@@ -204,29 +195,25 @@ Let's take this apart piece by piece.
 
 We're passing on each filename from `ls` into the following code:
 
-```{bash}
-#| eval: false
+```bash
 sh -c 'head %; echo "---\n"'
 ```
 
 The `sh -c` opens a subshell so that we can execute our command for each of the files in our list. We're using `sh -c` to run:
 
-```{bash}
-#| eval: false
+```bash
 'head %; echo "---\n"'
 ```
 
 So for our first file, `01-scripting-basics.qmd`, we are substituting that for `%` in our command:
 
-```{bash}
-#| eval: false
+```bash
 'head hpc-basics.qmd; echo "---\n"'
 ```
 
 For our second file, `hpc-basics.qmd`, we would substitute that for the `%`:
 
-```{bash}
-#| eval: false
+```bash
 'head hpc-basics.qmd; echo "---\n"'
 ```
 
@@ -246,8 +233,7 @@ Basics of using `xargs` to iterate on a list of files
 
 As you cycle through lists of files, keep in mind this basic pattern (@fig-xargs):
 
-```{bash}
-#| eval: false
+```bash
 ls <wildcard> | xargs -I% sh -c "<command to run> %"
 ```
 
@@ -259,8 +245,7 @@ How would we modify the below code to do the following?
 1. List only `.json` files in our `data/` folder using `ls`
 1. Use `tail` instead of `head`
 
-```{bash}
-#| eval: false
+```bash
 ls *.txt | xargs -I% sh -c "head %; echo '---\n'"
 ```
 :::
@@ -268,14 +253,13 @@ ls *.txt | xargs -I% sh -c "head %; echo '---\n'"
 :::{.callout-note collapse="true"}
 ## Answer
 
-```{bash}
-#| eval: false
+```bash
 ls data/*.json | xargs -I% sh -c "tail %; echo '---\n'"
 ```
 :::
 
 :::{.callout-note}
-## Why this is important on the platform
+## Why this is important on HPC
 
 We can use `xargs` to execute small batch jobs on a small number of files. This especially becomes powerful on the platform when we use `ls` to list files in our HPC project.
 
@@ -295,19 +279,26 @@ We've already encountered a placeholder variable, `%`, that we used in running `
 
 In Bash, we can declare a variable by using `<variable_name>=<value>`. Note there are no spaces between the variable (`my_variable`), equals sign, and the value (`"ggplot2"`).
 
-```{bash}
+```bash
 my_variable="ggplot2"
 
 echo "My favorite R package is ${my_variable}"
 ```
 
+```
+My favorite R package is ggplot2
+```
 Take a look at line 3 above. We expand the variable (that is, we substitute the actual variable) by using `${my_variable}` in our `echo` statement.
 
 In general, when expanding a variable in a quoted string, it is better to use `${my_variable}` (the variable name in curly brackets). This is especially important when using the variable name as part of a string:
 
-```{bash}
+```bash
 my_var="chr1"
 echo "${my_var}_1.vcf.gz"
+```
+
+```
+chr1_1.vcf.gz
 ```
 
 If we didn't use the braces here, like this:
@@ -327,13 +318,13 @@ If we are processing a bunch of files on a worker, we need a way to get the bare
 For example:
 
 ```
-basename /mnt/project/worker_scripts/dx-run-script.sh
+basename /mnt/project/worker_scripts/srun-script.sh
 ```
 
 This will return:
 
 ```
-dx-run-script.sh
+srun-script.sh
 ```
 
 Which can be really handy when we name our outputs. This command is so handy it is used in WDL. 

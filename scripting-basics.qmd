@@ -88,8 +88,6 @@ bash sam_run.sh my_file.bam out_stats.txt
 See @sec-named for more info.
 
 
-
-
 ## Using pipes: STDIN, STDOUT, STDERR
 
 We will need to use pipes to chain our commands together. Specifically, we need to take a command that generates a list of files on the platform, and then spawns individual jobs to process each file. For this reason, understanding a little bit more about how pipes (`|`) work in Bash is helpful.

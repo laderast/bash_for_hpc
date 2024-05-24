@@ -339,11 +339,10 @@ apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
     direction LR
-    A[Container Filesystem\n/mydata/]
-    A --write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
-    C --read--&gt; A
-    B["External Directory\n/fh/fast/mydata/"] --read--&gt; C
-    C --write--&gt; B
+        A[Container Filesystem\n/mydata/]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
+        C --read--&gt; A
+        B["External Directory\n/fh/fast/mydata/"] --read--&gt; C
+        C --write--&gt; B
 </pre>
 </div>
 <p></p></figure><p></p>

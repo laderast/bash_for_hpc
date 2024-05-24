@@ -211,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tip-module-purge-when-youre-done" id="toc-tip-module-purge-when-youre-done" class="nav-link" data-scroll-target="#tip-module-purge-when-youre-done"><span class="header-section-number">4.2.2</span> Tip: <code>module purge</code> when you’re done</a></li>
   <li><a href="#full-script-example" id="toc-full-script-example" class="nav-link" data-scroll-target="#full-script-example"><span class="header-section-number">4.2.3</span> Full Script Example</a></li>
   </ul></li>
-  <li><a href="#running-docker-containers" id="toc-running-docker-containers" class="nav-link" data-scroll-target="#running-docker-containers"><span class="header-section-number">4.3</span> Running Docker Containers</a></li>
+  <li><a href="#running-software-thats-not-available." id="toc-running-software-thats-not-available." class="nav-link" data-scroll-target="#running-software-thats-not-available."><span class="header-section-number">4.3</span> Running Software that’s not available.</a></li>
   </ul>
 </nav>
     </div>
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Ok, we’ve gotten comfortable navigating around the HPC filesystem. Now how do we run executables on files?</p>
-<p>Let’s talk about the two problems: 1) How do we find executables on a cluster, and</p>
+<p>Let’s talk about the two problems: 1) How do we find executables on a cluster, and 2) how do we load them up and run them?</p>
 <section id="a-empty-environment" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="a-empty-environment"><span class="header-section-number">4.1</span> A empty environment</h2>
 <p>Remember, we can poke around and see whether <code>samtools</code> is installed on the machine using <code>which</code>:</p>
@@ -250,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.2" class="anchored" data-anchor-id="environment-modules"><span class="header-section-number">4.2</span> Environment Modules</h2>
 <p>Before you install your own versions of software, it’s important to realize that this problem may be solved for you.</p>
 <p>Your first stop should be looking for environment modules on the HPC. Not all HPCs have these, but if they have them, this should be your first stop to find executables.</p>
-<p><code>lmod</code> is a system for loading and unloading software modules. The commands all start with <code>module</code>, and there are a number of ones that are useful for you.</p>
+<p><code>lmod</code> is a system for loading and unloading software modules. It is usually installed on HPCs. The commands all start with <code>module</code>, and there are a number of ones that are useful for you.</p>
 <ul>
 <li><code>module avail</code></li>
 <li><code>module load</code></li>
@@ -266,7 +266,8 @@ For FH Users
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>On the FH cluster, <code>ml</code> is a handy command that combines <code>module load</code> and <code>module avail</code></p>
+<p>On the FH cluster, <code>ml</code> is a handy command that combines <code>module load</code> and <code>module avail</code>.</p>
+<p>You can load a module with <code>ml &lt;module_name&gt;</code>.</p>
 </div>
 </div>
 <section id="tip-always-use-versioning-for-environment-modules" class="level3" data-number="4.2.1">
@@ -274,21 +275,34 @@ For FH Users
 </section>
 <section id="tip-module-purge-when-youre-done" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="tip-module-purge-when-youre-done"><span class="header-section-number">4.2.2</span> Tip: <code>module purge</code> when you’re done</h3>
+<p>When you’re done with a software module, you should use <code>module purge</code> to clear out its’ software environment.</p>
+<pre><code>module purge</code></pre>
 </section>
 <section id="full-script-example" class="level3" data-number="4.2.3">
 <h3 data-number="4.2.3" class="anchored" data-anchor-id="full-script-example"><span class="header-section-number">4.2.3</span> Full Script Example</h3>
 <p>This is an example of a full script that uses environment modules.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: example_script.sh</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load SAMtools/1.19.2-GCC-13.2.0</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: samtools_count.sh</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load SAMtools/1.19.2-GCC-13.2.0</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can use this script by making it executable, and then run it with:</p>
+<pre><code>./samtools_count.sh my_bam_file.sh</code></pre>
+<p>This will output a counts file called <code>my_bam_file.counts.txt</code> in our home directory.</p>
+<p>We’ll talk more about arguments in the scripting chapter (<a href="scripting-basics.html#sec-positional" class="quarto-xref"><span>Section 5.3</span></a>).</p>
 </section>
 </section>
-<section id="running-docker-containers" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="running-docker-containers"><span class="header-section-number">4.3</span> Running Docker Containers</h2>
-<p>If there is not a</p>
+<section id="running-software-thats-not-available." class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="running-software-thats-not-available."><span class="header-section-number">4.3</span> Running Software that’s not available.</h2>
+<p>If there is not a module available for our software, then we have a few options, in terms of effort.</p>
+<ol type="1">
+<li>Use a docker container with <code>apptainer</code> that has our software</li>
+<li>Install the binary into our <code>/home</code> directory using <code>conda</code></li>
+<li>Compile the executable ourselves</li>
+</ol>
+<p>For more information about these different methods, please refer to this article: <a href="https://sciwiki.fredhutch.org/dasldemos/computational_rank/">Why your computational environment is important</a>.</p>
+<p>We will get more in-depth into containers in the <a href="interactive_shell.html">Interactive Shell chapter</a>.</p>
 
 
 </section>

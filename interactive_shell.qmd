@@ -108,11 +108,10 @@ The main mechanism we have in Apptainer to access the external filesystem are *b
 ```{mermaid}
 flowchart LR
     direction LR
-    A[Container Filesystem\n/mydata/]
-    A --write-->C("--bind /fh/fast/mydata/:/mydata/")
-    C --read--> A
-    B["External Directory\n/fh/fast/mydata/"] --read--> C
-    C --write--> B
+        A[Container Filesystem\n/mydata/]--write-->C("--bind /fh/fast/mydata/:/mydata/")
+        C --read--> A
+        B["External Directory\n/fh/fast/mydata/"] --read--> C
+        C --write--> B
 ```
 
 I think of bind paths as "tunnels" that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them using the bind path.

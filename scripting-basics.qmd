@@ -83,10 +83,6 @@ bash sam_run.sh my_file.bam out_stats.txt
 ```
 :::
 
-### What about named arguments in my script?
-
-See @sec-named for more info.
-
 
 ## Using pipes: STDIN, STDOUT, STDERR
 

@@ -1,4 +1,4 @@
-# Testing Scripts Using Interactive Shell
+# Testing Scripts in Containers Interactively
 
 You might wonder how to test a script will work on a worker. That's what interactive shells are for.
 
@@ -28,8 +28,6 @@ srun --version
 ```
 
 If the version is past 20.11, we can open an interactive shell on a worker with `salloc`. 
-
-
 
 :::{.callout-note}
 ## For FH Users: `grabnode`
@@ -76,13 +74,19 @@ When you are doing interactive analysis, it is easy to forget in which node you'
 
 ## Containers
 
+In this section, we talk about testing scripts in a container using `apptainer`. We use `apptainer` (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.
+
+In order to do our testing, we'll first pull the Docker container, map our bind point (so our container can access files outside of its file sytem), and then open 
+
 ### Pulling a Docker Container
 
-Let's pull a docker container from the Docker registry. Note we have to specify `docker://` when we pull the container.
+Let's pull a docker container from the Docker registry. Note we have to specify `docker://` when we pull the container, because Apptainer has its own internal format.
 
 ```
 apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
+
+I recommend that you 
 
 ## Opening a Shell in a Docker Container
 
@@ -91,11 +95,22 @@ When you're getting started, opening a shell using Apptainer can help you test o
 You can open an Apptainer shell in a container using `apptainer shell`. Remember to use `docker://` before the container name. For example:
 
 ```{bash}
-#| eval:false
+#| eval: false
 apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
-This will open a Bash shell in the container. Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpaths).
+This will open a Bash shell in the container. Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpaths). 90% of the issues with using Docker containers has to do with bind paths, so we'll talk about that next.
+
+Once you're in the shell, you can take a look at where `samtools` is installed:
+
+```{bash}
+#| eval: true
+which samtools
+```
+
+```
+
+```
 
 ### Testing out bind paths in containers {#sec-bindpaths}
 
@@ -107,11 +122,11 @@ The main mechanism we have in Apptainer to access the external filesystem are *b
 
 ```{mermaid}
 flowchart LR
-    direction LR
-        A[Container Filesystem\n/mydata/]--write-->C("--bind /fh/fast/mydata/:/mydata/")
-        C --read--> A
-        B["External Directory\n/fh/fast/mydata/"] --read--> C
-        C --write--> B
+   A[Container Filesystem\n/mydata/]--write-->C("--bind /fh/fast/mydata/:/mydata/")
+   C --read--> A
+   B["External Directory\n/fh/fast/mydata/"] 
+   B --read--> C
+   C --write--> B
 ```
 
 I think of bind paths as "tunnels" that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them using the bind path.
@@ -121,11 +136,11 @@ Say my data lives in `/fh/fast/mydata/`. Then I can specify a bind point in my `
 We can do this with the `--bind` option:
 
 ```{bash}
-#| eval:false
+#| eval: false
 apptainer shell --bind /fh/fast/mydata:/mydata docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
-Note that the bind syntax doesn't have the trailing slash. That is, note that it is:
+Note that the bind syntax doesn't have the trailing slash (`/`). That is, note that it is:
 
 ```
 --bind /fh/fast/mydata: ....
@@ -151,7 +166,7 @@ This is one reason we recommend writing WDL Workflows and a workflow engine (suc
 Ok, now we have a bind point, so now we can test our script in the shell. For example, we can see if we are invoking `samtools` in the correct way and that our bind points work.
 
 ```{bash}
-#| eval:false
+#| eval: false
 samtools view -c /mydata/my_bam_file.bam > /mydata/bam_counts.txt
 ```
 

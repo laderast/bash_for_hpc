@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./interactive_shell.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./interactive_shell.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -188,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -339,11 +339,10 @@ apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
     direction LR
-    A[Container Filesystem\n/mydata/]
-    A --write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
-    C --read--&gt; A
-    B["External Directory\n/fh/fast/mydata/"] --read--&gt; C
-    C --write--&gt; B
+        A[Container Filesystem\n/mydata/]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
+        C --read--&gt; A
+        B["External Directory\n/fh/fast/mydata/"] --read--&gt; C
+        C --write--&gt; B
 </pre>
 </div>
 <p></p></figure><p></p>

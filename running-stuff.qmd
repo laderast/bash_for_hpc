@@ -6,8 +6,6 @@ Let's talk about the two problems: 1) How do we find executables on a cluster, a
 
 ## A empty environment
 
-
-
 Remember, we can poke around and see whether `samtools` is installed on the machine using `which`:
 
 ```
@@ -16,7 +14,8 @@ which samtools
 
 If `samtools` is available, it will give the path. If it isn't, you will have an empty response.
 
-So if we don't have `samtools` immediately available, how do we discover it?
+So if we don't have `samtools` immediately available, how do we find it on our system? We can use environment modules to load software.
+
 
 ## Environment Modules
 
@@ -30,6 +29,13 @@ Your first stop should be looking for environment modules on the HPC. Not all HP
 - `module load`
 - `module purge`
 
+:::{callout-note}
+## For FH Users: Modules benefit everyone
+
+If there is a particular bit of software that you need to run on the FH cluster that's not there, make sure to request it from SciComp. Someone else probably needs it and so making it known so they can add it as a Environment module will help other people.
+:::
+
+
 :::{.callout}
 ## For FH Users
 
@@ -38,8 +44,23 @@ On the FH cluster, `ml` is a handy command that combines `module load` and `modu
 You can load a module with `ml <module_name>`.
 :::
 
+### Tip: Load only as many modules as you need at a time
+
+One of the big issues with bioinformatics software is that the toolchain (the software dependencies needed to run the software) can be different. So when possible, load only one or two modules at a time for each step of your analysis. When you're done with that step, use `module purge` to clear out the software environment.
+
 ### Tip: Always Use Versioning for Environment Modules
 
+When you list the environment modules using `module avail`, you'll see that there are versions for each of the modules. For example, `SAMtools` has a version called: `SAMtools/0.1.20-foss-2018b`. There usually is a default module selected (it will be specified by a `(d)`), so use that version in your script.
+
+For example, here's a full bash script that loads up `samtools` on `rhino`/`gizmo`:
+
+```{bash}
+#| eval: false
+#!/bin/bash
+module load SAMtools/0.1.20-foss-2018b
+samtools view -c $1 > counts.txt
+module purge
+```
 
 
 ### Tip: `module purge` when you're done
@@ -49,6 +70,8 @@ When you're done with a software module, you should use `module purge` to clear 
 ```
 module purge
 ```
+
+This is because there may be conflicting 
 
 ### Full Script Example
 
@@ -77,7 +100,7 @@ We'll talk more about arguments in the scripting chapter (@sec-positional).
 
 If there is not a module available for our software, then we have a few options, in terms of effort.
 
-1. Use a docker container with `apptainer` that has our software
+1. Use a Docker container with `apptainer` that has our software in it
 2. Install the binary into our `/home` directory using `conda`
 3. Compile the executable ourselves
 

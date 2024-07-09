@@ -25,7 +25,7 @@ In our examples, we're going to be connecting to the Fred Hutch servers `rhino` 
 
 Many HPC systems are behind an organization's VPN, so you'll need a VPN client like Cisco Secure Client to get into your VPN.
 
-FH Users: you'll connect to `rhino` to gain access to the HPC system. 
+FH Users: after connecting through the Fred Hutch VPN you'll connect to `rhino` to gain access to the HPC system. 
 :::
 
 :::{.callout-note}
@@ -33,7 +33,7 @@ FH Users: you'll connect to `rhino` to gain access to the HPC system.
 If you are on Windows, you can install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server. I prefer this route, but PuTTY works great as well.
 :::
 
-On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in ones such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
+On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in editors such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
 
 ## Where Am I?
 
@@ -84,7 +84,7 @@ If my current path the directory `/fh/fast/laderas_t/immuno_project/`, then the 
 raw_data/tcr_data.fasta
 ```
 
-Note that this relative path does not start with a `/`, because our current directory isn't the root directory. 
+Note that this relative path does not start with a `/`, because our current directory isn't the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.
 
 You may have seen relative paths such as `../another_directory/` - the `..` means to go up a directory in the file hierarchy, and then look in that directory for the `another_directory/` directory. I try to avoid using relative paths like these.
 
@@ -102,7 +102,7 @@ The requirements of bioinformatics analysis usually require a huge amount of dat
 
 A lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster. 
 
-You're probably familiar with `mv`, which lets you move files around in Unix. One thing to keep in mind when you're `mv`ing things to a new folder that there is a difference between:
+You might be familiar with `mv`, which lets you move files around in Unix. One thing to keep in mind when you're `mv`ing things to a new folder that there is a difference between:
 
 ```bash
 mv log.txt my_folder   ## renames log.txt to my_folder
@@ -127,13 +127,13 @@ Some things that trip me up all the time. The difference between
 and 
 
 ```bash
-home/mydir/`    #relative path
+home/mydir/    #relative path
 ```
 The first one is an *absolute path*, and the second is a *relative path*. Your clue is the leading `/` at the beginning of a path. If you're getting `file not found` messages, check to make sure the path is the right format.
 
 ## Environment Variables
 
-Environment variables are variables which can be seen globally in the Linux system across executables. 
+Environment variables are variables which can be seen globally in the Linux (or Windows) system across executables. 
 
 You can get a list of all set environment variables by using the `env` command. Here's an example from my own system:
 
@@ -162,6 +162,14 @@ echo $PATH
 /home/tladera2/.local/bin:/home/tladera2/gems/bin:/home/tladera2/.nvm/versions/node/v21.7.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/ [....]
 ```
 
+:::{.callout-note}
+## Environment Variables in Windows
+
+Since we're mostly going to be working in a Unix environment, we're not going to touch on Windows environment variables. However, there is also a `$PATH` environment variable that you can set.
+
+I recommend looking at the PowerShell documentation for more information about Windows-specific environment variables
+:::
+
 ### Setting Environment Variables
 
 In Bash, we use the `export` command to declare an environment variable. For example, if we wanted to declare the environment variable `$SAMTOOLS_PATH` we'd do the following:
@@ -176,13 +184,13 @@ One thing to note is that spacing matters when you declare environment variables
 export SAMTOOLS_PATH = "/home/tladera2/miniconda/bin/"
 ```
 
-Another thing to note is that we declare environment variables differently than we use then. If we wanted to use `$SAMTOOLS_PATH` we'd use a dollar sign (`$`) in front of it:
+Another thing to note is that we declare environment variables differently than we use them. If we wanted to use `$SAMTOOLS_PATH` in a script, we use a dollar sign (`$`) in front of it:
 
 ```bash
 #!/bin/bash/
 $SAMTOOLS_PATH/samtools view -c $input_file
 ```
-In this case, the value of `$SAMTOOLS_PATH` will be expanded (substituted) to give:
+In this case, the value of `$SAMTOOLS_PATH` will be expanded (substituted) to give the overall path:
 
 ```bash
 #!/bin/bash/
@@ -191,17 +199,17 @@ In this case, the value of `$SAMTOOLS_PATH` will be expanded (substituted) to gi
 
 ### A Very Special Environment Variable: `$PATH`
 
-The most important environment variable is the `$PATH` variable. This variable is important because it determines where to search for software executables. 
+The most important environment variable is the `$PATH` variable. This variable is important because it determines where to search for software executables (also called binaries). 
 
-We add to the `$PATH` by appending to it. You might have seen the following bit of code in your `.bashrc`:
+We can add more directories to the `$PATH` by appending to it. You might have seen the following bit of code in your `.bashrc`:
 
 ```bash
 export PATH=$PATH:/home/tladera2/samtools/
 ```
 
-We are adding the path `/home/tladera2/samtools/` to our `$PATH` environment variable. Note that how we refer to the `PATH` variable is different depending on which side the variable is on of the equals sign. 
+In this line, we are adding the path `/home/tladera2/samtools/` to our `$PATH` environment variable. Note that how we refer to the `PATH` variable is different depending on which side the variable is on of the equals sign. 
 
-We declare the variable using `export PATH` and we append to the variable using `$PATH`. This is something that trips me up all the time. 
+TLDR: We declare the variable using `export PATH` (no dollar sign) and we append to the variable using `$PATH` (with dollar sign). This is something that trips me up all the time. 
 
 :::{.callout-note}
 ## For FH Users
@@ -233,11 +241,15 @@ Ok, what's the difference between `.bashrc` and `.bash_profile`?
 
 The main difference is when these two files are sourced. `bash_profile` is used when you do an interactive login, and `.bashrc` is used for non-interactive shells.
 
-`.bashrc` should contain the environment variables that you use all the time, such as `$PATH` and `$JAVA_HOME` for example. You can get the best of both worlds by including the following line in your `.bash_profile`:
+`.bashrc` should contain the environment variables that you use all the time, such as `$PATH` and `$JAVA_HOME` for example. 
+
+You can get the best of both worlds by including the following line in your `.bash_profile`:
 
 ```bash
 source ~/.bashrc
 ```
+
+That way, everything in the `.bashrc` file is loaded when you log in interactively.
 
 ## Working with Shell Scripts
 
@@ -297,9 +309,9 @@ tladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev
 As an HPC user, you will usually not have root-level access to the cluster. Again, because it is a shared resource, this is a good thing. The trick is knowing how to install software and add it to your path, or run software containers with new software on a shared system.
 
 :::{.callout-note}
-## Why Singularity and Not Docker
+## Why Singularity and Not Docker?
 
-When we talk more about software environments, we'll talk about Docker.
+When we talk more about [software environments](), we'll talk about Docker.
 
 Docker requires root-level access to run processes on a machine. There is a special `docker` group that has pretty much root-level access. 
 
@@ -314,9 +326,9 @@ The following section outlines some useful unix utilities that can be very helpf
 
 ### Text editors: `vim` or `nano`
 
-In general, we recommend connecting an editor such as VS Code via SSH to make it easier to edit files. But sometimes you just need to edit a file on the system directly.
+In general, we recommend connecting an editor such as VS Code with the SSH extension to make it easier to edit files. But sometimes you just need to edit a file on the system directly.
 
-That's what `nano` and `vim` are for. Of these, `nano` has the smallest learning curve, since it works like most editors. `vim` is powerful, but there is a steep learning curve associated with it. 
+That's what `nano` and `vim` are for. Of these, `nano` has the smallest learning curve, since it works like most editors. `vim` is powerful (especially for searching and substitution), but there is a steep learning curve associated with it. 
 
 ### `screen` or `tmux`: keep your session open
 
@@ -363,7 +375,7 @@ And we'll be back in our screen session! Handy, right?
 
 Note that if you logout from `rhino`, you'll need to log back into the same `rhino` node to access your screen session.
 
-For example, if my screen session was on `rhino01`, I'd need to ssh back into `rhino01`, not `rhino02` or `rhino03`.
+For example, if my screen session was on `rhino01`, I'd need to ssh back into `rhino01`, not `rhino02` or `rhino03`. This means you will need to ssh into `rhino01` specifically to get back into your screen session.
 :::
 
 ### The `Tab` key

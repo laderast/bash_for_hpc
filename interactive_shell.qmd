@@ -15,7 +15,7 @@ After reading this, you will be able to:
 - **Open** an interactive shell on a Docker Container
 - **Articulate** how to connect container filesystems to the external filesystem
 
-## Grabbing an interactive shell
+## Grabbing an interactive shell on a worker
 
 When you're testing code that's going to run on a worker node, you need to be aware of what the worker node sees. 
 
@@ -80,7 +80,7 @@ In order to do our testing, we'll first pull the Docker container, map our bind 
 
 ### Pulling a Docker Container
 
-Let's pull a docker container from the Docker registry. Note we have to specify `docker://` when we pull the container, because Apptainer has its own internal format.
+Let's pull a docker container from the Docker registry. Note we have to specify `docker://` when we pull the container, because Apptainer has its own internal format called SIF.
 
 ```
 apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
@@ -88,14 +88,16 @@ apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
 
 I recommend that you 
 
-## Opening a Shell in a Docker Container
+## Opening a Shell in a Container with `apptainer shell`
 
-When you're getting started, opening a shell using Apptainer can help you test out things like filepaths and how they're accessed in the container. It's hard to get an intuition for how this works until you can see the limited view from the container.
+When you're getting started, opening a shell using Apptainer can help you test out things like filepaths and how they're accessed in the container. It's hard to get an intuition for how file I/O works with containers until you can see the limited view from the container. 
 
 You can open an Apptainer shell in a container using `apptainer shell`. Remember to use `docker://` before the container name. For example:
 
 ```{bash}
 #| eval: false
+#!/bin/bash
+module load Apptainer/1.1.6
 apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
@@ -108,9 +110,7 @@ Once you're in the shell, you can take a look at where `samtools` is installed:
 which samtools
 ```
 
-```
-
-```
+Note that the container filesystem is isolated, and we need to explicitly build connections to it (called bind paths) to get files in and out.
 
 ### Testing out bind paths in containers {#sec-bindpaths}
 
@@ -153,12 +153,12 @@ Rather than
 
 Now our `/fh/fast/mydata/` folder will be available as `/mydata/` in my container. We can read and write files to this bind point.
 
-:::{.callout}
+:::{.callout-note}
 ## WDL makes this way easier
 
-A major point of failure with apptainer scripting is when our scripts aren't using the right bind points. 
+A major point of failure with Apptainer scripting is when our scripts aren't using the right bind points. 
 
-This is one reason we recommend writing WDL Workflows and a workflow engine (such as Cromwell) to run your workflows, since you don't have to worry about them, because they are handled by the workflow engine.
+This is one reason we recommend writing WDL Workflows and a workflow engine (such as Cromwell) to run your workflows. You don't have to worry that your bind points are setup correctly, because they are handled by the workflow engine.
 :::
 
 ### Testing in the Apptainer Shell
@@ -170,7 +170,7 @@ Ok, now we have a bind point, so now we can test our script in the shell. For ex
 samtools view -c /mydata/my_bam_file.bam > /mydata/bam_counts.txt
 ```
 
-Trying out scripts in the container is the best way to understand what the container can and can't see.
+Again, trying out scripts in the container is the best way to understand what the container can and can't see.
 
 ### Exiting the container when you're done
 

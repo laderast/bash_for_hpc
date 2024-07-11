@@ -122,7 +122,7 @@ The main mechanism we have in Apptainer to access the external filesystem are *b
 
 ```{mermaid}
 flowchart LR
-   A[Container Filesystem\n/mydata/]--write-->C("--bind /fh/fast/mydata/:/mydata/")
+   A["Container Filesystem\n/mydata/"]--write-->C("--bind /fh/fast/mydata/:/mydata/")
    C --read--> A
    B["External Directory\n/fh/fast/mydata/"] 
    B --read--> C

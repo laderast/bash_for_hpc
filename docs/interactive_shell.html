@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bash for HPC - 6&nbsp; Testing Scripts Using Interactive Shell</title>
+<title>Bash for HPC - 6&nbsp; Testing Scripts in Containers Interactively</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./interactive_shell.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./interactive_shell.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -188,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -228,7 +228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts Using Interactive Shell</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></h1>
 </div>
 
 
@@ -314,19 +314,26 @@ Remember <code>hostname</code>
 </section>
 <section id="containers" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="containers"><span class="header-section-number">6.3</span> Containers</h2>
+<p>In this section, we talk about testing scripts in a container using <code>apptainer</code>. We use <code>apptainer</code> (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.</p>
+<p>In order to do our testing, we’ll first pull the Docker container, map our bind point (so our container can access files outside of its file sytem), and then open</p>
 <section id="pulling-a-docker-container" class="level3" data-number="6.3.1">
 <h3 data-number="6.3.1" class="anchored" data-anchor-id="pulling-a-docker-container"><span class="header-section-number">6.3.1</span> Pulling a Docker Container</h3>
-<p>Let’s pull a docker container from the Docker registry. Note we have to specify <code>docker://</code> when we pull the container.</p>
+<p>Let’s pull a docker container from the Docker registry. Note we have to specify <code>docker://</code> when we pull the container, because Apptainer has its own internal format.</p>
 <pre><code>apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
+<p>I recommend that you</p>
 </section>
 </section>
 <section id="opening-a-shell-in-a-docker-container" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="opening-a-shell-in-a-docker-container"><span class="header-section-number">6.4</span> Opening a Shell in a Docker Container</h2>
 <p>When you’re getting started, opening a shell using Apptainer can help you test out things like filepaths and how they’re accessed in the container. It’s hard to get an intuition for how this works until you can see the limited view from the container.</p>
 <p>You can open an Apptainer shell in a container using <code>apptainer shell</code>. Remember to use <code>docker://</code> before the container name. For example:</p>
-<pre class="{bash}"><code>#| eval:false
+<pre class="{bash}"><code>#| eval: false
 apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
-<p>This will open a Bash shell in the container. Once you’re in the container, you can test code, especially seeing whether your files can be seen by the container (see <a href="#sec-bindpaths" class="quarto-xref"><span>Section 6.4.1</span></a>).</p>
+<p>This will open a Bash shell in the container. Once you’re in the container, you can test code, especially seeing whether your files can be seen by the container (see <a href="#sec-bindpaths" class="quarto-xref"><span>Section 6.4.1</span></a>). 90% of the issues with using Docker containers has to do with bind paths, so we’ll talk about that next.</p>
+<p>Once you’re in the shell, you can take a look at where <code>samtools</code> is installed:</p>
+<pre class="{bash}"><code>#| eval: true
+which samtools</code></pre>
+<pre><code></code></pre>
 <section id="sec-bindpaths" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="sec-bindpaths"><span class="header-section-number">6.4.1</span> Testing out bind paths in containers</h3>
 <p>One thing to keep in mind is that every container has its own filesystem. One of the hardest things to wrap your head around for containers is how their filesystems work, and how to access files that are outside of the container filesystem. We’ll call any filesystems outside of the container <em>external filesystems</em> to make the discussion a little easier.</p>
@@ -338,11 +345,11 @@ apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    direction LR
-        A[Container Filesystem\n/mydata/]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
-        C --read--&gt; A
-        B["External Directory\n/fh/fast/mydata/"] --read--&gt; C
-        C --write--&gt; B
+   A[Container Filesystem\n/mydata/]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
+   C --read--&gt; A
+   B["External Directory\n/fh/fast/mydata/"] 
+   B --read--&gt; C
+   C --write--&gt; B
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -352,9 +359,9 @@ apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
 <p>I think of bind paths as “tunnels” that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them using the bind path.</p>
 <p>Say my data lives in <code>/fh/fast/mydata/</code>. Then I can specify a bind point in my <code>apptainer shell</code> and <code>apptainer run</code> commands.</p>
 <p>We can do this with the <code>--bind</code> option:</p>
-<pre class="{bash}"><code>#| eval:false
+<pre class="{bash}"><code>#| eval: false
 apptainer shell --bind /fh/fast/mydata:/mydata docker://biocontainers/samtools:v1.9-4-deb_cv1</code></pre>
-<p>Note that the bind syntax doesn’t have the trailing slash. That is, note that it is:</p>
+<p>Note that the bind syntax doesn’t have the trailing slash (<code>/</code>). That is, note that it is:</p>
 <pre><code>--bind /fh/fast/mydata: ....</code></pre>
 <p>Rather than</p>
 <pre><code>--bind /fh/fast/mydata/: ....</code></pre>
@@ -377,7 +384,7 @@ WDL makes this way easier
 <section id="testing-in-the-apptainer-shell" class="level3" data-number="6.4.2">
 <h3 data-number="6.4.2" class="anchored" data-anchor-id="testing-in-the-apptainer-shell"><span class="header-section-number">6.4.2</span> Testing in the Apptainer Shell</h3>
 <p>Ok, now we have a bind point, so now we can test our script in the shell. For example, we can see if we are invoking <code>samtools</code> in the correct way and that our bind points work.</p>
-<pre class="{bash}"><code>#| eval:false
+<pre class="{bash}"><code>#| eval: false
 samtools view -c /mydata/my_bam_file.bam &gt; /mydata/bam_counts.txt</code></pre>
 <p>Trying out scripts in the container is the best way to understand what the container can and can’t see.</p>
 </section>

@@ -72,11 +72,15 @@ If you're doing interactive analysis that is going to span over a few days, I re
 When you are doing interactive analysis, it is easy to forget in which node you're working in. Just as a quick check, I use `hostname` to remind myself whether I'm in `rhino`, `gizmo`, or within an apptainer container.
 :::
 
-## Containers
+## Testing Your Code in Containers
 
 In this section, we talk about testing scripts in a container using `apptainer`. We use `apptainer` (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.
 
 In order to do our testing, we'll first pull the Docker container, map our bind point (so our container can access files outside of its file sytem), and then open 
+
+### Resources 
+
+<https://carpentries-incubator.github.io/apptainer-introduction/01-apptainer-gettingstarted/index.html>
 
 ### Pulling a Docker Container
 
@@ -86,7 +90,15 @@ Let's pull a docker container from the Docker registry. Note we have to specify 
 apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
-I recommend that you 
+I recommend that you use a version tag (such as `v1.9-4-deb_cv1`) when you pull a container. Otherwise, your code will always pull the `latest` image, and you
+
+
+:::{.callout-important}
+## The Apptainer Cache
+
+
+
+:::
 
 ## Opening a Shell in a Docker Container
 
@@ -99,7 +111,7 @@ You can open an Apptainer shell in a container using `apptainer shell`. Remember
 apptainer shell docker://biocontainers/samtools:v1.9-4-deb_cv1
 ```
 
-This will open a Bash shell in the container. Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpaths). 90% of the issues with using Docker containers has to do with bind paths, so we'll talk about that next.
+This will open a Bash shell in the container. Don't do this just yet - this command will be much more useful when we add bind paths (see below).
 
 Once you're in the shell, you can take a look at where `samtools` is installed:
 
@@ -111,6 +123,10 @@ which samtools
 ```
 
 ```
+
+Once you're in the container, you can test code, especially seeing whether your files can be seen by the container (see @sec-bindpaths). 
+
+One thing to keep in mind is that **containers have their own separate file systems**. You'll notice that you can't access anything outside of this filesystem. 90% of the issues with using Docker containers has to do with correctly setting bind paths, so we'll talk about that next.
 
 ### Testing out bind paths in containers {#sec-bindpaths}
 
@@ -156,14 +172,14 @@ Now our `/fh/fast/mydata/` folder will be available as `/mydata/` in my containe
 :::{.callout}
 ## WDL makes this way easier
 
-A major point of failure with apptainer scripting is when our scripts aren't using the right bind points. 
+A major point of failure with `apptainer` scripting is when our scripts aren't using the right bind points. 
 
 This is one reason we recommend writing WDL Workflows and a workflow engine (such as Cromwell) to run your workflows, since you don't have to worry about them, because they are handled by the workflow engine.
 :::
 
 ### Testing in the Apptainer Shell
 
-Ok, now we have a bind point, so now we can test our script in the shell. For example, we can see if we are invoking `samtools` in the correct way and that our bind points work.
+Ok, now we have a bind path, so now we can test our script in the shell. For example, we can see if we are invoking `samtools` in the correct way and that our bind points work.
 
 ```{bash}
 #| eval: false

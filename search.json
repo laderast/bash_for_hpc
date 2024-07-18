@@ -374,7 +374,7 @@
     "href": "scripting-basics.html#what-you-learned-in-this-chapter",
     "title": "5  Shell Scripting Basics",
     "section": "5.8 What you learned in this chapter",
-    "text": "5.8 What you learned in this chapter\nWhew, this was a whirlwind tour. Keep this chapter in mind when you’re working with the platform - the bash programming patterns will serve you well. We’ll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.\n\nSetting up bash scripts with positional arguments\nIterating over a list of files using xargs\nHow to use bash variables and variable expansions",
+    "text": "5.8 What you learned in this chapter\nWhew, this was a whirlwind tour. Keep this chapter in mind when you’re working on a cluster - the bash programming patterns will serve you well. We’ll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.\n\nSetting up bash scripts with positional arguments\nIterating over a list of files using xargs\nHow to use bash variables and variable expansions",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Shell Scripting Basics</span>"
     ]

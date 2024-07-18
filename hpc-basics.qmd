@@ -17,7 +17,10 @@ After reading this chapter, you should be able to:
 
 Let's establish the terminology we need to talk about HPC computing.
 
-- **Toolchain** - a piece of software and its dependencies needed to run on a computer. For example, `cromwell` (a workflow runner), and `java`.
+- **High Performance Computing** - A type of computing that uses higher spec machines, or multiple machines that are joined together in a *cluster*. These machines can either be on-premise (also called *on-prem*), or in the cloud (such as Amazon EC machines, or Azure Batch).
+- **Cluster** - a group of machines networked such that users can use one or more machines at once.
+- **Allocation** - a temporary set of one or more computers requested from a cluster.
+- **Toolchain** - a piece of software and its dependencies needed to build a tool on a computer. For example, `cromwell` (a workflow runner), and `java`.
 - **Software Environment** - everything needed to run a piece of software on a brand new computer. For example, this would include installing `tidyverse`, but also all of its dependencies (`R`) as well. A *toolchain* is similar, but might not contain all system dependencies. 
 - **Executable** - software that is available on the HPC. 
 - **Shared Filesystem** - Part of the platform that stores our files and other objects. We'll see that these other objects include applets, databases, and other object types.
@@ -55,7 +58,7 @@ Let's contrast our view of local computing with the key players in the HPC clust
 
 ### Further Reading
 
-[Working on a remote HPC system](https://epcced.github.io/2022-01-28-hpc-intro-online/12-cluster/index.html) is also a good overview of the different parts of HPC.
+- [Working on a remote HPC system](https://epcced.github.io/2022-01-28-hpc-intro-online/12-cluster/index.html) is also a good overview of the different parts of HPC.
 
 :::{.callout-note}
 ## For Fred Hutch Users
@@ -76,7 +79,7 @@ Let's go over the order of operations needed to execute our job on the HPC clust
 
 A. **Start a job using `srun` to send a request to the platform.** In order to start a job, we will need two things: software (`samtools`), and a file to process from the shared filesystem (not shown). When we use `srun`, a request is sent to the platform. 
 
-B. **Platform requests for a worker from available workers; worker made available on platform.** In this step, the head node looks for a worker instance that can meet our needs. Then the computations run on worker; output files are generated.** Once our app is ready and our file is transferred, we can run the computation on the worker.
+B. **Platform requests for a worker from available workers; worker made available on platform.** In this step, the head node looks for a set of workers that can meet our needs. Then the computations run on the worker; output files are generated.** Once our app is ready and our file is transferred, we can run the computation on the worker.
 
 C. **Output files transferred back to project storage.** Any files that we generate during our computation (`53525342.bam`) must be transferred back into the shared filesystem.
 
@@ -87,13 +90,13 @@ When you are working with an HPC cluster, especially with batch jobs, keep in mi
 As you might have surmised, running a job on the HPC platform is very different from computing on your local computer.
 
 1. We don't own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.
-2. We have to be explicit what kind of machine we want. We'll talk much more about this in terms of machine types.
+2. We have to be explicit about what kind of machine we want. We'll talk much more about this in terms of machine types and classifieds.
 
 ## The Shared Filesystem
 
 Clusters often have a shared filesystem to make things easier. These filesystems can be accessed by all the nodes in a cluster and are designed for fast file transfers and reading. One example of a filesystem is Lustre. 
 
-Think about that: it's like having an SSD attached to all of the nodes. But how does the storage work?
+Think about that: it's like having an SSD attached to all of the nodes. But how does the shared storage work?
 
 The filesystem is distributed such that each set of nodes has a relatively fast access to the files on the system. The data itself is *sharded*, or broken up, and distributed among the storage servers that provide access to the files.
 
@@ -120,12 +123,14 @@ So far, everything we've seen so far can be run on a single computer. In the clu
 
 We can see an example of this in @fig-scatter. In distributed computing, we break our job up into smaller parts. One of the easiest way to do this is to split up a list of files (`file1.bam`, `file2.bam`, `file3.bam`) that we need to process, process each file separately on a different node, and then bring the results back together. Each node is only doing part of the work, but because we have multiple nodes, it is getting done 3 times faster.
 
-You can orchestrate this process yourself with tools such as `sbatch`, but it is usually much easier to utilize workflow runners such as Cromwell (for WDL) or Nextflow (for nf files), because they automatically handle saving the results of intermediate steps. 
+You can orchestrate this process yourself with tools such as `sbatch`, but it is usually much easier to utilize workflow runners such as Cromwell/PROOF (for `.wdl` files) or Nextflow (for `.nf` files), because they automatically handle saving the results of intermediate steps. 
+
+Trust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management makes it much easier.
 
 :::{.callout-note}
 ## For FH Users: Running Workflows
 
-At Fred Hutch, we have two main ways to run workflows on `gizmo`: Cromwell and NextFlow. Cromwell users have a nifty UI to run their workflows called PROOF.
+At Fred Hutch, we have two main ways to run workflows on `gizmo`: Cromwell and NextFlow. Cromwell users have a nifty UI to run their workflows called PROOF. 
 :::
 
 

@@ -54,8 +54,7 @@ When you list the environment modules using `module avail`, you'll see that ther
 
 For example, here's a full bash script that loads up `samtools` on `rhino`/`gizmo`:
 
-```{bash}
-#| eval: false
+```bash
 #!/bin/bash
 module load SAMtools/0.1.20-foss-2018b
 samtools view -c $1 > counts.txt
@@ -78,8 +77,6 @@ This is because there may be conflicting
 This is an example of a full script that uses environment modules. 
 
 ```bash
-#| eval: false
-#| filename: samtools_count.sh
 #!/bin/bash
 module load SAMtools/1.19.2-GCC-13.2.0
 samtools view -c $1 > $1.counts.txt

@@ -414,7 +414,7 @@ That's why I focus on double quotes for filenames and `${}` for variable expansi
 
 ## What you learned in this chapter
 
-Whew, this was a whirlwind tour. Keep this chapter in mind when you're working with the platform - the bash programming patterns will serve you well. We'll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.
+Whew, this was a whirlwind tour. Keep this chapter in mind when you're working on a cluster - the bash programming patterns will serve you well. We'll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.
 
 - Setting up bash scripts with positional arguments
 - Iterating over a list of files using `xargs`

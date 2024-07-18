@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.54">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -228,7 +228,10 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="2.2" class="anchored" data-anchor-id="important-terminology"><span class="header-section-number">2.2</span> Important Terminology</h2>
 <p>Let’s establish the terminology we need to talk about HPC computing.</p>
 <ul>
-<li><strong>Toolchain</strong> - a piece of software and its dependencies needed to run on a computer. For example, <code>cromwell</code> (a workflow runner), and <code>java</code>.</li>
+<li><strong>High Performance Computing</strong> - A type of computing that uses higher spec machines, or multiple machines that are joined together in a <em>cluster</em>. These machines can either be on-premise (also called <em>on-prem</em>), or in the cloud (such as Amazon EC machines, or Azure Batch).</li>
+<li><strong>Cluster</strong> - a group of machines networked such that users can use one or more machines at once.</li>
+<li><strong>Allocation</strong> - a temporary set of one or more computers requested from a cluster.</li>
+<li><strong>Toolchain</strong> - a piece of software and its dependencies needed to build a tool on a computer. For example, <code>cromwell</code> (a workflow runner), and <code>java</code>.</li>
 <li><strong>Software Environment</strong> - everything needed to run a piece of software on a brand new computer. For example, this would include installing <code>tidyverse</code>, but also all of its dependencies (<code>R</code>) as well. A <em>toolchain</em> is similar, but might not contain all system dependencies.</li>
 <li><strong>Executable</strong> - software that is available on the HPC.</li>
 <li><strong>Shared Filesystem</strong> - Part of the platform that stores our files and other objects. We’ll see that these other objects include applets, databases, and other object types.</li>
@@ -280,7 +283,9 @@ Figure&nbsp;2.2: Key Players in HPC
 </section>
 <section id="further-reading" class="level3" data-number="2.3.3">
 <h3 data-number="2.3.3" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">2.3.3</span> Further Reading</h3>
-<p><a href="https://epcced.github.io/2022-01-28-hpc-intro-online/12-cluster/index.html">Working on a remote HPC system</a> is also a good overview of the different parts of HPC.</p>
+<ul>
+<li><a href="https://epcced.github.io/2022-01-28-hpc-intro-online/12-cluster/index.html">Working on a remote HPC system</a> is also a good overview of the different parts of HPC.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -312,7 +317,7 @@ Figure&nbsp;2.3: Order of Operations
 </figure>
 </div>
 <p>A. <strong>Start a job using <code>srun</code> to send a request to the platform.</strong> In order to start a job, we will need two things: software (<code>samtools</code>), and a file to process from the shared filesystem (not shown). When we use <code>srun</code>, a request is sent to the platform.</p>
-<p>B. <strong>Platform requests for a worker from available workers; worker made available on platform.</strong> In this step, the head node looks for a worker instance that can meet our needs. Then the computations run on worker; output files are generated.** Once our app is ready and our file is transferred, we can run the computation on the worker.</p>
+<p>B. <strong>Platform requests for a worker from available workers; worker made available on platform.</strong> In this step, the head node looks for a set of workers that can meet our needs. Then the computations run on the worker; output files are generated.** Once our app is ready and our file is transferred, we can run the computation on the worker.</p>
 <p>C. <strong>Output files transferred back to project storage.</strong> Any files that we generate during our computation (<code>53525342.bam</code>) must be transferred back into the shared filesystem.</p>
 <p>When you are working with an HPC cluster, especially with batch jobs, keep in mind this order of execution. Being familiar with how the key players interact on the platform is key to running efficient jobs.</p>
 <section id="key-differences-with-local-computing" class="level3" data-number="2.4.1">
@@ -320,14 +325,14 @@ Figure&nbsp;2.3: Order of Operations
 <p>As you might have surmised, running a job on the HPC platform is very different from computing on your local computer.</p>
 <ol type="1">
 <li>We don’t own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.</li>
-<li>We have to be explicit what kind of machine we want. We’ll talk much more about this in terms of machine types.</li>
+<li>We have to be explicit about what kind of machine we want. We’ll talk much more about this in terms of machine types and classifieds.</li>
 </ol>
 </section>
 </section>
 <section id="the-shared-filesystem" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="the-shared-filesystem"><span class="header-section-number">2.5</span> The Shared Filesystem</h2>
 <p>Clusters often have a shared filesystem to make things easier. These filesystems can be accessed by all the nodes in a cluster and are designed for fast file transfers and reading. One example of a filesystem is Lustre.</p>
-<p>Think about that: it’s like having an SSD attached to all of the nodes. But how does the storage work?</p>
+<p>Think about that: it’s like having an SSD attached to all of the nodes. But how does the shared storage work?</p>
 <p>The filesystem is distributed such that each set of nodes has a relatively fast access to the files on the system. The data itself is <em>sharded</em>, or broken up, and distributed among the storage servers that provide access to the files.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -369,7 +374,8 @@ Figure&nbsp;2.4: The scattering process
 </div>
 <p>So far, everything we’ve seen so far can be run on a single computer. In the cluster, we have access to higher spec’ed machines, but using the cluster in this way doesn’t take advantage of the efficiency of <em>distributed computing</em>, or dividing the work up among multiple worker nodes.</p>
 <p>We can see an example of this in <a href="#fig-scatter" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>. In distributed computing, we break our job up into smaller parts. One of the easiest way to do this is to split up a list of files (<code>file1.bam</code>, <code>file2.bam</code>, <code>file3.bam</code>) that we need to process, process each file separately on a different node, and then bring the results back together. Each node is only doing part of the work, but because we have multiple nodes, it is getting done 3 times faster.</p>
-<p>You can orchestrate this process yourself with tools such as <code>sbatch</code>, but it is usually much easier to utilize workflow runners such as Cromwell (for WDL) or Nextflow (for nf files), because they automatically handle saving the results of intermediate steps.</p>
+<p>You can orchestrate this process yourself with tools such as <code>sbatch</code>, but it is usually much easier to utilize workflow runners such as Cromwell/PROOF (for <code>.wdl</code> files) or Nextflow (for <code>.nf</code> files), because they automatically handle saving the results of intermediate steps.</p>
+<p>Trust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management makes it much easier.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

@@ -608,5 +608,45 @@
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Working with containers</span>"
     ]
+  },
+  {
+    "objectID": "working-with-wdl.html",
+    "href": "working-with-wdl.html",
+    "title": "8  Working with WDL",
+    "section": "",
+    "text": "8.1 Learning Objectives",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+    ]
+  },
+  {
+    "objectID": "working-with-wdl.html#learning-objectives",
+    "href": "working-with-wdl.html#learning-objectives",
+    "title": "8  Working with WDL",
+    "section": "",
+    "text": "Explain the basic architecture of a WDL file\nExplain the role of a task in WDL\nUtilize Cromwell to execute a WDL script on one file\nUttilze Cromwell to batch execute a WDL script on multiple files",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+    ]
+  },
+  {
+    "objectID": "working-with-wdl.html#architecture-of-a-wdl-file",
+    "href": "working-with-wdl.html#architecture-of-a-wdl-file",
+    "title": "8  Working with WDL",
+    "section": "8.2 Architecture of a WDL file",
+    "text": "8.2 Architecture of a WDL file\nThe best way to read WDL files is to read them top down. We’ll focus on the basic sections of a WDL file before we see how they work together.\nThe code below is from the WILDs WDL Repo.\nworkflow SRA_STAR2Pass {\n  input { \n    Array[String] sra_id_list\n    RefGenome ref_genome\n  }\n\n  scatter ( id in sra_id_list ){\n    call fastqdump {\n        ...\n    }\n\n    call STARalignTwoPass {\n        ...\n    }\n  } # End scatter \n\n  # Outputs that will be retained when execution is complete\n  output {\n    ...\n  }\n\n}",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+    ]
+  },
+  {
+    "objectID": "working-with-wdl.html#anatomy-of-a-task",
+    "href": "working-with-wdl.html#anatomy-of-a-task",
+    "title": "8  Working with WDL",
+    "section": "8.3 Anatomy of a Task",
+    "text": "8.3 Anatomy of a Task\ntask fastqdump {\n  input {\n    String sra_id\n    Int ncpu = 12\n  }\n\n  command &lt;&lt;&lt;\n    set -eo pipefail\n    # check if paired ended\n    numLines=$(fastq-dump -X 1 -Z --split-spot \"~{sra_id}\" | wc -l)\n    paired_end=\"false\"\n    if [ $numLines -eq 8 ]; then\n      paired_end=\"true\"\n    fi\n    # perform fastqdump\n    if [ $paired_end == 'true' ]; then\n      echo true &gt; paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --split-files \\\n        --gzip\n    else\n      touch paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --gzip\n    fi\n  &gt;&gt;&gt;\n\n  output {\n    File r1_end = \"~{sra_id}_1.fastq.gz\"\n    File r2_end = \"~{sra_id}_2.fastq.gz\"\n    String paired_end = read_string('paired_file')\n  }\n\n  runtime {\n    memory: 2 * ncpu + \" GB\"\n    docker: \"getwilds/pfastqdump:0.6.7\"\n    cpu: ncpu\n  }\n\n  parameter_meta {\n    ...\n  }\n}",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+    ]
   }
 ]

@@ -16,6 +16,7 @@ book:
     - "scripting-basics.qmd"
     - "interactive_shell.qmd"
     - "running_containers.qmd"
+    - "working-with-wdl.qmd"
     - "r-commandline.qmd"
 #    - "04-doing-work-with-dx-run.qmd"
 #    - "05-batch-processing.qmd"

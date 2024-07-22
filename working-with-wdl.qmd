@@ -1,0 +1,100 @@
+# Working with WDL
+
+In this section, we'll learn about one of the recommended workflow runners, Cromwell, 
+
+## Learning Objectives
+
+- **Explain** the basic architecture of a WDL file
+- **Explain** the role of a *task* in WDL
+- **Utilize** Cromwell to execute a WDL script on one file
+- **Uttilze** Cromwell to batch execute a WDL script on multiple files
+
+
+## Architecture of a WDL file
+
+The best way to read WDL files is to read them top down. We'll focus on the basic sections of a WDL file before we see how they work together.
+
+The code below is from the [WILDs WDL Repo](https://getwilds.org/packages.html#wdls).  
+
+```wdl
+workflow SRA_STAR2Pass {
+  input { 
+    Array[String] sra_id_list
+    RefGenome ref_genome
+  }
+
+  scatter ( id in sra_id_list ){
+    call fastqdump {
+        ...
+    }
+
+    call STARalignTwoPass {
+        ...
+    }
+  } # End scatter 
+
+  # Outputs that will be retained when execution is complete
+  output {
+    ...
+  }
+
+} 
+```
+
+## Anatomy of a Task
+
+```wdl
+task fastqdump {
+  input {
+    String sra_id
+    Int ncpu = 12
+  }
+
+  command <<<
+    set -eo pipefail
+    # check if paired ended
+    numLines=$(fastq-dump -X 1 -Z --split-spot "~{sra_id}" | wc -l)
+    paired_end="false"
+    if [ $numLines -eq 8 ]; then
+      paired_end="true"
+    fi
+    # perform fastqdump
+    if [ $paired_end == 'true' ]; then
+      echo true > paired_file
+      parallel-fastq-dump \
+        --sra-id ~{sra_id} \
+        --threads ~{ncpu} \
+        --outdir ./ \
+        --split-files \
+        --gzip
+    else
+      touch paired_file
+      parallel-fastq-dump \
+        --sra-id ~{sra_id} \
+        --threads ~{ncpu} \
+        --outdir ./ \
+        --gzip
+    fi
+  >>>
+
+  output {
+    File r1_end = "~{sra_id}_1.fastq.gz"
+    File r2_end = "~{sra_id}_2.fastq.gz"
+    String paired_end = read_string('paired_file')
+  }
+
+  runtime {
+    memory: 2 * ncpu + " GB"
+    docker: "getwilds/pfastqdump:0.6.7"
+    cpu: ncpu
+  }
+
+  parameter_meta {
+    ...
+  }
+}
+```
+
+## Resources
+
+- [Developing WDL Workflows](https://hutchdatascience.org/Developing_WDL_Workflows/introduction-to-wdl.html) is a full course talking about developing your own WDL Workflows and has a much more in detail section of WDL file architecture. 

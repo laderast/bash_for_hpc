@@ -87,7 +87,7 @@ When you are working with an HPC cluster, especially with batch jobs, keep in mi
 
 ### Key Differences with local computing
 
-As you might have surmised, running a job on the HPC platform is very different from computing on your local computer.
+As you might have surmised, running a job on the HPC platform is very different from computing on your local computer. Here are a few key differences:
 
 1. We don't own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.
 2. We have to be explicit about what kind of machine we want. We'll talk much more about this in terms of machine types and classifieds.
@@ -115,6 +115,16 @@ There are three main filesystems you will probably use:
 - [Transferring Files](https://epcced.github.io/2022-01-28-hpc-intro-online/15-transferring-files/index.html) is a nice overview of the ways to transfer files to and from a remote system.
 - [SciWiki: Permissions](https://sciwiki.fredhutch.org/scicomputing/access_permissions/) - understanding the file permission.
 
+## Requesting Machines
+
+How do you request a set of machines on the HPC? There are multiple ways to do so:
+
+- Open an Interactive shell on a Node
+- As part of a job using `srun` or `sbatch`
+- Using Cromwell or Nextflow
+
+In general, we recommend 
+
 ## Scattering: Distribute the Work
 
 ![The scattering process](images/scatter.png){#fig-scatter}
@@ -125,7 +135,21 @@ We can see an example of this in @fig-scatter. In distributed computing, we brea
 
 You can orchestrate this process yourself with tools such as `sbatch`, but it is usually much easier to utilize workflow runners such as Cromwell/PROOF (for `.wdl` files) or Nextflow (for `.nf` files), because they automatically handle saving the results of intermediate steps. 
 
-Trust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management makes it much easier.
+Trust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management and node management makes it much easier in the long run.
+
+:::{.callout}
+## Nodes versus CPUs
+
+One thing that confused me was understanding the difference between requesting a system with multiple cores versus requesting multiple nodes.
+
+*Cores* roughly correspond to processors, so a 24-core allocation is a single node that has 24 CPUs. 
+
+*Nodes* correspond to machines - so a 24 node allocation is 24 machines.
+
+The reason why this is important is that you use them differently - we use scatter to utilize a 24 node allocation, whereas we can use multicore packages such as `{parallel}` and `mcapply()` to utilize a multi-core system. 
+
+In general, scatter over multiple nodes is handled by `sbatch` or your workflow runner.
+:::
 
 :::{.callout-note}
 ## For FH Users: Running Workflows

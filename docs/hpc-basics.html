@@ -186,7 +186,8 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#further-reading-1" id="toc-further-reading-1" class="nav-link" data-scroll-target="#further-reading-1"><span class="header-section-number">2.5.1</span> Further Reading</a></li>
   </ul></li>
-  <li><a href="#scattering-distribute-the-work" id="toc-scattering-distribute-the-work" class="nav-link" data-scroll-target="#scattering-distribute-the-work"><span class="header-section-number">2.6</span> Scattering: Distribute the Work</a></li>
+  <li><a href="#requesting-machines" id="toc-requesting-machines" class="nav-link" data-scroll-target="#requesting-machines"><span class="header-section-number">2.6</span> Requesting Machines</a></li>
+  <li><a href="#scattering-distribute-the-work" id="toc-scattering-distribute-the-work" class="nav-link" data-scroll-target="#scattering-distribute-the-work"><span class="header-section-number">2.7</span> Scattering: Distribute the Work</a></li>
   </ul>
 </nav>
     </div>
@@ -322,7 +323,7 @@ Figure&nbsp;2.3: Order of Operations
 <p>When you are working with an HPC cluster, especially with batch jobs, keep in mind this order of execution. Being familiar with how the key players interact on the platform is key to running efficient jobs.</p>
 <section id="key-differences-with-local-computing" class="level3" data-number="2.4.1">
 <h3 data-number="2.4.1" class="anchored" data-anchor-id="key-differences-with-local-computing"><span class="header-section-number">2.4.1</span> Key Differences with local computing</h3>
-<p>As you might have surmised, running a job on the HPC platform is very different from computing on your local computer.</p>
+<p>As you might have surmised, running a job on the HPC platform is very different from computing on your local computer. Here are a few key differences:</p>
 <ol type="1">
 <li>We don’t own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.</li>
 <li>We have to be explicit about what kind of machine we want. We’ll talk much more about this in terms of machine types and classifieds.</li>
@@ -360,8 +361,18 @@ For FH Users
 </ul>
 </section>
 </section>
-<section id="scattering-distribute-the-work" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="scattering-distribute-the-work"><span class="header-section-number">2.6</span> Scattering: Distribute the Work</h2>
+<section id="requesting-machines" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="requesting-machines"><span class="header-section-number">2.6</span> Requesting Machines</h2>
+<p>How do you request a set of machines on the HPC? There are multiple ways to do so:</p>
+<ul>
+<li>Open an Interactive shell on a Node</li>
+<li>As part of a job using <code>srun</code> or <code>sbatch</code></li>
+<li>Using Cromwell or Nextflow</li>
+</ul>
+<p>In general, we recommend</p>
+</section>
+<section id="scattering-distribute-the-work" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="scattering-distribute-the-work"><span class="header-section-number">2.7</span> Scattering: Distribute the Work</h2>
 <div id="fig-scatter" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -375,7 +386,24 @@ Figure&nbsp;2.4: The scattering process
 <p>So far, everything we’ve seen so far can be run on a single computer. In the cluster, we have access to higher spec’ed machines, but using the cluster in this way doesn’t take advantage of the efficiency of <em>distributed computing</em>, or dividing the work up among multiple worker nodes.</p>
 <p>We can see an example of this in <a href="#fig-scatter" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>. In distributed computing, we break our job up into smaller parts. One of the easiest way to do this is to split up a list of files (<code>file1.bam</code>, <code>file2.bam</code>, <code>file3.bam</code>) that we need to process, process each file separately on a different node, and then bring the results back together. Each node is only doing part of the work, but because we have multiple nodes, it is getting done 3 times faster.</p>
 <p>You can orchestrate this process yourself with tools such as <code>sbatch</code>, but it is usually much easier to utilize workflow runners such as Cromwell/PROOF (for <code>.wdl</code> files) or Nextflow (for <code>.nf</code> files), because they automatically handle saving the results of intermediate steps.</p>
-<p>Trust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management makes it much easier.</p>
+<p>Trust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management and node management makes it much easier in the long run.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nodes versus CPUs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One thing that confused me was understanding the difference between requesting a system with multiple cores versus requesting multiple nodes.</p>
+<p><em>Cores</em> roughly correspond to processors, so a 24-core allocation is a single node that has 24 CPUs.</p>
+<p><em>Nodes</em> correspond to machines - so a 24 node allocation is 24 machines.</p>
+<p>The reason why this is important is that you use them differently - we use scatter to utilize a 24 node allocation, whereas we can use multicore packages such as <code>{parallel}</code> and <code>mcapply()</code> to utilize a multi-core system.</p>
+<p>In general, scatter over multiple nodes is handled by <code>sbatch</code> or your workflow runner.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

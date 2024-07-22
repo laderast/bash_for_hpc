@@ -309,7 +309,7 @@ tladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev
 As an HPC user, you will usually not have root-level access to the cluster. Again, because it is a shared resource, this is a good thing. The trick is knowing how to install software and add it to your path, or run software containers with new software on a shared system.
 
 :::{.callout-note}
-## Why Singularity and Not Docker?
+## Why Apptainer and Not Docker?
 
 When we talk more about [software environments](), we'll talk about Docker.
 
@@ -317,7 +317,7 @@ Docker requires root-level access to run processes on a machine. There is a spec
 
 On a shared system such as an HPC cluster, we don't want to grant such access to individual users.
 
-Enter [Singularity](https://sylabs.io/docs/), which was designed for HPC clusters from the ground up. You can run Docker/Singularity containers on a shared system without needing root-level access. 
+Enter [Apptainer](https://sylabs.io/docs/), which was designed for HPC clusters from the ground up. You can run Docker/Apptainer containers on a shared system without needing root-level access. 
 :::
 
 ## Useful Utilities
@@ -386,8 +386,7 @@ Never underestimate the usefulness of the tab key, which triggers autocompletion
 
 Sometimes you will want to know where you are in the queue of all the other jobs that are in the run queue in SLURM. You can use `squeue` with `-u` (username) option to look for your username. For example:
 
-```{bash}
-#| eval: false
+```bash
 squeue -u tladera2
 ```
 

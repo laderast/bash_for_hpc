@@ -322,11 +322,11 @@ Opening a Shell in a Docker Container
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-   A["Container Filesystem\n/mydata/"]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
-   C --read--&gt; A
    B["External Directory\n/fh/fast/mydata/"] 
    B --read--&gt; C
    C --write--&gt; B
+   A["Container Filesystem\n/mydata/"]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
+   C --read--&gt; A
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -370,11 +370,14 @@ WDL makes this way easier
 </section>
 <section id="entrypoints" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="entrypoints"><span class="header-section-number">7.5</span> Entrypoints</h2>
+<p>You can think of an entrypoint as a way of automatically starting something up in your container when you run it. For example, if you have a web stack container, one of the things you want to start is a web server when you start running it.</p>
+<p>The main reason to be aware of entrypoints is when they exist in a Dockerfile. It is important to know what is started when you start running a container.</p>
 </section>
 <section id="more-info" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="more-info"><span class="header-section-number">7.6</span> More Info</h2>
 <ul>
 <li><a href="https://hsf-training.github.io/hsf-training-singularity-webpage/07-file-sharing/index.html">Carpentries Section on Apptainer Paths</a> - this is an excellent resource if you want to dive deeper into undestanding container filesystems and bind points.</li>
+<li><a href="https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#bind-examples">Apptainer Documentation on Bind Paths</a>. There are a lot of good examples here on how to set up bind paths.</li>
 <li><a href="https://apptainer.org/docs/user/main/bind_paths_and_mounts.html">More about bind paths and other options</a>.</li>
 </ul>
 </section>
@@ -382,7 +385,7 @@ WDL makes this way easier
 <h2 data-number="7.7" class="anchored" data-anchor-id="what-next"><span class="header-section-number">7.7</span> What Next?</h2>
 <p>You’ve learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:</p>
 <ul>
-<li>Integrate containers in your scripts</li>
+<li>Integrate containers into your scripts</li>
 <li>Customize your container using a Dockerfile</li>
 </ul>
 

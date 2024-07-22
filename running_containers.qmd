@@ -78,11 +78,11 @@ The main mechanism we have in Apptainer to access the external filesystem are *b
 
 ```{mermaid}
 flowchart LR
-   A["Container Filesystem\n/mydata/"]--write-->C("--bind /fh/fast/mydata/:/mydata/")
-   C --read--> A
    B["External Directory\n/fh/fast/mydata/"] 
    B --read--> C
    C --write--> B
+   A["Container Filesystem\n/mydata/"]--write-->C("--bind /fh/fast/mydata/:/mydata/")
+   C --read--> A
 ```
 
 I think of bind paths as "tunnels" that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them using the bind path.
@@ -136,16 +136,18 @@ You can `exit`, like any shell you open. You should be out of the container. Con
 
 ## Entrypoints
 
+You can think of an entrypoint as a way of automatically starting something up in your container when you run it. For example, if you have a web stack container, one of the things you want to start is a web server when you start running it. 
 
+The main reason to be aware of entrypoints is when they exist in a Dockerfile. It is important to know what is started when you start running a container.
 
 ## More Info
 - [Carpentries Section on Apptainer Paths](https://hsf-training.github.io/hsf-training-singularity-webpage/07-file-sharing/index.html) - this is an excellent resource if you want to dive deeper into undestanding container filesystems and bind points.
+- [Apptainer Documentation on Bind Paths](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#bind-examples). There are a lot of good examples here on how to set up bind paths.
 - [More about bind paths and other options](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html).
-
 
 ## What Next?
 
 You've learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:
 
-- Integrate containers in your scripts
+- Integrate containers into your scripts
 - Customize your container using a Dockerfile

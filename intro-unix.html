@@ -185,13 +185,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./running_containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./r-commandline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
   </div>
 </li>
     </ul>
@@ -289,7 +295,7 @@ Don’t Forget the VPN!
 </div>
 <div class="callout-body-container callout-body">
 <p>Many HPC systems are behind an organization’s VPN, so you’ll need a VPN client like Cisco Secure Client to get into your VPN.</p>
-<p>FH Users: you’ll connect to <code>rhino</code> to gain access to the HPC system.</p>
+<p>FH Users: after connecting through the Fred Hutch VPN you’ll connect to <code>rhino</code> to gain access to the HPC system.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -305,7 +311,7 @@ A Little More Advanced
 <p>If you are on Windows, you can install <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux</a>, and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server. I prefer this route, but PuTTY works great as well.</p>
 </div>
 </div>
-<p>On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include <a href="https://code.visualstudio.com/">Visual Studio Code (VS Code)</a>, or built in ones such as <code>nano</code>. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.</p>
+<p>On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include <a href="https://code.visualstudio.com/">Visual Studio Code (VS Code)</a>, or built in editors such as <code>nano</code>. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.</p>
 </section>
 <section id="where-am-i" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="where-am-i"><span class="header-section-number">3.3</span> Where Am I?</h2>
@@ -334,7 +340,7 @@ A Little More Advanced
 <p>Relative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path <em>relative</em> to that directory. Relative paths are really helpful because things don’t break when you move your folder or files.</p>
 <p>If my current path the directory <code>/fh/fast/laderas_t/immuno_project/</code>, then the relative path to that same file would be:</p>
 <pre><code>raw_data/tcr_data.fasta</code></pre>
-<p>Note that this relative path does not start with a <code>/</code>, because our current directory isn’t the root directory.</p>
+<p>Note that this relative path does not start with a <code>/</code>, because our current directory isn’t the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.</p>
 <p>You may have seen relative paths such as <code>../another_directory/</code> - the <code>..</code> means to go up a directory in the file hierarchy, and then look in that directory for the <code>another_directory/</code> directory. I try to avoid using relative paths like these.</p>
 <p>In general for portability and reproducibility, you will want to use relative paths <strong>within a directory</strong>, and avoid using relative paths like <code>../../my_folder</code>, where you are navigating up. In general, use relative paths to navigate down.</p>
 </section>
@@ -347,7 +353,7 @@ A Little More Advanced
 <section id="moving-things-around" class="level3" data-number="3.4.4">
 <h3 data-number="3.4.4" class="anchored" data-anchor-id="moving-things-around"><span class="header-section-number">3.4.4</span> Moving Things Around</h3>
 <p>A lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.</p>
-<p>You’re probably familiar with <code>mv</code>, which lets you move files around in Unix. One thing to keep in mind when you’re <code>mv</code>ing things to a new folder that there is a difference between:</p>
+<p>You might be familiar with <code>mv</code>, which lets you move files around in Unix. One thing to keep in mind when you’re <code>mv</code>ing things to a new folder that there is a difference between:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> log.txt my_folder   <span class="co">## renames log.txt to my_folder</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> log.txt my_folder/  <span class="co">## moves log.txt to be in my_folder</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -359,13 +365,13 @@ A Little More Advanced
 <p>Some things that trip me up all the time. The difference between</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/mydir/</span>    <span class="co">#absolute path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">home/mydir/</span><span class="kw">`</span>    <span class="co">#relative path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">home/mydir/</span>    <span class="co">#relative path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The first one is an <em>absolute path</em>, and the second is a <em>relative path</em>. Your clue is the leading <code>/</code> at the beginning of a path. If you’re getting <code>file not found</code> messages, check to make sure the path is the right format.</p>
 </section>
 </section>
 <section id="environment-variables" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="environment-variables"><span class="header-section-number">3.5</span> Environment Variables</h2>
-<p>Environment variables are variables which can be seen globally in the Linux system across executables.</p>
+<p>Environment variables are variables which can be seen globally in the Linux (or Windows) system across executables.</p>
 <p>You can get a list of all set environment variables by using the <code>env</code> command. Here’s an example from my own system:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">env</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>SHELL=/bin/bash
@@ -379,26 +385,40 @@ LOGNAME=tladera2
 <p>You can see whether an environment variable is set using <code>echo</code>, such as</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>/home/tladera2/.local/bin:/home/tladera2/gems/bin:/home/tladera2/.nvm/versions/node/v21.7.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/ [....]</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Environment Variables in Windows
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since we’re mostly going to be working in a Unix environment, we’re not going to touch on Windows environment variables. However, there is also a <code>$PATH</code> environment variable that you can set.</p>
+<p>I recommend looking at the PowerShell documentation for more information about Windows-specific environment variables</p>
+</div>
+</div>
 <section id="setting-environment-variables" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="setting-environment-variables"><span class="header-section-number">3.5.1</span> Setting Environment Variables</h3>
 <p>In Bash, we use the <code>export</code> command to declare an environment variable. For example, if we wanted to declare the environment variable <code>$SAMTOOLS_PATH</code> we’d do the following:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SAMTOOLS_PATH</span><span class="op">=</span><span class="st">"/home/tladera2/miniconda/bin/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>One thing to note is that spacing matters when you declare environment variables. For example, this won’t declare the <code>$SAMTOOLS_PATH</code> variable:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SAMTOOLS_PATH</span> <span class="op">=</span> <span class="st">"/home/tladera2/miniconda/bin/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Another thing to note is that we declare environment variables differently than we use then. If we wanted to use <code>$SAMTOOLS_PATH</code> we’d use a dollar sign (<code>$</code>) in front of it:</p>
+<p>Another thing to note is that we declare environment variables differently than we use them. If we wanted to use <code>$SAMTOOLS_PATH</code> in a script, we use a dollar sign (<code>$</code>) in front of it:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash/</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">$SAMTOOLS_PATH</span><span class="ex">/samtools</span> view <span class="at">-c</span> <span class="va">$input_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In this case, the value of <code>$SAMTOOLS_PATH</code> will be expanded (substituted) to give:</p>
+<p>In this case, the value of <code>$SAMTOOLS_PATH</code> will be expanded (substituted) to give the overall path:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash/</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/tladera2/miniconda/bin/samtools</span> view <span class="at">-c</span> <span class="va">$input_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="a-very-special-environment-variable-path" class="level3" data-number="3.5.2">
 <h3 data-number="3.5.2" class="anchored" data-anchor-id="a-very-special-environment-variable-path"><span class="header-section-number">3.5.2</span> A Very Special Environment Variable: <code>$PATH</code></h3>
-<p>The most important environment variable is the <code>$PATH</code> variable. This variable is important because it determines where to search for software executables.</p>
-<p>We add to the <code>$PATH</code> by appending to it. You might have seen the following bit of code in your <code>.bashrc</code>:</p>
+<p>The most important environment variable is the <code>$PATH</code> variable. This variable is important because it determines where to search for software executables (also called binaries).</p>
+<p>We can add more directories to the <code>$PATH</code> by appending to it. You might have seen the following bit of code in your <code>.bashrc</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:/home/tladera2/samtools/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We are adding the path <code>/home/tladera2/samtools/</code> to our <code>$PATH</code> environment variable. Note that how we refer to the <code>PATH</code> variable is different depending on which side the variable is on of the equals sign.</p>
-<p>We declare the variable using <code>export PATH</code> and we append to the variable using <code>$PATH</code>. This is something that trips me up all the time.</p>
+<p>In this line, we are adding the path <code>/home/tladera2/samtools/</code> to our <code>$PATH</code> environment variable. Note that how we refer to the <code>PATH</code> variable is different depending on which side the variable is on of the equals sign.</p>
+<p>TLDR: We declare the variable using <code>export PATH</code> (no dollar sign) and we append to the variable using <code>$PATH</code> (with dollar sign). This is something that trips me up all the time.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -427,8 +447,10 @@ For FH Users
 <h3 data-number="3.5.4" class="anchored" data-anchor-id="bashrc-versus-.bash_profile"><span class="header-section-number">3.5.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></h3>
 <p>Ok, what’s the difference between <code>.bashrc</code> and <code>.bash_profile</code>?</p>
 <p>The main difference is when these two files are sourced. <code>bash_profile</code> is used when you do an interactive login, and <code>.bashrc</code> is used for non-interactive shells.</p>
-<p><code>.bashrc</code> should contain the environment variables that you use all the time, such as <code>$PATH</code> and <code>$JAVA_HOME</code> for example. You can get the best of both worlds by including the following line in your <code>.bash_profile</code>:</p>
+<p><code>.bashrc</code> should contain the environment variables that you use all the time, such as <code>$PATH</code> and <code>$JAVA_HOME</code> for example.</p>
+<p>You can get the best of both worlds by including the following line in your <code>.bash_profile</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That way, everything in the <code>.bashrc</code> file is loaded when you log in interactively.</p>
 </section>
 </section>
 <section id="working-with-shell-scripts" class="level2" data-number="3.6">
@@ -462,20 +484,21 @@ For FH Users
 <p>You can see which groups you are a member of by using <code>groups</code>. For example, on my local Windows Subsystem for Linux filesystem, I am a member of the following groups.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">groups</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>tladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev</code></pre>
+<p>As an HPC user, you will usually not have root-level access to the cluster. Again, because it is a shared resource, this is a good thing. The trick is knowing how to install software and add it to your path, or run software containers with new software on a shared system.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Why Singularity and Not Docker
+Why Apptainer and Not Docker?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When we talk more about software environments, we’ll talk about Docker.</p>
+<p>When we talk more about <a href="">software environments</a>, we’ll talk about Docker.</p>
 <p>Docker requires root-level access to run processes on a machine. There is a special <code>docker</code> group that has pretty much root-level access.</p>
 <p>On a shared system such as an HPC cluster, we don’t want to grant such access to individual users.</p>
-<p>Enter <a href="https://sylabs.io/docs/">Singularity</a>, which was designed for HPC clusters from the ground up. You can run Docker/Singularity containers on a shared system without needing root-level access.</p>
+<p>Enter <a href="https://sylabs.io/docs/">Apptainer</a>, which was designed for HPC clusters from the ground up. You can run Docker/Apptainer containers on a shared system without needing root-level access.</p>
 </div>
 </div>
 </section>
@@ -485,8 +508,8 @@ Why Singularity and Not Docker
 <p>The following section outlines some useful unix utilities that can be very helpful when you’re working in bash. Most of these should be available in HPC systems by default.</p>
 <section id="text-editors-vim-or-nano" class="level3" data-number="3.7.1">
 <h3 data-number="3.7.1" class="anchored" data-anchor-id="text-editors-vim-or-nano"><span class="header-section-number">3.7.1</span> Text editors: <code>vim</code> or <code>nano</code></h3>
-<p>In general, we recommend connecting an editor such as VS Code via SSH to make it easier to edit files. But sometimes you just need to edit a file on the system directly.</p>
-<p>That’s what <code>nano</code> and <code>vim</code> are for. Of these, <code>nano</code> has the smallest learning curve, since it works like most editors. <code>vim</code> is powerful, but there is a steep learning curve associated with it.</p>
+<p>In general, we recommend connecting an editor such as VS Code with the SSH extension to make it easier to edit files. But sometimes you just need to edit a file on the system directly.</p>
+<p>That’s what <code>nano</code> and <code>vim</code> are for. Of these, <code>nano</code> has the smallest learning curve, since it works like most editors. <code>vim</code> is powerful (especially for searching and substitution), but there is a steep learning curve associated with it.</p>
 </section>
 <section id="screen-or-tmux-keep-your-session-open" class="level3" data-number="3.7.2">
 <h3 data-number="3.7.2" class="anchored" data-anchor-id="screen-or-tmux-keep-your-session-open"><span class="header-section-number">3.7.2</span> <code>screen</code> or <code>tmux</code>: keep your session open</h3>
@@ -519,7 +542,7 @@ For FH Users
 </div>
 <div class="callout-body-container callout-body">
 <p>Note that if you logout from <code>rhino</code>, you’ll need to log back into the same <code>rhino</code> node to access your screen session.</p>
-<p>For example, if my screen session was on <code>rhino01</code>, I’d need to ssh back into <code>rhino01</code>, not <code>rhino02</code> or <code>rhino03</code>.</p>
+<p>For example, if my screen session was on <code>rhino01</code>, I’d need to ssh back into <code>rhino01</code>, not <code>rhino02</code> or <code>rhino03</code>. This means you will need to ssh into <code>rhino01</code> specifically to get back into your screen session.</p>
 </div>
 </div>
 </section>
@@ -530,8 +553,7 @@ For FH Users
 <section id="squeue--u-username" class="level3" data-number="3.7.4">
 <h3 data-number="3.7.4" class="anchored" data-anchor-id="squeue--u-username"><span class="header-section-number">3.7.4</span> <code>squeue -u &lt;username&gt;</code></h3>
 <p>Sometimes you will want to know where you are in the queue of all the other jobs that are in the run queue in SLURM. You can use <code>squeue</code> with <code>-u</code> (username) option to look for your username. For example:</p>
-<pre class="{bash}"><code>#| eval: false
-squeue -u tladera2</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> tladera2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

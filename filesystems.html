@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>8&nbsp; Working with containers – Bash for HPC</title>
+<title>4&nbsp; Navigating the Unix Filesystem – Bash for HPC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./working-with-wdl.html" rel="next">
-<link href="./interactive_shell.html" rel="prev">
+<link href="./running-stuff.html" rel="next">
+<link href="./intro-unix.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running_containers.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./filesystems.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -175,7 +175,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./filesystems.html" class="sidebar-item-text sidebar-link">
+  <a href="./filesystems.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
   </div>
 </li>
@@ -199,7 +199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./running_containers.html" class="sidebar-item-text sidebar-link active">
+  <a href="./running_containers.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
   </div>
 </li>
@@ -225,20 +225,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#visual-table-of-contents" id="toc-visual-table-of-contents" class="nav-link active" data-scroll-target="#visual-table-of-contents"><span class="header-section-number">8.1</span> Visual Table of Contents</a></li>
-  <li><a href="#opening-shells-in-containers-for-testing" id="toc-opening-shells-in-containers-for-testing" class="nav-link" data-scroll-target="#opening-shells-in-containers-for-testing"><span class="header-section-number">8.2</span> Opening Shells in Containers for Testing</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">4.1</span> Learning Objectives</a></li>
+  <li><a href="#visual-table-of-contents" id="toc-visual-table-of-contents" class="nav-link" data-scroll-target="#visual-table-of-contents"><span class="header-section-number">4.2</span> Visual Table of Contents</a></li>
+  <li><a href="#sec-filesystems" id="toc-sec-filesystems" class="nav-link" data-scroll-target="#sec-filesystems"><span class="header-section-number">4.3</span> FH users: the main filesystems</a>
   <ul class="collapse">
-  <li><a href="#pulling-a-docker-container" id="toc-pulling-a-docker-container" class="nav-link" data-scroll-target="#pulling-a-docker-container"><span class="header-section-number">8.2.1</span> Pulling a Docker Container</a></li>
+  <li><a href="#when-in-doubt-pwd" id="toc-when-in-doubt-pwd" class="nav-link" data-scroll-target="#when-in-doubt-pwd"><span class="header-section-number">4.3.1</span> When in doubt: <code>pwd</code></a></li>
   </ul></li>
-  <li><a href="#opening-a-shell-in-a-container-with-apptainer-shell" id="toc-opening-a-shell-in-a-container-with-apptainer-shell" class="nav-link" data-scroll-target="#opening-a-shell-in-a-container-with-apptainer-shell"><span class="header-section-number">8.3</span> Opening a Shell in a Container with <code>apptainer shell</code></a></li>
-  <li><a href="#sec-bindpaths" id="toc-sec-bindpaths" class="nav-link" data-scroll-target="#sec-bindpaths"><span class="header-section-number">8.4</span> Testing out bind paths in containers</a>
+  <li><a href="#sec-home" id="toc-sec-home" class="nav-link" data-scroll-target="#sec-home"><span class="header-section-number">4.4</span> Going <code>/home</code>: <code>~/</code></a></li>
+  <li><a href="#sec-paths" id="toc-sec-paths" class="nav-link" data-scroll-target="#sec-paths"><span class="header-section-number">4.5</span> Absolute versus relative paths</a>
   <ul class="collapse">
-  <li><a href="#testing-in-the-apptainer-shell" id="toc-testing-in-the-apptainer-shell" class="nav-link" data-scroll-target="#testing-in-the-apptainer-shell"><span class="header-section-number">8.4.1</span> Testing in the Apptainer Shell</a></li>
-  <li><a href="#exiting-the-container-when-youre-done" id="toc-exiting-the-container-when-youre-done" class="nav-link" data-scroll-target="#exiting-the-container-when-youre-done"><span class="header-section-number">8.4.2</span> Exiting the container when you’re done</a></li>
+  <li><a href="#keep-everything-in-a-folder" id="toc-keep-everything-in-a-folder" class="nav-link" data-scroll-target="#keep-everything-in-a-folder"><span class="header-section-number">4.5.1</span> Keep Everything in a Folder</a></li>
   </ul></li>
-  <li><a href="#entrypoints" id="toc-entrypoints" class="nav-link" data-scroll-target="#entrypoints"><span class="header-section-number">8.5</span> Entrypoints</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">8.6</span> More Info</a></li>
-  <li><a href="#what-next" id="toc-what-next" class="nav-link" data-scroll-target="#what-next"><span class="header-section-number">8.7</span> What Next?</a></li>
+  <li><a href="#sec-project" id="toc-sec-project" class="nav-link" data-scroll-target="#sec-project"><span class="header-section-number">4.6</span> Project/folder based workflows</a></li>
+  <li><a href="#sec-moving" id="toc-sec-moving" class="nav-link" data-scroll-target="#sec-moving"><span class="header-section-number">4.7</span> Moving Things Around</a>
+  <ul class="collapse">
+  <li><a href="#things-i-always-forget-the-difference-between-homemydir-and-homemydir" id="toc-things-i-always-forget-the-difference-between-homemydir-and-homemydir" class="nav-link" data-scroll-target="#things-i-always-forget-the-difference-between-homemydir-and-homemydir"><span class="header-section-number">4.7.1</span> Things I always forget: the difference between <code>/home/mydir/</code> and <code>home/mydir/</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -247,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></h1>
 </div>
 
 
@@ -264,19 +266,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="visual-table-of-contents" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="visual-table-of-contents"><span class="header-section-number">8.1</span> Visual Table of Contents</h2>
+<section id="learning-objectives" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">4.1</span> Learning Objectives</h2>
+<p>After reading this chapter, you should be able to:</p>
+<ul>
+<li><strong>Navigate</strong> the HPC filesystem using both <em>absolute</em> and <em>relative</em> paths</li>
+<li><strong>Identify</strong> the shared filesystems associated with your cluster</li>
+<li><strong>Develop Scripts</strong> that use multiple filesystems to process data</li>
+<li><strong>Explain</strong> the benefits of a folder-based approach to organizing your analysis</li>
+<li><strong>Move</strong> Files between filesystems and folders</li>
+</ul>
+</section>
+<section id="visual-table-of-contents" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="visual-table-of-contents"><span class="header-section-number">4.2</span> Visual Table of Contents</h2>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-   A[Open Shell on Worker] --&gt; B
-   B["Open Shell in Container\n(with Bindpaths)"]
-   B --&gt; D[Test Scripts in container]
-   D --&gt; E[Exit Container]
-   E --&gt; F[Exit Worker]
+    A["Main Filesystems on FH"] --&gt; B
+    click A "#sec-filesystems"
+    B["Home Directories"] --&gt; C
+    click B "#sec-home"
+    C["Absolute/Relative Paths"] --&gt; D
+    click C "#sec-paths"
+    D["Project Based File Structures"] --&gt; E
+    click D "#sec-project"
+    E["Moving Things Around"]
+    click E "#sec-moving"
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -284,124 +302,130 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="opening-shells-in-containers-for-testing" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="opening-shells-in-containers-for-testing"><span class="header-section-number">8.2</span> Opening Shells in Containers for Testing</h2>
-<p>In this section, we talk about testing scripts in a container using <code>apptainer</code>. We use <code>apptainer</code> (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.</p>
-<p>In order to do our testing, we’ll first pull the Docker container, map our bind point (so our container can access files outside of its file system), and then run scripts in the container.</p>
-<p>Even if you aren’t going to frequently use Apptainer in your work, I recommend trying an interactive shell in a container at least once or twice to learn about the container filesystem and how you connect it to the external filesystem.</p>
-<section id="pulling-a-docker-container" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="pulling-a-docker-container"><span class="header-section-number">8.2.1</span> Pulling a Docker Container</h3>
-<p>Let’s pull a docker container from the Docker registry. Note we have to specify <code>docker://</code> when we pull the container, because Apptainer has its own internal format called SIF.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> pull docker://biocontainers/samtools:v1.9-4-deb_cv1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-</section>
-<section id="opening-a-shell-in-a-container-with-apptainer-shell" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="opening-a-shell-in-a-container-with-apptainer-shell"><span class="header-section-number">8.3</span> Opening a Shell in a Container with <code>apptainer shell</code></h2>
-<p>When you’re getting started, opening a shell using Apptainer can help you test out things like filepaths and how they’re accessed in the container. It’s hard to get an intuition for how file I/O works with containers until you can see the limited view from the container.</p>
-<p>By default, apptainers can see your current directory and navigate to the files in it.</p>
-<p>You can open an Apptainer shell in a container using <code>apptainer shell</code>. Remember to use <code>docker://</code> before the container name. For example:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load Apptainer/1.1.6</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> shell docker://biocontainers/samtools:v1.9-4-deb_cv1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This will load the <code>apptainer</code> module, and then open a Bash shell in the container using <code>apptainer shell</code>. Once you’re in the container, you can test code, especially seeing whether your files can be seen by the container (see <a href="#sec-bindpaths" class="quarto-xref"><span>Section 8.4</span></a>). 90% of the issues with using Docker containers has to do with bind paths, so we’ll talk about that next.</p>
-<p>Once you’re in the shell, you can take a look at where <code>samtools</code> is installed:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> samtools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that the container filesystem is isolated, and we need to explicitly build connections to it (called bind paths) to get files in and out. We’ll talk more about this in the next section.</p>
-<p>Once we’re done testing scripts in our containers, we can exit the shell and get back into the node.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Opening a Shell in a Docker Container
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>For the most part, due to security reasons, we don’t use <code>docker</code> on HPC systems. However, if you have admin level access (for example, on your own laptop), you can open up an interactive shell with <code>docker run</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-it</span> biocontainers/samtools:v1.9-4-deb_cv1 /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</section>
-<section id="sec-bindpaths" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="sec-bindpaths"><span class="header-section-number">8.4</span> Testing out bind paths in containers</h2>
-<p>One thing to keep in mind is that every container has its own filesystem. One of the hardest things to wrap your head around for containers is how their filesystems work, and how to access files that are outside of the container filesystem. We’ll call any filesystems outside of the container <em>external filesystems</em> to make the discussion a little easier.</p>
-<p>By default, the containers have access to your current working directory. We could make this where our scripts live (such as <code>/home/tladera2/</code>), but because our data is elsewhere, we’ll need to specify that location (<code>/fh/fast/mylab/</code>) as well.</p>
-<p>The main mechanism we have in Apptainer to access the external filesystem are <em>bind paths</em>. Much like mounting a drive, we can bind directories from the external filesystem using these bind points.</p>
+<section id="sec-filesystems" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-filesystems"><span class="header-section-number">4.3</span> FH users: the main filesystems</h2>
+<p>When working on the HPC, there are three filesystems you should consider:</p>
+<ul>
+<li><code>/home/</code> - The home filesystem. Your scripts can live here</li>
+<li><code>/fh/fast/</code> (also known as fast) - Research storage. Raw files and processed results should live here.</li>
+<li><code>/fh/temp/</code> (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on <code>/fh/fast/</code>. Note that files on <code>/fh/temp/</code> will be deleted after 30 days.</li>
+</ul>
+<p>Below is a a diagram with one way to work with these multiple filesystems.</p>
+<ol type="1">
+<li>We transfer the raw files to be processed from <code>/fh/fast/</code> to our directory <code>/fh/temp/</code>. For example, a set of <code>.bam</code> files.</li>
+<li>We run our scripts from <code>/home/</code>, on the raw files in <code>/fh/temp/</code> and produce results in <code>/fh/temp/</code></li>
+<li>We transfer our results from <code>/fh/temp/</code> to <code>/fh/fast/</code></li>
+</ol>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
-   B["External Directory\n/fh/fast/mydata/"] 
-   B --read--&gt; C
-   C --write--&gt; B
-   A["Container Filesystem\n/mydata/"]--write--&gt;C("--bind /fh/fast/mydata/:/mydata/")
-   C --read--&gt; A
+<pre class="mermaid mermaid-js">graph LR
+    A["Home Directory\n/home/tladera2/\nScripts"] --"2. run scripts"--&gt; C
+    B["Fast\n/fh/fast/tladera2\nResearch Data"] --"1. transfer\nraw files"--&gt; C
+    C["Temp\n/fh/temp/tladera2"] --"3. transfer\nresults"--&gt; B
 </pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
-<p>I think of bind paths as “tunnels” that give access to particular folders in the external filesystem. Once the tunnel is open, we can access data files, process them, and save them using the bind path.</p>
-<p>Say my data lives in <code>/fh/fast/mydata/</code>. Then I can specify a bind point in my <code>apptainer shell</code> and <code>apptainer run</code> commands.</p>
-<p>We can do this with the <code>--bind</code> option:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> shell <span class="at">--bind</span> /fh/fast/mydata:/mydata docker://biocontainers/samtools:v1.9-4-deb_cv1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that the bind syntax doesn’t have the trailing slash (<code>/</code>). That is, note that it is:</p>
-<pre><code>--bind /fh/fast/mydata: ....</code></pre>
-<p>Rather than</p>
-<pre><code>--bind /fh/fast/mydata/: ....</code></pre>
-<p>Now our <code>/fh/fast/mydata/</code> folder will be available as <code>/mydata/</code> in my container. We can read and write files to this bind point. For example, I’d refer to the <code>.bam</code> file <code>/fh/fast/mydata/my_bam_file.bam</code> as:</p>
-<pre><code>samtools view -c /mydata/my_bam_file.bam</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-WDL makes this way easier
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A major point of failure with Apptainer scripting is when our scripts aren’t using the right bind paths.</p>
-<p>This is one reason we recommend writing WDL Workflows and a workflow engine (such as Cromwell) to run your workflows. You don’t have to worry that your bind points are setup correctly, because they are handled by the workflow engine.</p>
-</div>
-</div>
-<section id="testing-in-the-apptainer-shell" class="level3" data-number="8.4.1">
-<h3 data-number="8.4.1" class="anchored" data-anchor-id="testing-in-the-apptainer-shell"><span class="header-section-number">8.4.1</span> Testing in the Apptainer Shell</h3>
-<p>Ok, now we have a bind point, so now we can test our script in the shell. For example, we can see if we are invoking <code>samtools</code> in the correct way and that our bind points work.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> /mydata/my_bam_file.bam <span class="op">&gt;</span> /mydata/bam_counts.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Again, trying out scripts in the container is the best way to understand what the container can and can’t see.</p>
-</section>
-<section id="exiting-the-container-when-youre-done" class="level3" data-number="8.4.2">
-<h3 data-number="8.4.2" class="anchored" data-anchor-id="exiting-the-container-when-youre-done"><span class="header-section-number">8.4.2</span> Exiting the container when you’re done</h3>
-<p>You can <code>exit</code>, like any shell you open. You should be out of the container. Confirm by using <code>hostname</code> to make sure you’re out of the container.</p>
+<p>Your main mechanism for getting files to and from fast and scratch is <a href="https://sciwiki.fredhutch.org/compdemos/motuz/">Motuz</a>, which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again.</p>
+<p>Motuz also supports file transfers between other filesystems at FH, including the FH Amazon S3 bucket. Highly recommended.</p>
+<section id="when-in-doubt-pwd" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="when-in-doubt-pwd"><span class="header-section-number">4.3.1</span> When in doubt: <code>pwd</code></h3>
+<p>The <code>pwd</code> command (short for <em>present working directory</em>) will let you know your current location in the filesystem. Knowing your current directory is critical when using <em>relative</em> file paths.</p>
 </section>
 </section>
-<section id="entrypoints" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="entrypoints"><span class="header-section-number">8.5</span> Entrypoints</h2>
-<p>You can think of an entrypoint as a way of automatically starting something up in your container when you run it. For example, if you have a web stack container, one of the things you want to start is a web server when you start running it.</p>
-<p>The main reason to be aware of entrypoints is when they exist in a Dockerfile. It is important to know what is started when you start running a container.</p>
+<section id="sec-home" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-home"><span class="header-section-number">4.4</span> Going <code>/home</code>: <code>~/</code></h2>
+<p>There is one important shortcut you should always remember: <code>~/</code> is shorthand for your own home directory.</p>
+<p>Depending on the linux distribution, this can be a different location. On the FH filesystem, when I use <code>~/</code>, it maps to:</p>
+<p><code>/home/tladera2/</code></p>
+<p>The home directory is also important because it is where your configuration files live, such as <code>.bashrc</code> (see <a href="intro-unix.html#sec-bashrc" class="quarto-xref"><span>Section 3.4.4</span></a>).</p>
+<p>Depending on how you work, you may want to store your scripts and workflows in <code>/home/</code>. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see <a href="#sec-project" class="quarto-xref"><span>Section 4.6</span></a></p>
 </section>
-<section id="more-info" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="more-info"><span class="header-section-number">8.6</span> More Info</h2>
-<ul>
-<li><a href="https://hsf-training.github.io/hsf-training-singularity-webpage/07-file-sharing/index.html">Carpentries Section on Apptainer Paths</a> - this is an excellent resource if you want to dive deeper into undestanding container filesystems and bind points.</li>
-<li><a href="https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#bind-examples">Apptainer Documentation on Bind Paths</a>. There are a lot of good examples here on how to set up bind paths.</li>
-<li><a href="https://apptainer.org/docs/user/main/bind_paths_and_mounts.html">More about bind paths and other options</a>.</li>
-</ul>
+<section id="sec-paths" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sec-paths"><span class="header-section-number">4.5</span> Absolute versus relative paths</h2>
+<p>Absolute paths contain all the information needed to find a file in a file system from the root <code>/</code> directory. For example, this would be an absolute path:</p>
+<pre><code>/fh/fast/laderast/immuno_project/raw_data/tcr_data.fasta</code></pre>
+<p>In terms of folder structure, this is what this looks like:</p>
+<pre><code>/
+├── fh
+│   └──fast
+│       └──laderast
+|            └──immuno_project
+│                 └──raw_data
+│                    └──chr2.fa.gz</code></pre>
+<p>Absolute paths always start with <code>/</code>, because that is the root directory, where all the top folders and files live.</p>
+<p>Relative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path <em>relative</em> to that directory. Relative paths are really helpful because things don’t break when you move your folder or files.</p>
+<pre><code>/
+├── fh
+│   └──fast
+│       └── laderast
+|            └──immuno_project *</code></pre>
+<p>If my current path the directory <code>/fh/fast/laderas_t/immuno_project/</code>, then the relative path to that same file would be:</p>
+<pre><code>raw_data/tcr_data.fasta</code></pre>
+<p>Note that this relative path does not start with a <code>/</code>, because our current directory isn’t the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.</p>
+<section id="keep-everything-in-a-folder" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="keep-everything-in-a-folder"><span class="header-section-number">4.5.1</span> Keep Everything in a Folder</h3>
+<p>We need to talk about code and data organization. For the FH system, we have a <code>/home/</code> directory, and if we have generated research data, a <code>/fh/fast/</code> directory. If we want our scripts to live in <code>/home/</code> and our data is in <code>/fh/temp/</code>, we’ll need to refer to each of these file locations.</p>
+<p>Ideally, we want to make the naming conventions of our code and our data as similar as possible.</p>
+<p>The requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.</p>
 </section>
-<section id="what-next" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="what-next"><span class="header-section-number">8.7</span> What Next?</h2>
-<p>You’ve learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:</p>
-<ul>
-<li>Integrate containers into your scripts</li>
-<li>Customize your container using a Dockerfile</li>
-</ul>
+</section>
+<section id="sec-project" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="sec-project"><span class="header-section-number">4.6</span> Project/folder based workflows</h2>
+<p>On a particular machine, using <em>absolute</em> paths is safe. However, you do this at the cost of <em>portability</em> - code that you write on one machine may not run on another.</p>
+<p>If you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest.</p>
+<p>For example, here’s one example of putting everything into a single folder:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">my_project</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> data</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── chr1.fa.gz</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── chr2.fa.gz</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── chr3.fa.gz</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> results</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> run_workflow.sh</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> scripts</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> run_bowtie.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the above example, our project is named <code>my_project</code>, and there are three folders inside it: <code>data/</code>, <code>results/</code>, and <code>scripts/</code>. Our main script for running is <code>my_project/run_workflow.sh</code>. Because this script is in the root folder, we can refer to the <code>data/</code> folder to process files:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/run_bowtie.sh</span> data/<span class="pp">*</span>.fa.gz results/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we run <code>run_workflow.sh</code>, it will execute <code>run_bowtie.sh</code> on all of the files in <code>data/</code>, and save them in <code>results/</code>, resulting in the following updated structure.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">my_project</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> data</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── chr1.fa.gz</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── chr2.fa.gz</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── chr3.fa.gz</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> results</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── chr1.bam</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── chr2.bam</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── chr3.bam</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> run_workflow.sh</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> scripts</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> run_bowtie.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You may have seen relative paths such as <code>../another_directory/</code> - the <code>..</code> means to go up a directory in the file hierarchy, and then look in that directory for the <code>another_directory/</code> directory. I try to avoid using relative paths like these.</p>
+<p>In general for portability and reproducibility, you will want to use relative paths <strong>within a directory</strong>, and avoid using relative paths like <code>../../my_folder</code>, where you are navigating up. In general, use relative paths to navigate down.</p>
+</section>
+<section id="sec-moving" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="sec-moving"><span class="header-section-number">4.7</span> Moving Things Around</h2>
+<p>A lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.</p>
+<p>You might be familiar with <code>mv</code>, which lets you move files around in Unix. One thing to keep in mind when you’re <code>mv</code>ing things to a new folder that there is a difference between:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> log.txt my_folder   <span class="co">## renames log.txt to my_folder</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> log.txt my_folder/  <span class="co">## moves log.txt to be in my_folder</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is one thing that trips me up all the time.</p>
+<p>This is one situation where using a GUI such as Motuz can be very helpful.</p>
+<section id="things-i-always-forget-the-difference-between-homemydir-and-homemydir" class="level3" data-number="4.7.1">
+<h3 data-number="4.7.1" class="anchored" data-anchor-id="things-i-always-forget-the-difference-between-homemydir-and-homemydir"><span class="header-section-number">4.7.1</span> Things I always forget: the difference between <code>/home/mydir/</code> and <code>home/mydir/</code></h3>
+<p>Some things that trip me up all the time. The difference between</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/mydir/</span>    <span class="co">#absolute path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">home/mydir/</span>    <span class="co">#relative path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first one is an <em>absolute path</em>, and the second is a <em>relative path</em>. Your clue is the leading <code>/</code> at the beginning of a path. If you’re getting <code>file not found</code> messages, check to make sure the path is the right format.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -827,13 +851,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./interactive_shell.html" class="pagination-link" aria-label="Interactively Testing Scripts in Nodes">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span>
+      <a href="./intro-unix.html" class="pagination-link" aria-label="Everything about Unix/Linux they didn't teach you">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./working-with-wdl.html" class="pagination-link" aria-label="Working with WDL">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with WDL</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./running-stuff.html" class="pagination-link" aria-label="Running Executables on HPC">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

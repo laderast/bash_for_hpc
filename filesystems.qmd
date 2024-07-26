@@ -1,0 +1,204 @@
+# Navigating the Unix Filesystem
+
+
+## Learning Objectives
+
+After reading this chapter, you should be able to:
+
+- **Navigate** the HPC filesystem using both *absolute* and *relative* paths
+- **Identify** the shared filesystems associated with your cluster
+- **Develop Scripts** that use multiple filesystems to process data
+- **Explain** the benefits of a folder-based approach to organizing your analysis
+- **Move** Files between filesystems and folders
+
+## Visual Table of Contents
+
+```{mermaid}
+flowchart TD
+    A["Main Filesystems on FH"] --> B
+    click A "#sec-filesystems"
+    B["Home Directories"] --> C
+    click B "#sec-home"
+    C["Absolute/Relative Paths"] --> D
+    click C "#sec-paths"
+    D["Project Based File Structures"] --> E
+    click D "#sec-project"
+    E["Moving Things Around"]
+    click E "#sec-moving"
+```
+
+
+## FH users: the main filesystems {#sec-filesystems}
+
+When working on the HPC, there are three filesystems you should consider:
+
+- `/home/` - The home filesystem. Your scripts can live here
+- `/fh/fast/` (also known as fast) - Research storage. Raw files and processed results should live here. 
+- `/fh/temp/` (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on `/fh/fast/`. Note that files on `/fh/temp/` will be deleted after 30 days. 
+
+Below is a a diagram with one way to work with these multiple filesystems. 
+
+1. We transfer the raw files to be processed from `/fh/fast/` to our directory `/fh/temp/`. For example, a set of `.bam` files.
+2. We run our scripts from `/home/`, on the raw files in `/fh/temp/` and produce results in `/fh/temp/`
+3. We transfer our results from `/fh/temp/` to `/fh/fast/`
+
+```{mermaid}
+graph LR
+    A["Home Directory\n/home/tladera2/\nScripts"] --"2. run scripts"--> C
+    B["Fast\n/fh/fast/tladera2\nResearch Data"] --"1. transfer\nraw files"--> C
+    C["Temp\n/fh/temp/tladera2"] --"3. transfer\nresults"--> B
+```
+
+Your main mechanism for getting files to and from fast and scratch is [Motuz](https://sciwiki.fredhutch.org/compdemos/motuz/), which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again. 
+
+Motuz also supports file transfers between other filesystems at FH, including the FH Amazon S3 bucket. Highly recommended.
+
+### When in doubt: `pwd`
+
+The `pwd` command (short for *present working directory*) will let you know your current location in the filesystem. Knowing your current directory is critical when using *relative* file paths.
+
+## Going `/home`: `~/` {#sec-home}
+
+There is one important shortcut you should always remember: `~/` is shorthand for your own home directory.
+
+Depending on the linux distribution, this can be a different location. On the FH filesystem, when I use `~/`, it maps to:
+
+`/home/tladera2/`
+
+The home directory is also important because it is where your configuration files live, such as `.bashrc` (see @sec-bashrc).
+
+Depending on how you work, you may want to store your scripts and workflows in `/home/`. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see @sec-project
+
+## Absolute versus relative paths {#sec-paths}
+
+Absolute paths contain all the information needed to find a file in a file system from the root `/` directory. For example, this would be an absolute path:
+
+```
+/fh/fast/laderast/immuno_project/raw_data/tcr_data.fasta
+```
+
+In terms of folder structure, this is what this looks like:
+
+```
+/
+├── fh
+│   └──fast
+│       └──laderast
+|            └──immuno_project
+│                 └──raw_data
+│                    └──chr2.fa.gz
+```
+
+Absolute paths always start with `/`, because that is the root directory, where all the top folders and files live. 
+
+Relative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path *relative* to that directory. Relative paths are really helpful because things don't break when you move your folder or files. 
+
+```
+/
+├── fh
+│   └──fast
+│       └── laderast
+|            └──immuno_project *
+```
+
+If my current path the directory `/fh/fast/laderas_t/immuno_project/`, then the relative path to that same file would be:
+
+```
+raw_data/tcr_data.fasta
+```
+
+Note that this relative path does not start with a `/`, because our current directory isn't the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.
+
+### Keep Everything in a Folder
+
+We need to talk about code and data organization. For the FH system, we have a `/home/` directory, and if we have generated research data, a `/fh/fast/` directory. If we want our scripts to live in `/home/` and our data is in `/fh/temp/`, we'll need to refer to each of these file locations.
+
+Ideally, we want to make the naming conventions of our code and our data as similar as possible.
+
+The requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.
+
+
+## Project/folder based workflows {#sec-project}
+
+On a particular machine, using *absolute* paths is safe. However, you do this at the cost of *portability* - code that you write on one machine may not run on another. 
+
+If you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest. 
+
+For example, here's one example of putting everything into a single folder:
+
+```bash
+my_project
+├── data
+│   ├── chr1.fa.gz
+│   ├── chr2.fa.gz
+│   └── chr3.fa.gz
+├── results
+├── run_workflow.sh
+└── scripts
+    └── run_bowtie.sh
+```
+
+In the above example, our project is named `my_project`, and there are three folders inside it: `data/`, `results/`, and `scripts/`. Our main script for running is `my_project/run_workflow.sh`. Because this script is in the root folder, we can refer to the `data/` folder to process files:
+
+```bash
+./scripts/run_bowtie.sh data/*.fa.gz results/
+```
+
+When we run `run_workflow.sh`, it will execute `run_bowtie.sh` on all of the files in `data/`, and save them in `results/`, resulting in the following updated structure.
+
+```bash
+my_project
+├── data
+│   ├── chr1.fa.gz
+│   ├── chr2.fa.gz
+│   └── chr3.fa.gz
+├── results
+│   ├── chr1.bam
+│   ├── chr2.bam
+│   └── chr3.bam
+├── run_workflow.sh
+└── scripts
+    └── run_bowtie.sh
+```
+
+
+You may have seen relative paths such as `../another_directory/` - the `..` means to go up a directory in the file hierarchy, and then look in that directory for the `another_directory/` directory. I try to avoid using relative paths like these.
+
+In general for portability and reproducibility, you will want to use relative paths **within a directory**, and avoid using relative paths like `../../my_folder`, where you are navigating up. In general, use relative paths to navigate down. 
+
+
+## Moving Things Around {#sec-moving}
+
+A lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster. 
+
+You might be familiar with `mv`, which lets you move files around in Unix. One thing to keep in mind when you're `mv`ing things to a new folder that there is a difference between:
+
+```bash
+mv log.txt my_folder   ## renames log.txt to my_folder
+```
+
+and
+
+```bash
+mv log.txt my_folder/  ## moves log.txt to be in my_folder
+```
+This is one thing that trips me up all the time. 
+
+This is one situation where using a GUI such as Motuz can be very helpful. 
+
+### Things I always forget: the difference between `/home/mydir/`  and `home/mydir/`
+
+Some things that trip me up all the time. The difference between 
+
+```bash
+/home/mydir/    #absolute path
+```
+and 
+
+```bash
+home/mydir/    #relative path
+```
+The first one is an *absolute path*, and the second is a *relative path*. Your clue is the leading `/` at the beginning of a path. If you're getting `file not found` messages, check to make sure the path is the right format.
+
+
+

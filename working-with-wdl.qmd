@@ -97,4 +97,5 @@ task fastqdump {
 
 ## Resources
 
-- [Developing WDL Workflows](https://hutchdatascience.org/Developing_WDL_Workflows/introduction-to-wdl.html) is a full course talking about developing your own WDL Workflows and has a much more in detail section of WDL file architecture. 
+- [Developing WDL Workflows](https://hutchdatascience.org/Developing_WDL_Workflows/introduction-to-wdl.html) is a full guide from the Data Science Lab (DaSL) showing you how to develop your own WDL Workflows and has a much more in detail section of WDL file architecture. 
+- 

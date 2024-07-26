@@ -174,7 +174,7 @@
     "href": "intro-unix.html#learning-objectives",
     "title": "3  Everything about Unix/Linux they didn’t teach you",
     "section": "",
-    "text": "Setup your terminal to connect to an HPC system\nNavigate the HPC filesystem using both absolute and relative paths\nFind and set environment variables in an HPC system\nModify your $PATH variable to include the path to an executable\nUse which to identify which version of an executable you’re using\nArticulate basic HPC architecture\nIdentify the shared filesystems associated with your cluster",
+    "text": "Setup your terminal to connect to an HPC system\nFind and set environment variables in an HPC system\nModify your $PATH variable to include the path to an executable\nUse which to identify which version of an executable you’re using\nExplain built-in utilities that are useful in your work",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
     ]
@@ -204,7 +204,7 @@
     "href": "intro-unix.html#navigating-the-unixlinux-filesystem",
     "title": "3  Everything about Unix/Linux they didn’t teach you",
     "section": "3.4 Navigating the Unix/Linux filesystem",
-    "text": "3.4 Navigating the Unix/Linux filesystem\nWe’ll start out our Unix/Linux journey talking about the filesystem, which has some quirks we need to be aware of.\n\n3.4.1 Going /home: ~/\nThere is one important shortcut you should always remember: ~/ is shorthand for your own home directory.\nDepending on the linux distribution, this can be a different location. On the FH filesystem, when I use ~/, it maps to:\n/home/tladera2\nThe home directory is also important because it is where your configuration files live, such as .bashrc (see below).\n\n\n3.4.2 Absolute versus relative paths\nAbsolute paths contain all the information needed to find a file in a file system from the root / directory. For example, this would be an absolute path:\n/fh/fast/laderas_t/immuno_project/raw_data/tcr_data.fasta\nAbsolute paths always start with /, because that is the root directory.\nRelative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path relative to that directory. Relative paths are really helpful because things don’t break when you move your folder or files.\nIf my current path the directory /fh/fast/laderas_t/immuno_project/, then the relative path to that same file would be:\nraw_data/tcr_data.fasta\nNote that this relative path does not start with a /, because our current directory isn’t the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.\nYou may have seen relative paths such as ../another_directory/ - the .. means to go up a directory in the file hierarchy, and then look in that directory for the another_directory/ directory. I try to avoid using relative paths like these.\nIn general for portability and reproducibility, you will want to use relative paths within a directory, and avoid using relative paths like ../../my_folder, where you are navigating up. In general, use relative paths to navigate down.\n\n\n3.4.3 Keep Everything in a Folder\nWe need to talk about code and data organization. For the FH system, we have a /home/ directory, and if we have generated research data, a /fh/fast/ directory.\nIdeally, we want to make the naming conventions of our code and our data as similar as possible.\nThe requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.\n\n\n3.4.4 Moving Things Around\nA lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.\nYou might be familiar with mv, which lets you move files around in Unix. One thing to keep in mind when you’re mving things to a new folder that there is a difference between:\nmv log.txt my_folder   ## renames log.txt to my_folder\nand\nmv log.txt my_folder/  ## moves log.txt to be in my_folder\nThis is one thing that trips me up all the time.\nThis is one situation where using a GUI such as Motuz can be very helpful.\n\n\n3.4.5 Things I always forget: the difference between /home/mydir/ and home/mydir/\nSome things that trip me up all the time. The difference between\n/home/mydir/    #absolute path\nand\nhome/mydir/    #relative path\nThe first one is an absolute path, and the second is a relative path. Your clue is the leading / at the beginning of a path. If you’re getting file not found messages, check to make sure the path is the right format.",
+    "text": "3.4 Navigating the Unix/Linux filesystem\nWe’ll start out our Unix/Linux journey talking about the filesystem, which has some quirks we need to be aware of.\n\n\n\n\n\n\nFH users: the main filesystems\n\n\n\nWhen working on the HPC, there are three filesystems you should consider:\n\n/home/ - The home filesystem. Your scripts can live here\n/fh/fast/ (also known as fast) - Research storage. Raw files and processed results should live here.\n/fh/temp/ (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on /fh/fast/. Note that files on /fh/temp/ will be deleted after 30 days.\n\nBelow is a a diagram with one way to work with these multiple filesystems.\n\nWe transfer the raw files to be processed from /fh/fast/ to our directory /fh/temp/. For example, a set of .bam files.\nWe run our scripts from /home/, on the raw files in /fh/temp/ and produce results in /fh/temp/\nWe transfer our results from /fh/temp/ to /fh/fast/\n\n\n\n\n\n\ngraph LR\nA[\"Home Directory\\n/home/tladera2/\\nScripts\"] --\"2. run scripts\"--&gt; C\nB[\"Fast\\n/fh/fast/tladera2\\nResearch Data\"] --\"1. transfer\\nraw files\"--&gt; C\nC[\"Temp\\n/fh/temp/tladera2\"] --\"3. transfer\\nresults\"--&gt; B\n\n\n\n\n\n\nYour main mechanism for getting files to and from fast and scratch is Motuz, which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again.\nMotuz also supports file transfers between other filesystems at FH, including the FH Amazon S3 bucket. Highly recommended.\n\n\n\n3.4.1 Going /home: ~/\nThere is one important shortcut you should always remember: ~/ is shorthand for your own home directory.\nDepending on the linux distribution, this can be a different location. On the FH filesystem, when I use ~/, it maps to:\n/home/tladera2\nThe home directory is also important because it is where your configuration files live, such as .bashrc (see below).\nDepending on how you work, you may want to store your scripts and workflows in /home/. Some people prefer to keep their scripts, data, and results in a single folder. They usually have a structure like this:\n\n\n\n3.4.2 Absolute versus relative paths\nAbsolute paths contain all the information needed to find a file in a file system from the root / directory. For example, this would be an absolute path:\n/fh/fast/laderas_t/immuno_project/raw_data/tcr_data.fasta\nAbsolute paths always start with /, because that is the root directory, where all the top folders and files live.\nRelative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path relative to that directory. Relative paths are really helpful because things don’t break when you move your folder or files.\nIf my current path the directory /fh/fast/laderas_t/immuno_project/, then the relative path to that same file would be:\nraw_data/tcr_data.fasta\nNote that this relative path does not start with a /, because our current directory isn’t the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.\n\n\n\n\n\n\nProject/folder based workflows\n\n\n\nOn a particular machine, using absolute paths is safe. However, you do this at the cost of portability - code that you write on one machine may not run on another.\nIf you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest.\nFor example, here’s one example of putting everything into a single folder:\nmy_project\n├── data\n│   ├── chr1.fa.gz\n│   ├── chr2.fa.gz\n│   └── chr3.fa.gz\n├── results\n├── run_workflow.sh\n└── scripts\n    └── run_bowtie.sh\nWhen we run run_workflow.sh, it will run bowtie on all of the files in data/, and save them in results/, resulting in the following updated structure.\nmy_project\n├── data\n│   ├── chr1.fa.gz\n│   ├── chr2.fa.gz\n│   └── chr3.fa.gz\n├── results\n│   ├── chr1.bam\n│   ├── chr2.bam\n│   └── chr3.bam\n├── run_workflow.sh\n└── scripts\n    └── run_bowtie.sh\n\n\nYou may have seen relative paths such as ../another_directory/ - the .. means to go up a directory in the file hierarchy, and then look in that directory for the another_directory/ directory. I try to avoid using relative paths like these.\nIn general for portability and reproducibility, you will want to use relative paths within a directory, and avoid using relative paths like ../../my_folder, where you are navigating up. In general, use relative paths to navigate down.\n\n\n3.4.3 Keep Everything in a Folder\nWe need to talk about code and data organization. For the FH system, we have a /home/ directory, and if we have generated research data, a /fh/fast/ directory. If we want our scripts to live in /home/ and our data is in /fh/temp/, we’ll need to\nIdeally, we want to make the naming conventions of our code and our data as similar as possible.\nThe requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.\n\n\n3.4.4 Moving Things Around\nA lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.\nYou might be familiar with mv, which lets you move files around in Unix. One thing to keep in mind when you’re mving things to a new folder that there is a difference between:\nmv log.txt my_folder   ## renames log.txt to my_folder\nand\nmv log.txt my_folder/  ## moves log.txt to be in my_folder\nThis is one thing that trips me up all the time.\nThis is one situation where using a GUI such as Motuz can be very helpful.\n\n\n3.4.5 Things I always forget: the difference between /home/mydir/ and home/mydir/\nSome things that trip me up all the time. The difference between\n/home/mydir/    #absolute path\nand\nhome/mydir/    #relative path\nThe first one is an absolute path, and the second is a relative path. Your clue is the leading / at the beginning of a path. If you’re getting file not found messages, check to make sure the path is the right format.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
     ]
@@ -213,8 +213,8 @@
     "objectID": "intro-unix.html#environment-variables",
     "href": "intro-unix.html#environment-variables",
     "title": "3  Everything about Unix/Linux they didn’t teach you",
-    "section": "3.5 Environment Variables",
-    "text": "3.5 Environment Variables\nEnvironment variables are variables which can be seen globally in the Linux (or Windows) system across executables.\nYou can get a list of all set environment variables by using the env command. Here’s an example from my own system:\nenv\nSHELL=/bin/bash\nNVM_INC=/home/tladera2/.nvm/versions/node/v21.7.1/include/node\nWSL_DISTRO_NAME=Ubuntu\nNAME=2QM6TV3\nPWD=/home/tladera2\nLOGNAME=tladera2\n[....]\nOne common environment variable you may have seen is $JAVA_HOME, which is used to find the Java Software Development Kit (SDK). (I usually encounter it when a software application yells at me when I haven’t set it.)\nYou can see whether an environment variable is set using echo, such as\necho $PATH\n/home/tladera2/.local/bin:/home/tladera2/gems/bin:/home/tladera2/.nvm/versions/node/v21.7.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/ [....]\n\n\n\n\n\n\nEnvironment Variables in Windows\n\n\n\nSince we’re mostly going to be working in a Unix environment, we’re not going to touch on Windows environment variables. However, there is also a $PATH environment variable that you can set.\nI recommend looking at the PowerShell documentation for more information about Windows-specific environment variables\n\n\n\n3.5.1 Setting Environment Variables\nIn Bash, we use the export command to declare an environment variable. For example, if we wanted to declare the environment variable $SAMTOOLS_PATH we’d do the following:\nexport SAMTOOLS_PATH=\"/home/tladera2/miniconda/bin/\"\nOne thing to note is that spacing matters when you declare environment variables. For example, this won’t declare the $SAMTOOLS_PATH variable:\nexport SAMTOOLS_PATH = \"/home/tladera2/miniconda/bin/\"\nAnother thing to note is that we declare environment variables differently than we use them. If we wanted to use $SAMTOOLS_PATH in a script, we use a dollar sign ($) in front of it:\n#!/bin/bash/\n$SAMTOOLS_PATH/samtools view -c $input_file\nIn this case, the value of $SAMTOOLS_PATH will be expanded (substituted) to give the overall path:\n#!/bin/bash/\n/home/tladera2/miniconda/bin/samtools view -c $input_file\n\n\n3.5.2 A Very Special Environment Variable: $PATH\nThe most important environment variable is the $PATH variable. This variable is important because it determines where to search for software executables (also called binaries).\nWe can add more directories to the $PATH by appending to it. You might have seen the following bit of code in your .bashrc:\nexport PATH=$PATH:/home/tladera2/samtools/\nIn this line, we are adding the path /home/tladera2/samtools/ to our $PATH environment variable. Note that how we refer to the PATH variable is different depending on which side the variable is on of the equals sign.\nTLDR: We declare the variable using export PATH (no dollar sign) and we append to the variable using $PATH (with dollar sign). This is something that trips me up all the time.\n\n\n\n\n\n\nFor FH Users\n\n\n\nIn general, when you use environment modules on gizmo, you do not need to modify your $PATH variable. You mostly need to modify it when you are compiling executables so that the system can find them. Be sure to use which to see where the environment module is actually located:\nwhich samtools\n\n\n\n\n3.5.3 Making your own environment variables\nOne of the difficulties with working on a cluster is that your scripts may be in one filesystem (/home/), and your data might be in another filesystem (/fh/fast/). And it might be recommended that you transfer over files to a faster-access filesystem (/fh/temp/) to process them.\nYou can set your own environment variables for use in your own scripts. For example, we might define a $TCR_FILE_HOME variable:\nexport TCR_FILE_HOME=/fh/fast/my_tcr_project/\nto save us some typing across our scripts. We can use this new environment variable like any other existing environment variable:\n#!/bin/Bash\nexport my_file_location=$TCR_FILE_HOME/fasta_files/\n\n\n3.5.4 .bashrc versus .bash_profile\nOk, what’s the difference between .bashrc and .bash_profile?\nThe main difference is when these two files are sourced. bash_profile is used when you do an interactive login, and .bashrc is used for non-interactive shells.\n.bashrc should contain the environment variables that you use all the time, such as $PATH and $JAVA_HOME for example.\nYou can get the best of both worlds by including the following line in your .bash_profile:\nsource ~/.bashrc\nThat way, everything in the .bashrc file is loaded when you log in interactively.",
+    "section": "3.4 Environment Variables",
+    "text": "3.4 Environment Variables\nEnvironment variables are variables which can be seen globally in the Linux (or Windows) system across executables.\nYou can get a list of all set environment variables by using the env command. Here’s an example from my own system:\nenv\nSHELL=/bin/bash\nNVM_INC=/home/tladera2/.nvm/versions/node/v21.7.1/include/node\nWSL_DISTRO_NAME=Ubuntu\nNAME=2QM6TV3\nPWD=/home/tladera2\nLOGNAME=tladera2\n[....]\nOne common environment variable you may have seen is $JAVA_HOME, which is used to find the Java Software Development Kit (SDK). (I usually encounter it when a software application yells at me when I haven’t set it.)\nYou can see whether an environment variable is set using echo, such as\necho $PATH\n/home/tladera2/.local/bin:/home/tladera2/gems/bin:/home/tladera2/.nvm/versions/node/v21.7.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/ [....]\n\n\n\n\n\n\nEnvironment Variables in Windows\n\n\n\nSince we’re mostly going to be working in a Unix environment, we’re not going to touch on Windows environment variables. However, there is also a $PATH environment variable that you can set.\nI recommend looking at the PowerShell documentation for more information about Windows-specific environment variables\n\n\n\n3.4.1 Setting Environment Variables\nIn Bash, we use the export command to declare an environment variable. For example, if we wanted to declare the environment variable $SAMTOOLS_PATH we’d do the following:\nexport SAMTOOLS_PATH=\"/home/tladera2/miniconda/bin/\"\nOne thing to note is that spacing matters when you declare environment variables. For example, this won’t declare the $SAMTOOLS_PATH variable:\nexport SAMTOOLS_PATH = \"/home/tladera2/miniconda/bin/\"\nAnother thing to note is that we declare environment variables differently than we use them. If we wanted to use $SAMTOOLS_PATH in a script, we use a dollar sign ($) in front of it:\n#!/bin/bash/\n$SAMTOOLS_PATH/samtools view -c $input_file\nIn this case, the value of $SAMTOOLS_PATH will be expanded (substituted) to give the overall path:\n#!/bin/bash/\n/home/tladera2/miniconda/bin/samtools view -c $input_file\n\n\n3.4.2 A Very Special Environment Variable: $PATH\nThe most important environment variable is the $PATH variable. This variable is important because it determines where to search for software executables (also called binaries).\nWe can add more directories to the $PATH by appending to it. You might have seen the following bit of code in your .bashrc:\nexport PATH=$PATH:/home/tladera2/samtools/\nIn this line, we are adding the path /home/tladera2/samtools/ to our $PATH environment variable. Note that how we refer to the PATH variable is different depending on which side the variable is on of the equals sign.\nTLDR: We declare the variable using export PATH (no dollar sign) and we append to the variable using $PATH (with dollar sign). This is something that trips me up all the time.\n\n\n\n\n\n\nFor FH Users\n\n\n\nIn general, when you use environment modules on gizmo, you do not need to modify your $PATH variable. You mostly need to modify it when you are compiling executables so that the system can find them. Be sure to use which to see where the environment module is actually located:\nwhich samtools\n\n\n\n\n3.4.3 Making your own environment variables\nOne of the difficulties with working on a cluster is that your scripts may be in one filesystem (/home/), and your data might be in another filesystem (/fh/fast/). And it might be recommended that you transfer over files to a faster-access filesystem (/fh/temp/) to process them.\nYou can set your own environment variables for use in your own scripts. For example, we might define a $TCR_FILE_HOME variable:\nexport TCR_FILE_HOME=/fh/fast/my_tcr_project/\nto save us some typing across our scripts. We can use this new environment variable like any other existing environment variable:\n#!/bin/Bash\nexport my_file_location=$TCR_FILE_HOME/fasta_files/\n\n\n3.4.4 .bashrc versus .bash_profile\nOk, what’s the difference between .bashrc and .bash_profile?\nThe main difference is when these two files are sourced. bash_profile is used when you do an interactive login, and .bashrc is used for non-interactive shells.\n.bashrc should contain the environment variables that you use all the time, such as $PATH and $JAVA_HOME for example.\nYou can get the best of both worlds by including the following line in your .bash_profile:\nsource ~/.bashrc\nThat way, everything in the .bashrc file is loaded when you log in interactively.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
     ]
@@ -223,8 +223,8 @@
     "objectID": "intro-unix.html#working-with-shell-scripts",
     "href": "intro-unix.html#working-with-shell-scripts",
     "title": "3  Everything about Unix/Linux they didn’t teach you",
-    "section": "3.6 Working with Shell Scripts",
-    "text": "3.6 Working with Shell Scripts\n\nNote that I’m only covering bash scripting (hence the name of the book). Each shell has different conventions.\n\nWhen you are writing shell scripts, there’s a few things to know to make them executable.\n\n3.6.1 The she-bang: #!\nIf you’ve looked at a shell script and seen the following:\n#| filename: samcount.sh\n#!/bin/bash\nsamtools view -c $1 &gt; $1.counts.txt\nthe #! is known as a she-bang - it’s a signal to Linux what shell interpreter to use when running the script on the command line.\n\n\n3.6.2 Making things executable: chmod\nNow we have our shell script, we will need to make it executable. We can do this using chmod\nchmod +x samcount.sh\nNow we can run it using:\n./samcount.sh bam_file.bam\nBecause the script is not on our $PATH, then we need to specify the location of the script using ./.\nNote that you can always execute scripts using the bash command, even if they’re not executable for you on your filesystem. You will still need read access.\nbash samcount.sh bam_file.bam\nMuch more info about file permissions is here: Permissions (at the Carpentries)\n\n\n3.6.3 User Access: Groups\nThe groups that you are a member of essentially control access to other files that you don’t own.\nYou can see which groups you are a member of by using groups. For example, on my local Windows Subsystem for Linux filesystem, I am a member of the following groups.\ngroups\ntladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev\nAs an HPC user, you will usually not have root-level access to the cluster. Again, because it is a shared resource, this is a good thing. The trick is knowing how to install software and add it to your path, or run software containers with new software on a shared system.\n\n\n\n\n\n\nWhy Apptainer and Not Docker?\n\n\n\nWhen we talk more about software environments, we’ll talk about Docker.\nDocker requires root-level access to run processes on a machine. There is a special docker group that has pretty much root-level access.\nOn a shared system such as an HPC cluster, we don’t want to grant such access to individual users.\nEnter Apptainer, which was designed for HPC clusters from the ground up. You can run Docker/Apptainer containers on a shared system without needing root-level access.",
+    "section": "3.5 Working with Shell Scripts",
+    "text": "3.5 Working with Shell Scripts\n\nNote that I’m only covering bash scripting (hence the name of the book). Each shell has different conventions.\n\nWhen you are writing shell scripts, there’s a few things to know to make them executable.\n\n3.5.1 The she-bang: #!\nIf you’ve looked at a shell script and seen the following:\n#| filename: samcount.sh\n#!/bin/bash\nsamtools view -c $1 &gt; $1.counts.txt\nthe #! is known as a she-bang - it’s a signal to Linux what shell interpreter to use when running the script on the command line.\n\n\n3.5.2 Making things executable: chmod\nNow we have our shell script, we will need to make it executable. We can do this using chmod\nchmod +x samcount.sh\nNow we can run it using:\n./samcount.sh bam_file.bam\nBecause the script is not on our $PATH, then we need to specify the location of the script using ./.\nNote that you can always execute scripts using the bash command, even if they’re not executable for you on your filesystem. You will still need read access.\nbash samcount.sh bam_file.bam\nMuch more info about file permissions is here: Permissions (at the Carpentries)\n\n\n3.5.3 User Access: Groups\nThe groups that you are a member of essentially control access to other files that you don’t own.\nYou can see which groups you are a member of by using groups. For example, on my local Windows Subsystem for Linux filesystem, I am a member of the following groups.\ngroups\ntladera2 adm dialout cdrom floppy sudo audio dip video plugdev netdev\nAs an HPC user, you will usually not have root-level access to the cluster. Again, because it is a shared resource, this is a good thing. The trick is knowing how to install software and add it to your path, or run software containers with new software on a shared system.\n\n\n\n\n\n\nWhy Apptainer and Not Docker?\n\n\n\nWhen we talk more about software environments, we’ll talk about Docker.\nDocker requires root-level access to run processes on a machine. There is a special docker group that has pretty much root-level access.\nOn a shared system such as an HPC cluster, we don’t want to grant such access to individual users.\nEnter Apptainer, which was designed for HPC clusters from the ground up. You can run Docker/Apptainer containers on a shared system without needing root-level access.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
     ]
@@ -233,8 +233,8 @@
     "objectID": "intro-unix.html#useful-utilities",
     "href": "intro-unix.html#useful-utilities",
     "title": "3  Everything about Unix/Linux they didn’t teach you",
-    "section": "3.7 Useful Utilities",
-    "text": "3.7 Useful Utilities\nThe following section outlines some useful unix utilities that can be very helpful when you’re working in bash. Most of these should be available in HPC systems by default.\n\n3.7.1 Text editors: vim or nano\nIn general, we recommend connecting an editor such as VS Code with the SSH extension to make it easier to edit files. But sometimes you just need to edit a file on the system directly.\nThat’s what nano and vim are for. Of these, nano has the smallest learning curve, since it works like most editors. vim is powerful (especially for searching and substitution), but there is a steep learning curve associated with it.\n\n\n3.7.2 screen or tmux: keep your session open\n\nOftentimes, when you are running something interactive on a system, you’ll have to leave your shell open. Otherwise, your running job will terminate.\nYou can use screen or tmux, which are known as window managers, to keep your sessions open on a remote machine. We’ll talk about screen.\n\nscreen works by starting a new bash shell. You can tell this because your bash prompt will change.\nThe key of working remotely with screen is that you can then request an hpc node.\nFor FH users, you can request a gizmo node using grabnode. We can then check we’re on the gizmo node by using hostname.\nIf we have something running on this node, we can keep it running by detaching the screen session. Once we are detached, we should check that we’re back in rhino by using hostname. Now we can log out and our job will keep running.\n\nIf we need to get back into that screen session, we can use:\nscreen -ls\nTo list the number of sessions:\nThere is a screen on:\n        37096.pts-321.rhino01   (05/10/2024 10:21:54 AM)        (Detached)\n1 Socket in /run/screen/S-tladera2.\nOnce we’ve found the id for our screen session (in this case it’s 37096), we can reattach to the screen session using:\nscreen -r 37096\nAnd we’ll be back in our screen session! Handy, right?\n\n\n\n\n\n\nFor FH Users\n\n\n\nNote that if you logout from rhino, you’ll need to log back into the same rhino node to access your screen session.\nFor example, if my screen session was on rhino01, I’d need to ssh back into rhino01, not rhino02 or rhino03. This means you will need to ssh into rhino01 specifically to get back into your screen session.\n\n\n\n\n3.7.3 The Tab key\nNever underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files and save you a lot of typing.\n\n\n3.7.4 squeue -u &lt;username&gt;\nSometimes you will want to know where you are in the queue of all the other jobs that are in the run queue in SLURM. You can use squeue with -u (username) option to look for your username. For example:\nsqueue -u tladera2",
+    "section": "3.6 Useful Utilities",
+    "text": "3.6 Useful Utilities\nThe following section outlines some useful unix utilities that can be very helpful when you’re working in bash. Most of these should be available in HPC systems by default.\n\n3.6.1 Text editors: vim or nano\nIn general, we recommend connecting an editor such as VS Code with the SSH extension to make it easier to edit files. But sometimes you just need to edit a file on the system directly.\nThat’s what nano and vim are for. Of these, nano has the smallest learning curve, since it works like most editors. vim is powerful (especially for searching and substitution), but there is a steep learning curve associated with it.\n\n\n3.6.2 screen or tmux: keep your session open\n\nOftentimes, when you are running something interactive on a system, you’ll have to leave your shell open. Otherwise, your running job will terminate.\nYou can use screen or tmux, which are known as window managers, to keep your sessions open on a remote machine. We’ll talk about screen.\n\nscreen works by starting a new bash shell. You can tell this because your bash prompt will change.\nThe key of working remotely with screen is that you can then request an hpc node.\nFor FH users, you can request a gizmo node using grabnode. We can then check we’re on the gizmo node by using hostname.\nIf we have something running on this node, we can keep it running by detaching the screen session. Once we are detached, we should check that we’re back in rhino by using hostname. Now we can log out and our job will keep running.\n\nIf we need to get back into that screen session, we can use:\nscreen -ls\nTo list the number of sessions:\nThere is a screen on:\n        37096.pts-321.rhino01   (05/10/2024 10:21:54 AM)        (Detached)\n1 Socket in /run/screen/S-tladera2.\nOnce we’ve found the id for our screen session (in this case it’s 37096), we can reattach to the screen session using:\nscreen -r 37096\nAnd we’ll be back in our screen session! Handy, right?\n\n\n\n\n\n\nFor FH Users\n\n\n\nNote that if you logout from rhino, you’ll need to log back into the same rhino node to access your screen session.\nFor example, if my screen session was on rhino01, I’d need to ssh back into rhino01, not rhino02 or rhino03. This means you will need to ssh into rhino01 specifically to get back into your screen session.\n\n\n\n\n3.6.3 The Tab key\nNever underestimate the usefulness of the tab key, which triggers autocompletion on the command line. It can help you complete paths to files and save you a lot of typing.\n\n\n3.6.4 squeue -u &lt;username&gt;\nSometimes you will want to know where you are in the queue of all the other jobs that are in the run queue in SLURM. You can use squeue with -u (username) option to look for your username. For example:\nsqueue -u tladera2",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
     ]
@@ -242,51 +242,51 @@
   {
     "objectID": "running-stuff.html",
     "href": "running-stuff.html",
-    "title": "4  Running Executables on HPC",
+    "title": "5  Running Executables on HPC",
     "section": "",
-    "text": "4.1 A empty environment\nRemember, we can poke around and see whether samtools is installed on the machine using which:\nIf samtools is available, it will give the path. If it isn’t, you will have an empty response.\nSo if we don’t have samtools immediately available, how do we find it on our system? We can use environment modules to load software.",
+    "text": "5.1 A empty environment\nRemember, we can poke around and see whether samtools is installed on the machine using which:\nIf samtools is available, it will give the path. If it isn’t, you will have an empty response.\nSo if we don’t have samtools immediately available, how do we find it on our system? We can use environment modules to load software.",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#a-empty-environment",
     "href": "running-stuff.html#a-empty-environment",
-    "title": "4  Running Executables on HPC",
+    "title": "5  Running Executables on HPC",
     "section": "",
     "text": "which samtools",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#environment-modules",
     "href": "running-stuff.html#environment-modules",
-    "title": "4  Running Executables on HPC",
-    "section": "4.2 Environment Modules",
-    "text": "4.2 Environment Modules\nBefore you install your own versions of software, it’s important to realize that this problem may be solved for you.\nYour first stop should be looking for environment modules on the HPC. Not all HPCs have these, but if they have them, this should be your first stop to find executables.\nlmod is a system for loading and unloading software modules. It is usually installed on HPCs. The commands all start with module, and there are a number of ones that are useful for you.\n\nmodule avail\nmodule load\nmodule purge",
+    "title": "5  Running Executables on HPC",
+    "section": "5.2 Environment Modules",
+    "text": "5.2 Environment Modules\nBefore you install your own versions of software, it’s important to realize that this problem may be solved for you.\nYour first stop should be looking for environment modules on the HPC. Not all HPCs have these, but if they have them, this should be your first stop to find executables.\nlmod is a system for loading and unloading software modules. It is usually installed on HPCs. The commands all start with module, and there are a number of ones that are useful for you.\n\nmodule avail\nmodule load\nmodule purge",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#for-fh-users-modules-benefit-everyone",
     "href": "running-stuff.html#for-fh-users-modules-benefit-everyone",
-    "title": "4  Running Executables on HPC",
-    "section": "4.3 For FH Users: Modules benefit everyone",
-    "text": "4.3 For FH Users: Modules benefit everyone\nIf there is a particular bit of software that you need to run on the FH cluster that’s not there, make sure to request it from SciComp. Someone else probably needs it and so making it known so they can add it as a Environment module will help other people.",
+    "title": "5  Running Executables on HPC",
+    "section": "5.3 For FH Users: Modules benefit everyone",
+    "text": "5.3 For FH Users: Modules benefit everyone\nIf there is a particular bit of software that you need to run on the FH cluster that’s not there, make sure to request it from SciComp. Someone else probably needs it and so making it known so they can add it as a Environment module will help other people.",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#running-software-thats-not-available.",
     "href": "running-stuff.html#running-software-thats-not-available.",
-    "title": "4  Running Executables on HPC",
-    "section": "4.4 Running Software that’s not available.",
-    "text": "4.4 Running Software that’s not available.\nIf there is not a module available for our software, then we have a few options, in terms of effort.\n\nUse a Docker container with apptainer that has our software in it\nInstall the binary into our /home directory using conda\nCompile the executable ourselves\n\nFor more information about these different methods, please refer to this article: Why your computational environment is important.\nWe will get more in-depth into containers in the Interactive Shell chapter.",
+    "title": "5  Running Executables on HPC",
+    "section": "5.4 Running Software that’s not available.",
+    "text": "5.4 Running Software that’s not available.\nIf there is not a module available for our software, then we have a few options, in terms of effort.\n\nUse a Docker container with apptainer that has our software in it\nInstall the binary into our /home directory using conda\nCompile the executable ourselves\n\nFor more information about these different methods, please refer to this article: Why your computational environment is important.\nWe will get more in-depth into containers in the Interactive Shell chapter.",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
@@ -382,21 +382,21 @@
   {
     "objectID": "interactive_shell.html",
     "href": "interactive_shell.html",
-    "title": "6  Interactively Testing Scripts in Nodes",
+    "title": "7  Interactively Testing Scripts in Nodes",
     "section": "",
-    "text": "6.1 Visual Table of Contents\nflowchart TD\n   A[Open Shell on Worker] --&gt; B\n   B[Test Scripts] --&gt; E\n   E --&gt; F[Exit Worker]",
+    "text": "7.1 Visual Table of Contents\nflowchart TD\n   A[Open Shell on Worker] --&gt; B\n   B[Test Scripts] --&gt; E\n   E --&gt; F[Exit Worker]",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
     "objectID": "interactive_shell.html#learning-objectives",
     "href": "interactive_shell.html#learning-objectives",
-    "title": "6  Interactively Testing Scripts in Nodes",
-    "section": "6.2 Learning Objectives",
-    "text": "6.2 Learning Objectives\nAfter reading this, you will be able to:\n\nOpen an interactive shell on a SLURM worker node using salloc or grabnode\nOpen an interactive shell in a Docker Container using Apptainer\nArticulate how to connect container filesystems to the external filesystem",
+    "title": "7  Interactively Testing Scripts in Nodes",
+    "section": "7.2 Learning Objectives",
+    "text": "7.2 Learning Objectives\nAfter reading this, you will be able to:\n\nOpen an interactive shell on a SLURM worker node using salloc or grabnode\nOpen an interactive shell in a Docker Container using Apptainer\nArticulate how to connect container filesystems to the external filesystem",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -492,11 +492,11 @@
   {
     "objectID": "interactive_shell.html#grabbing-an-interactive-shell-on-a-worker",
     "href": "interactive_shell.html#grabbing-an-interactive-shell-on-a-worker",
-    "title": "6  Interactively Testing Scripts in Nodes",
-    "section": "6.3 Grabbing an interactive shell on a worker",
-    "text": "6.3 Grabbing an interactive shell on a worker\nWhen you’re testing code that’s going to run on a worker node, you need to be aware of what the worker node sees.\nIt’s also important in estimating how long our tasks are going to run since we can test how long a task runs for a representative dataset.\nOn a SLURM system, the way to open interactive shells on a node has changed. Check your version first:\nsrun --version\nIf you’re on a version before 20.11, you can use srun -i --pty bash to open an interactive terminal on a worker:\nsrun -i --pty bash\nIf the version is past 20.11, we can open an interactive shell on a worker with salloc.\nsalloc bash\n\n\n\n\n\n\nFor FH Users: grabnode\n\n\n\nOn the FH system, we can use a command called grabnode, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node.\ntladera2@rhino01:~$ grabnode\ngrabnode will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. Here, I’m grabbing a node with 8 cores, 8 Gb of memory, using it for 1 day, and no GPU.\nHow many CPUs/cores would you like to grab on the node? [1-36] 8\nHow much memory (GB) would you like to grab? [160] 8\nPlease enter the max number of days you would like to grab this node: [1-7] 1\nDo you need a GPU ? [y/N]n\n\nYou have requested 8 CPUs on this node/server for 1 days or until you type exit.\n\nWarning: If you exit this shell before your jobs are finished, your jobs\non this node/server will be terminated. Please use sbatch for larger jobs.\n\nShared PI folders can be found in: /fh/fast, /fh/scratch and /fh/secure.\n\nRequesting Queue: campus-new cores: 8 memory: 8 gpu: NONE\nsrun: job 40898906 queued and waiting for resources\nAfter a little bit, you’ll arrive at a new prompt:\n(base) tladera2@gizmok164:~$\nIf you’re doing interactive analysis that is going to span over a few days, I recommend that you use screen or tmux.\n\n\n\n\n\n\n\n\nRemember hostname\n\n\n\nWhen you are doing interactive analysis, it is easy to forget in which node you’re working in. Just as a quick check, I use hostname to remind myself whether I’m in rhino, gizmo, or within an apptainer container.",
+    "title": "7  Interactively Testing Scripts in Nodes",
+    "section": "7.3 Grabbing an interactive shell on a worker",
+    "text": "7.3 Grabbing an interactive shell on a worker\nWhen you’re testing code that’s going to run on a worker node, you need to be aware of what the worker node sees.\nIt’s also important in estimating how long our tasks are going to run since we can test how long a task runs for a representative dataset.\nOn a SLURM system, the way to open interactive shells on a node has changed. Check your version first:\nsrun --version\nIf you’re on a version before 20.11, you can use srun -i --pty bash to open an interactive terminal on a worker:\nsrun -i --pty bash\nIf the version is past 20.11, we can open an interactive shell on a worker with salloc.\nsalloc bash\n\n\n\n\n\n\nFor FH Users: grabnode\n\n\n\nOn the FH system, we can use a command called grabnode, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node.\ntladera2@rhino01:~$ grabnode\ngrabnode will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. Here, I’m grabbing a node with 8 cores, 8 Gb of memory, using it for 1 day, and no GPU.\nHow many CPUs/cores would you like to grab on the node? [1-36] 8\nHow much memory (GB) would you like to grab? [160] 8\nPlease enter the max number of days you would like to grab this node: [1-7] 1\nDo you need a GPU ? [y/N]n\n\nYou have requested 8 CPUs on this node/server for 1 days or until you type exit.\n\nWarning: If you exit this shell before your jobs are finished, your jobs\non this node/server will be terminated. Please use sbatch for larger jobs.\n\nShared PI folders can be found in: /fh/fast, /fh/scratch and /fh/secure.\n\nRequesting Queue: campus-new cores: 8 memory: 8 gpu: NONE\nsrun: job 40898906 queued and waiting for resources\nAfter a little bit, you’ll arrive at a new prompt:\n(base) tladera2@gizmok164:~$\nIf you’re doing interactive analysis that is going to span over a few days, I recommend that you use screen or tmux.\n\n\n\n\n\n\n\n\nRemember hostname\n\n\n\nWhen you are doing interactive analysis, it is easy to forget in which node you’re working in. Just as a quick check, I use hostname to remind myself whether I’m in rhino, gizmo, or within an apptainer container.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -522,11 +522,11 @@
   {
     "objectID": "interactive_shell.html#what-next",
     "href": "interactive_shell.html#what-next",
-    "title": "6  Interactively Testing Scripts in Nodes",
-    "section": "6.4 What Next?",
-    "text": "6.4 What Next?\nYou’ve learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:\n\nTry running your script using srun",
+    "title": "7  Interactively Testing Scripts in Nodes",
+    "section": "7.4 What Next?",
+    "text": "7.4 What Next?\nYou’ve learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:\n\nTry running your script using srun",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -612,41 +612,191 @@
   {
     "objectID": "working-with-wdl.html",
     "href": "working-with-wdl.html",
-    "title": "8  Working with WDL",
+    "title": "9  Working with WDL",
     "section": "",
-    "text": "8.1 Learning Objectives",
+    "text": "9.1 Learning Objectives",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#learning-objectives",
     "href": "working-with-wdl.html#learning-objectives",
-    "title": "8  Working with WDL",
+    "title": "9  Working with WDL",
     "section": "",
     "text": "Explain the basic architecture of a WDL file\nExplain the role of a task in WDL\nUtilize Cromwell to execute a WDL script on one file\nUttilze Cromwell to batch execute a WDL script on multiple files",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#architecture-of-a-wdl-file",
     "href": "working-with-wdl.html#architecture-of-a-wdl-file",
-    "title": "8  Working with WDL",
-    "section": "8.2 Architecture of a WDL file",
-    "text": "8.2 Architecture of a WDL file\nThe best way to read WDL files is to read them top down. We’ll focus on the basic sections of a WDL file before we see how they work together.\nThe code below is from the WILDs WDL Repo.\nworkflow SRA_STAR2Pass {\n  input { \n    Array[String] sra_id_list\n    RefGenome ref_genome\n  }\n\n  scatter ( id in sra_id_list ){\n    call fastqdump {\n        ...\n    }\n\n    call STARalignTwoPass {\n        ...\n    }\n  } # End scatter \n\n  # Outputs that will be retained when execution is complete\n  output {\n    ...\n  }\n\n}",
+    "title": "9  Working with WDL",
+    "section": "9.2 Architecture of a WDL file",
+    "text": "9.2 Architecture of a WDL file\nThe best way to read WDL files is to read them top down. We’ll focus on the basic sections of a WDL file before we see how they work together.\nThe code below is from the WILDs WDL Repo.\nworkflow SRA_STAR2Pass {\n  input { \n    Array[String] sra_id_list\n    RefGenome ref_genome\n  }\n\n  scatter ( id in sra_id_list ){\n    call fastqdump {\n        ...\n    }\n\n    call STARalignTwoPass {\n        ...\n    }\n  } # End scatter \n\n  # Outputs that will be retained when execution is complete\n  output {\n    ...\n  }\n\n}",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#anatomy-of-a-task",
     "href": "working-with-wdl.html#anatomy-of-a-task",
-    "title": "8  Working with WDL",
-    "section": "8.3 Anatomy of a Task",
-    "text": "8.3 Anatomy of a Task\ntask fastqdump {\n  input {\n    String sra_id\n    Int ncpu = 12\n  }\n\n  command &lt;&lt;&lt;\n    set -eo pipefail\n    # check if paired ended\n    numLines=$(fastq-dump -X 1 -Z --split-spot \"~{sra_id}\" | wc -l)\n    paired_end=\"false\"\n    if [ $numLines -eq 8 ]; then\n      paired_end=\"true\"\n    fi\n    # perform fastqdump\n    if [ $paired_end == 'true' ]; then\n      echo true &gt; paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --split-files \\\n        --gzip\n    else\n      touch paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --gzip\n    fi\n  &gt;&gt;&gt;\n\n  output {\n    File r1_end = \"~{sra_id}_1.fastq.gz\"\n    File r2_end = \"~{sra_id}_2.fastq.gz\"\n    String paired_end = read_string('paired_file')\n  }\n\n  runtime {\n    memory: 2 * ncpu + \" GB\"\n    docker: \"getwilds/pfastqdump:0.6.7\"\n    cpu: ncpu\n  }\n\n  parameter_meta {\n    ...\n  }\n}",
+    "title": "9  Working with WDL",
+    "section": "9.3 Anatomy of a Task",
+    "text": "9.3 Anatomy of a Task\ntask fastqdump {\n  input {\n    String sra_id\n    Int ncpu = 12\n  }\n\n  command &lt;&lt;&lt;\n    set -eo pipefail\n    # check if paired ended\n    numLines=$(fastq-dump -X 1 -Z --split-spot \"~{sra_id}\" | wc -l)\n    paired_end=\"false\"\n    if [ $numLines -eq 8 ]; then\n      paired_end=\"true\"\n    fi\n    # perform fastqdump\n    if [ $paired_end == 'true' ]; then\n      echo true &gt; paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --split-files \\\n        --gzip\n    else\n      touch paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --gzip\n    fi\n  &gt;&gt;&gt;\n\n  output {\n    File r1_end = \"~{sra_id}_1.fastq.gz\"\n    File r2_end = \"~{sra_id}_2.fastq.gz\"\n    String paired_end = read_string('paired_file')\n  }\n\n  runtime {\n    memory: 2 * ncpu + \" GB\"\n    docker: \"getwilds/pfastqdump:0.6.7\"\n    cpu: ncpu\n  }\n\n  parameter_meta {\n    ...\n  }\n}",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+    ]
+  },
+  {
+    "objectID": "working-with-wdl.html#resources",
+    "href": "working-with-wdl.html#resources",
+    "title": "9  Working with WDL",
+    "section": "9.4 Resources",
+    "text": "9.4 Resources\n\nDeveloping WDL Workflows is a full guide from the Data Science Lab (DaSL) showing you how to develop your own WDL Workflows and has a much more in detail section of WDL file architecture.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+    ]
+  },
+  {
+    "objectID": "intro-unix.html#where-am-i-understanding-the-unix-filesystem",
+    "href": "intro-unix.html#where-am-i-understanding-the-unix-filesystem",
+    "title": "3  Everything about Unix/Linux they didn’t teach you",
+    "section": "3.3 Where Am I? Understanding the Unix Filesystem",
+    "text": "3.3 Where Am I? Understanding the Unix Filesystem\nOne of the most confusing things about working on HPC is that sometimes you have a shell open on the head node, but oftentimes, you are on a worker node.\nYour totem for telling which node you’re in is hostname, which will give you the host name of the machine you’re on.\nFor example, if I used grabnode to grab a gizmo node for interactive work, I can check which node I’m in by using:\nhostname\ngizmok164\nIf you’re confused about which node you’re in, remember hostname. It will save you from making mistakes.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Everything about Unix/Linux they didn't teach you</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html",
+    "href": "filesystems.html",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "",
+    "text": "4.1 Learning Objectives\nAfter reading this chapter, you should be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#where-am-i-understanding-the-unix-filesystem",
+    "href": "filesystems.html#where-am-i-understanding-the-unix-filesystem",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "",
+    "text": "hostname\ngizmok164",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#navigating-the-unixlinux-filesystem",
+    "href": "filesystems.html#navigating-the-unixlinux-filesystem",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.3 Navigating the Unix/Linux filesystem",
+    "text": "4.3 Navigating the Unix/Linux filesystem\nWe’ll start out our Unix/Linux journey talking about the filesystem, which has some quirks we need to be aware of.\n\n\n\n\n\n\nFH users: the main filesystems\n\n\n\nWhen working on the HPC, there are three filesystems you should consider:\n\n/home/ - The home filesystem. Your scripts can live here\n/fh/fast/ (also known as fast) - Research storage. Raw files and processed results should live here.\n/fh/temp/ (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on /fh/fast/. Note that files on /fh/temp/ will be deleted after 30 days.\n\nBelow is a a diagram with one way to work with these multiple filesystems.\n\nWe transfer the raw files to be processed from /fh/fast/ to our directory /fh/temp/. For example, a set of .bam files.\nWe run our scripts from /home/, on the raw files in /fh/temp/ and produce results in /fh/temp/\nWe transfer our results from /fh/temp/ to /fh/fast/\n\n\n\n\n\n\ngraph LR\n    A[\"Home Directory\\n/home/tladera2/\\nScripts\"] --\"2. run scripts\"--&gt; C\n    B[\"Fast\\n/fh/fast/tladera2\\nResearch Data\"] --\"1. transfer\\nraw files\"--&gt; C\n    C[\"Temp\\n/fh/temp/tladera2\"] --\"3. transfer\\nresults\"--&gt; B\n\n\n\n\n\n\nYour main mechanism for getting files to and from fast and scratch is Motuz, which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again.\nMotuz also supports file transfers between other filesystems at FH, including the FH Amazon S3 bucket. Highly recommended.\n\n\n\n4.3.1 When in doubt: pwd\nThe pwd command (short for present working directory) will let you know your current location in the filesystem. Knowing your current directory is critical when using relative file paths.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#projectfolder-based-workflows",
+    "href": "filesystems.html#projectfolder-based-workflows",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.3 Project/folder based workflows",
+    "text": "4.3 Project/folder based workflows\nOn a particular machine, using absolute paths is safe. However, you do this at the cost of portability - code that you write on one machine may not run on another.\nIf you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest.\nFor example, here’s one example of putting everything into a single folder:\nmy_project\n├── data\n│   ├── chr1.fa.gz\n│   ├── chr2.fa.gz\n│   └── chr3.fa.gz\n├── results\n├── run_workflow.sh\n└── scripts\n    └── run_bowtie.sh\nIn the above example, our project is named my_project, and there are three folders inside it: data/, results/, and scripts/. Our main script for running is my_project/run_workflow.sh. Because this script is in the root folder, we can refer to the data/ folder to process files:\n./scripts/run_bowtie.sh data/*.fa.gz results/\nWhen we run run_workflow.sh, it will execute run_bowtie.sh on all of the files in data/, and save them in results/, resulting in the following updated structure.\nmy_project\n├── data\n│   ├── chr1.fa.gz\n│   ├── chr2.fa.gz\n│   └── chr3.fa.gz\n├── results\n│   ├── chr1.bam\n│   ├── chr2.bam\n│   └── chr3.bam\n├── run_workflow.sh\n└── scripts\n    └── run_bowtie.sh\nYou may have seen relative paths such as ../another_directory/ - the .. means to go up a directory in the file hierarchy, and then look in that directory for the another_directory/ directory. I try to avoid using relative paths like these.\nIn general for portability and reproducibility, you will want to use relative paths within a directory, and avoid using relative paths like ../../my_folder, where you are navigating up. In general, use relative paths to navigate down.\n\n4.3.1 Moving Things Around\nA lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.\nYou might be familiar with mv, which lets you move files around in Unix. One thing to keep in mind when you’re mving things to a new folder that there is a difference between:\nmv log.txt my_folder   ## renames log.txt to my_folder\nand\nmv log.txt my_folder/  ## moves log.txt to be in my_folder\nThis is one thing that trips me up all the time.\nThis is one situation where using a GUI such as Motuz can be very helpful.\n\n\n4.3.2 Things I always forget: the difference between /home/mydir/ and home/mydir/\nSome things that trip me up all the time. The difference between\n/home/mydir/    #absolute path\nand\nhome/mydir/    #relative path\nThe first one is an absolute path, and the second is a relative path. Your clue is the leading / at the beginning of a path. If you’re getting file not found messages, check to make sure the path is the right format.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#learning-objectives",
+    "href": "filesystems.html#learning-objectives",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "",
+    "text": "Navigate the HPC filesystem using both absolute and relative paths\nIdentify the shared filesystems associated with your cluster\nDevelop Scripts that use multiple filesystems to process data\nExplain the benefits of a folder-based approach to organizing your analysis\nMove Files between filesystems and folders",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#visual-table-of-contents",
+    "href": "filesystems.html#visual-table-of-contents",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.2 Visual Table of Contents",
+    "text": "4.2 Visual Table of Contents\n\n\n\n\n\nflowchart TD\n    A[\"Main Filesystems on FH\"] --&gt; B\n    click A \"#sec-filesystems\"\n    B[\"Home Directories\"] --&gt; C\n    click B \"#sec-home\"\n    C[\"Absolute/Relative Paths\"] --&gt; D\n    click C \"#sec-paths\"\n    D[\"Project Based File Structures\"] --&gt; E\n    click D \"#sec-project\"\n    E[\"Moving Things Around\"]\n    click E \"#sec-moving\"",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#sec-home",
+    "href": "filesystems.html#sec-home",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.4 Going /home: ~/",
+    "text": "4.4 Going /home: ~/\nThere is one important shortcut you should always remember: ~/ is shorthand for your own home directory.\nDepending on the linux distribution, this can be a different location. On the FH filesystem, when I use ~/, it maps to:\n/home/tladera2/\nThe home directory is also important because it is where your configuration files live, such as .bashrc (see ?sec-bashrc).\nDepending on how you work, you may want to store your scripts and workflows in /home/. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see Section 4.6",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#absolute-versus-relative-paths",
+    "href": "filesystems.html#absolute-versus-relative-paths",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.5 Absolute versus relative paths",
+    "text": "4.5 Absolute versus relative paths\nAbsolute paths contain all the information needed to find a file in a file system from the root / directory. For example, this would be an absolute path:\n/fh/fast/laderast/immuno_project/raw_data/tcr_data.fasta\nIn terms of folder structure, this is what this looks like:\n/\n├── fh\n│   └──fast\n│       └──laderast\n|            └──immuno_project\n│                 └──raw_data\n│                    └──chr2.fa.gz\nAbsolute paths always start with /, because that is the root directory, where all the top folders and files live.\nRelative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path relative to that directory. Relative paths are really helpful because things don’t break when you move your folder or files.\n/\n├── fh\n│   └──fast\n│       └── laderast\n|            └──immuno_project *\nIf my current path the directory /fh/fast/laderas_t/immuno_project/, then the relative path to that same file would be:\nraw_data/tcr_data.fasta\nNote that this relative path does not start with a /, because our current directory isn’t the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.\n\n4.5.1 Keep Everything in a Folder\nWe need to talk about code and data organization. For the FH system, we have a /home/ directory, and if we have generated research data, a /fh/fast/ directory. If we want our scripts to live in /home/ and our data is in /fh/temp/, we’ll need to refer to each of these file locations.\nIdeally, we want to make the naming conventions of our code and our data as similar as possible.\nThe requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#sec-project",
+    "href": "filesystems.html#sec-project",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.6 Project/folder based workflows",
+    "text": "4.6 Project/folder based workflows\nOn a particular machine, using absolute paths is safe. However, you do this at the cost of portability - code that you write on one machine may not run on another.\nIf you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest.\nFor example, here’s one example of putting everything into a single folder:\nmy_project\n├── data\n│   ├── chr1.fa.gz\n│   ├── chr2.fa.gz\n│   └── chr3.fa.gz\n├── results\n├── run_workflow.sh\n└── scripts\n    └── run_bowtie.sh\nIn the above example, our project is named my_project, and there are three folders inside it: data/, results/, and scripts/. Our main script for running is my_project/run_workflow.sh. Because this script is in the root folder, we can refer to the data/ folder to process files:\n./scripts/run_bowtie.sh data/*.fa.gz results/\nWhen we run run_workflow.sh, it will execute run_bowtie.sh on all of the files in data/, and save them in results/, resulting in the following updated structure.\nmy_project\n├── data\n│   ├── chr1.fa.gz\n│   ├── chr2.fa.gz\n│   └── chr3.fa.gz\n├── results\n│   ├── chr1.bam\n│   ├── chr2.bam\n│   └── chr3.bam\n├── run_workflow.sh\n└── scripts\n    └── run_bowtie.sh\nYou may have seen relative paths such as ../another_directory/ - the .. means to go up a directory in the file hierarchy, and then look in that directory for the another_directory/ directory. I try to avoid using relative paths like these.\nIn general for portability and reproducibility, you will want to use relative paths within a directory, and avoid using relative paths like ../../my_folder, where you are navigating up. In general, use relative paths to navigate down.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#moving-things-around",
+    "href": "filesystems.html#moving-things-around",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.7 Moving Things Around",
+    "text": "4.7 Moving Things Around\nA lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.\nYou might be familiar with mv, which lets you move files around in Unix. One thing to keep in mind when you’re mving things to a new folder that there is a difference between:\nmv log.txt my_folder   ## renames log.txt to my_folder\nand\nmv log.txt my_folder/  ## moves log.txt to be in my_folder\nThis is one thing that trips me up all the time.\nThis is one situation where using a GUI such as Motuz can be very helpful.\n\n4.7.1 Things I always forget: the difference between /home/mydir/ and home/mydir/\nSome things that trip me up all the time. The difference between\n/home/mydir/    #absolute path\nand\nhome/mydir/    #relative path\nThe first one is an absolute path, and the second is a relative path. Your clue is the leading / at the beginning of a path. If you’re getting file not found messages, check to make sure the path is the right format.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#sec-filesystems",
+    "href": "filesystems.html#sec-filesystems",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.3 FH users: the main filesystems",
+    "text": "4.3 FH users: the main filesystems\nWhen working on the HPC, there are three filesystems you should consider:\n\n/home/ - The home filesystem. Your scripts can live here\n/fh/fast/ (also known as fast) - Research storage. Raw files and processed results should live here.\n/fh/temp/ (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on /fh/fast/. Note that files on /fh/temp/ will be deleted after 30 days.\n\nBelow is a a diagram with one way to work with these multiple filesystems.\n\nWe transfer the raw files to be processed from /fh/fast/ to our directory /fh/temp/. For example, a set of .bam files.\nWe run our scripts from /home/, on the raw files in /fh/temp/ and produce results in /fh/temp/\nWe transfer our results from /fh/temp/ to /fh/fast/\n\n\n\n\n\n\ngraph LR\n    A[\"Home Directory\\n/home/tladera2/\\nScripts\"] --\"2. run scripts\"--&gt; C\n    B[\"Fast\\n/fh/fast/tladera2\\nResearch Data\"] --\"1. transfer\\nraw files\"--&gt; C\n    C[\"Temp\\n/fh/temp/tladera2\"] --\"3. transfer\\nresults\"--&gt; B\n\n\n\n\n\n\nYour main mechanism for getting files to and from fast and scratch is Motuz, which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again.\nMotuz also supports file transfers between other filesystems at FH, including the FH Amazon S3 bucket. Highly recommended.\n\n4.3.1 When in doubt: pwd\nThe pwd command (short for present working directory) will let you know your current location in the filesystem. Knowing your current directory is critical when using relative file paths.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#sec-moving",
+    "href": "filesystems.html#sec-moving",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.7 Moving Things Around",
+    "text": "4.7 Moving Things Around\nA lot of the time, we need to move files between shared filesystems. One filesystem might be good at storage and be backed up on a regular basis, while another filesystem might be better for temporary work on the cluster.\nYou might be familiar with mv, which lets you move files around in Unix. One thing to keep in mind when you’re mving things to a new folder that there is a difference between:\nmv log.txt my_folder   ## renames log.txt to my_folder\nand\nmv log.txt my_folder/  ## moves log.txt to be in my_folder\nThis is one thing that trips me up all the time.\nThis is one situation where using a GUI such as Motuz can be very helpful.\n\n4.7.1 Things I always forget: the difference between /home/mydir/ and home/mydir/\nSome things that trip me up all the time. The difference between\n/home/mydir/    #absolute path\nand\nhome/mydir/    #relative path\nThe first one is an absolute path, and the second is a relative path. Your clue is the leading / at the beginning of a path. If you’re getting file not found messages, check to make sure the path is the right format.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#sec-paths",
+    "href": "filesystems.html#sec-paths",
+    "title": "4  Navigating the Unix Filesystem",
+    "section": "4.5 Absolute versus relative paths",
+    "text": "4.5 Absolute versus relative paths\nAbsolute paths contain all the information needed to find a file in a file system from the root / directory. For example, this would be an absolute path:\n/fh/fast/laderast/immuno_project/raw_data/tcr_data.fasta\nIn terms of folder structure, this is what this looks like:\n/\n├── fh\n│   └──fast\n│       └──laderast\n|            └──immuno_project\n│                 └──raw_data\n│                    └──chr2.fa.gz\nAbsolute paths always start with /, because that is the root directory, where all the top folders and files live.\nRelative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path relative to that directory. Relative paths are really helpful because things don’t break when you move your folder or files.\n/\n├── fh\n│   └──fast\n│       └── laderast\n|            └──immuno_project *\nIf my current path the directory /fh/fast/laderas_t/immuno_project/, then the relative path to that same file would be:\nraw_data/tcr_data.fasta\nNote that this relative path does not start with a /, because our current directory isn’t the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.\n\n4.5.1 Keep Everything in a Folder\nWe need to talk about code and data organization. For the FH system, we have a /home/ directory, and if we have generated research data, a /fh/fast/ directory. If we want our scripts to live in /home/ and our data is in /fh/temp/, we’ll need to refer to each of these file locations.\nIdeally, we want to make the naming conventions of our code and our data as similar as possible.\nThe requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
     ]
   }
 ]

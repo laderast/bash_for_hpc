@@ -12,6 +12,7 @@ book:
     - index.qmd
     - "hpc-basics.qmd"
     - "intro-unix.qmd"
+    - "filesystems.qmd"
     - "running-stuff.qmd"
     - "scripting-basics.qmd"
     - "interactive_shell.qmd"

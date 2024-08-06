@@ -36,7 +36,23 @@ When working on the HPC, there are three filesystems you should consider:
 - `/fh/fast/` (also known as fast) - Research storage. Raw files and processed results should live here. 
 - `/fh/temp/` (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on `/fh/fast/`. Note that files on `/fh/temp/` will be deleted after 30 days. 
 
-Below is a a diagram with one way to work with these multiple filesystems. 
+### A Simplified Workflow: `/fh/fast/` and `/fh/temp/`
+
+A simple approach is to have your scripts also live in your project folder in `fast`. Then, you can sync the project in `/fh/fast/` over to `/fh/temp/`, run the scripts in `/fh/temp/`, and then sync the two folders again.
+
+If you want to go this route, you should think about using a Folder Based Workflow (@sec-project), where everything lives in a folder. 
+
+Another thing to consider is to have a backup of the scripts that is either on your own machine or in GitHub. You can do this by using your `.gitignore` to exclude the data and results. 
+
+```{mermaid}
+graph LR
+    A["/fh/fast/my_lab/project/\nRaw Data & Scripts"] --"1. Sync Data\n& scripts"-->B
+    B["/fh/temp/my_lab/project\n2. Run Scripts here"] --"3. Sync\nresults"-->A
+```
+
+### Another Approach
+
+Below is a a diagram with another way to work with these multiple filesystems. 
 
 1. We transfer the raw files to be processed from `/fh/fast/` to our directory `/fh/temp/`. For example, a set of `.bam` files.
 2. We run our scripts from `/home/`, on the raw files in `/fh/temp/` and produce results in `/fh/temp/`
@@ -48,6 +64,8 @@ graph LR
     B["Fast\n/fh/fast/tladera2\nResearch Data"] --"1. transfer\nraw files"--> C
     C["Temp\n/fh/temp/tladera2"] --"3. transfer\nresults"--> B
 ```
+
+### Transferring Files between Filesystems
 
 Your main mechanism for getting files to and from fast and scratch is [Motuz](https://sciwiki.fredhutch.org/compdemos/motuz/), which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again. 
 
@@ -116,6 +134,8 @@ We need to talk about code and data organization. For the FH system, we have a `
 Ideally, we want to make the naming conventions of our code and our data as similar as possible.
 
 The requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.
+
+
 
 
 ## Project/folder based workflows {#sec-project}

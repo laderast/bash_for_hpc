@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Shell Scripting Basics – Bash for HPC</title>
+<title>6&nbsp; Shell Scripting Basics – Bash for HPC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./scripting-basics.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./scripting-basics.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -175,26 +175,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./filesystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./running-stuff.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scripting-basics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./running_containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./working-with-wdl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./r-commandline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
   </div>
 </li>
     </ul>
@@ -207,34 +225,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">5.1</span> Learning Objectives</a></li>
-  <li><a href="#review-of-bash-scripting" id="toc-review-of-bash-scripting" class="nav-link" data-scroll-target="#review-of-bash-scripting"><span class="header-section-number">5.2</span> Review of Bash scripting</a></li>
-  <li><a href="#sec-positional" id="toc-sec-positional" class="nav-link" data-scroll-target="#sec-positional"><span class="header-section-number">5.3</span> Our first script with positional arguments</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">6.1</span> Learning Objectives</a></li>
+  <li><a href="#review-of-bash-scripting" id="toc-review-of-bash-scripting" class="nav-link" data-scroll-target="#review-of-bash-scripting"><span class="header-section-number">6.2</span> Review of Bash scripting</a></li>
+  <li><a href="#sec-positional" id="toc-sec-positional" class="nav-link" data-scroll-target="#sec-positional"><span class="header-section-number">6.3</span> Our first script with positional arguments</a>
   <ul class="collapse">
-  <li><a href="#positional-arguments-such-as-1" id="toc-positional-arguments-such-as-1" class="nav-link" data-scroll-target="#positional-arguments-such-as-1"><span class="header-section-number">5.3.1</span> Positional Arguments such as <code>$1</code></a></li>
+  <li><a href="#positional-arguments-such-as-1" id="toc-positional-arguments-such-as-1" class="nav-link" data-scroll-target="#positional-arguments-such-as-1"><span class="header-section-number">6.3.1</span> Positional Arguments such as <code>$1</code></a></li>
   </ul></li>
-  <li><a href="#using-pipes-stdin-stdout-stderr" id="toc-using-pipes-stdin-stdout-stderr" class="nav-link" data-scroll-target="#using-pipes-stdin-stdout-stderr"><span class="header-section-number">5.4</span> Using pipes: STDIN, STDOUT, STDERR</a>
+  <li><a href="#using-pipes-stdin-stdout-stderr" id="toc-using-pipes-stdin-stdout-stderr" class="nav-link" data-scroll-target="#using-pipes-stdin-stdout-stderr"><span class="header-section-number">6.4</span> Using pipes: STDIN, STDOUT, STDERR</a>
   <ul class="collapse">
-  <li><a href="#for-more-info-about-pipes-and-pipelines" id="toc-for-more-info-about-pipes-and-pipelines" class="nav-link" data-scroll-target="#for-more-info-about-pipes-and-pipelines"><span class="header-section-number">5.4.1</span> For more info about pipes and pipelines</a></li>
+  <li><a href="#for-more-info-about-pipes-and-pipelines" id="toc-for-more-info-about-pipes-and-pipelines" class="nav-link" data-scroll-target="#for-more-info-about-pipes-and-pipelines"><span class="header-section-number">6.4.1</span> For more info about pipes and pipelines</a></li>
   </ul></li>
-  <li><a href="#sec-xargs" id="toc-sec-xargs" class="nav-link" data-scroll-target="#sec-xargs"><span class="header-section-number">5.5</span> Batch Processing Basics: Iterating using <code>xargs</code></a>
+  <li><a href="#sec-xargs" id="toc-sec-xargs" class="nav-link" data-scroll-target="#sec-xargs"><span class="header-section-number">6.5</span> Batch Processing Basics: Iterating using <code>xargs</code></a>
   <ul class="collapse">
-  <li><a href="#the-basic-xargs-pattern" id="toc-the-basic-xargs-pattern" class="nav-link" data-scroll-target="#the-basic-xargs-pattern"><span class="header-section-number">5.5.1</span> The Basic <code>xargs</code> pattern</a></li>
-  <li><a href="#for-more-information" id="toc-for-more-information" class="nav-link" data-scroll-target="#for-more-information"><span class="header-section-number">5.5.2</span> For more information</a></li>
+  <li><a href="#the-basic-xargs-pattern" id="toc-the-basic-xargs-pattern" class="nav-link" data-scroll-target="#the-basic-xargs-pattern"><span class="header-section-number">6.5.1</span> The Basic <code>xargs</code> pattern</a></li>
+  <li><a href="#for-more-information" id="toc-for-more-information" class="nav-link" data-scroll-target="#for-more-information"><span class="header-section-number">6.5.2</span> For more information</a></li>
   </ul></li>
-  <li><a href="#sec-bash-variables" id="toc-sec-bash-variables" class="nav-link" data-scroll-target="#sec-bash-variables"><span class="header-section-number">5.6</span> Variables in Bash Scripts</a>
+  <li><a href="#sec-bash-variables" id="toc-sec-bash-variables" class="nav-link" data-scroll-target="#sec-bash-variables"><span class="header-section-number">6.6</span> Variables in Bash Scripts</a>
   <ul class="collapse">
-  <li><a href="#basename-can-be-very-handy-when-on-workers" id="toc-basename-can-be-very-handy-when-on-workers" class="nav-link" data-scroll-target="#basename-can-be-very-handy-when-on-workers"><span class="header-section-number">5.6.1</span> <code>basename</code> can be very handy when on workers</a></li>
+  <li><a href="#basename-can-be-very-handy-when-on-workers" id="toc-basename-can-be-very-handy-when-on-workers" class="nav-link" data-scroll-target="#basename-can-be-very-handy-when-on-workers"><span class="header-section-number">6.6.1</span> <code>basename</code> can be very handy when on workers</a></li>
   </ul></li>
-  <li><a href="#quoting-and-escaping-filenames-in-bash" id="toc-quoting-and-escaping-filenames-in-bash" class="nav-link" data-scroll-target="#quoting-and-escaping-filenames-in-bash"><span class="header-section-number">5.7</span> Quoting and Escaping Filenames in Bash</a>
+  <li><a href="#quoting-and-escaping-filenames-in-bash" id="toc-quoting-and-escaping-filenames-in-bash" class="nav-link" data-scroll-target="#quoting-and-escaping-filenames-in-bash"><span class="header-section-number">6.7</span> Quoting and Escaping Filenames in Bash</a>
   <ul class="collapse">
-  <li><a href="#if-you-have-spaces-in-a-filename-use-double-quotes-most-common" id="toc-if-you-have-spaces-in-a-filename-use-double-quotes-most-common" class="nav-link" data-scroll-target="#if-you-have-spaces-in-a-filename-use-double-quotes-most-common"><span class="header-section-number">5.7.1</span> If you have spaces in a filename, use double quotes (Most common)</a></li>
-  <li><a href="#if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common" id="toc-if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common" class="nav-link" data-scroll-target="#if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common"><span class="header-section-number">5.7.2</span> If you have a single quote in the name, use double quotes to wrap it (less common)</a></li>
-  <li><a href="#only-escape-characters-when-necessary-less-common" id="toc-only-escape-characters-when-necessary-less-common" class="nav-link" data-scroll-target="#only-escape-characters-when-necessary-less-common"><span class="header-section-number">5.7.3</span> Only escape characters when necessary (less common)</a></li>
-  <li><a href="#if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common" id="toc-if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common" class="nav-link" data-scroll-target="#if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common"><span class="header-section-number">5.7.4</span> If you need to preserve an escaped character, use single quotes (least common)</a></li>
-  <li><a href="#for-more-info" id="toc-for-more-info" class="nav-link" data-scroll-target="#for-more-info"><span class="header-section-number">5.7.5</span> For More Info</a></li>
+  <li><a href="#if-you-have-spaces-in-a-filename-use-double-quotes-most-common" id="toc-if-you-have-spaces-in-a-filename-use-double-quotes-most-common" class="nav-link" data-scroll-target="#if-you-have-spaces-in-a-filename-use-double-quotes-most-common"><span class="header-section-number">6.7.1</span> If you have spaces in a filename, use double quotes (Most common)</a></li>
+  <li><a href="#if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common" id="toc-if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common" class="nav-link" data-scroll-target="#if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common"><span class="header-section-number">6.7.2</span> If you have a single quote in the name, use double quotes to wrap it (less common)</a></li>
+  <li><a href="#only-escape-characters-when-necessary-less-common" id="toc-only-escape-characters-when-necessary-less-common" class="nav-link" data-scroll-target="#only-escape-characters-when-necessary-less-common"><span class="header-section-number">6.7.3</span> Only escape characters when necessary (less common)</a></li>
+  <li><a href="#if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common" id="toc-if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common" class="nav-link" data-scroll-target="#if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common"><span class="header-section-number">6.7.4</span> If you need to preserve an escaped character, use single quotes (least common)</a></li>
+  <li><a href="#for-more-info" id="toc-for-more-info" class="nav-link" data-scroll-target="#for-more-info"><span class="header-section-number">6.7.5</span> For More Info</a></li>
   </ul></li>
-  <li><a href="#what-you-learned-in-this-chapter" id="toc-what-you-learned-in-this-chapter" class="nav-link" data-scroll-target="#what-you-learned-in-this-chapter"><span class="header-section-number">5.8</span> What you learned in this chapter</a></li>
+  <li><a href="#what-you-learned-in-this-chapter" id="toc-what-you-learned-in-this-chapter" class="nav-link" data-scroll-target="#what-you-learned-in-this-chapter"><span class="header-section-number">6.8</span> What you learned in this chapter</a></li>
   </ul>
 </nav>
     </div>
@@ -243,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-script" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></h1>
+<h1 class="title"><span id="sec-script" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></h1>
 </div>
 
 
@@ -260,8 +278,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">5.1</span> Learning Objectives</h2>
+<section id="learning-objectives" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">6.1</span> Learning Objectives</h2>
 <ol type="1">
 <li><strong>Utilize</strong> positional <em>arguments</em> to generalize our scripts</li>
 <li><strong>Articulate</strong> the <em>three streams</em> of a command line utility</li>
@@ -271,8 +289,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Wrap</strong> executables and scripts in R/Python into a Bash script</li>
 </ol>
 </section>
-<section id="review-of-bash-scripting" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="review-of-bash-scripting"><span class="header-section-number">5.2</span> Review of Bash scripting</h2>
+<section id="review-of-bash-scripting" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="review-of-bash-scripting"><span class="header-section-number">6.2</span> Review of Bash scripting</h2>
 <p>Bash scripting is often referred to as a useful “glue language” on the internet. Although a lot of functionality can be covered by both JavaScript and Python, bash scripting is still very helpful to know.</p>
 <p>We are going to cover Bash scripting because it is the main shell that is available to us on HPC machines, which are Ubuntu-based.</p>
 <p>We will be using Bash scripts as “glue” for multiple applications in HPC computing, including:</p>
@@ -283,8 +301,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>As you can see, knowing Bash is extremely helpful when running jobs on HPC.</p>
 </section>
-<section id="sec-positional" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="sec-positional"><span class="header-section-number">5.3</span> Our first script with positional arguments</h2>
+<section id="sec-positional" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-positional"><span class="header-section-number">6.3</span> Our first script with positional arguments</h2>
 <p>Say we have <a href="http://www.htslib.org/doc/samtools-stats.html"><code>samtools</code></a> installed on our own machine. Let’s start with a basic script and build from there. We’ll call it <code>sam_run.sh</code>. With <code>nano</code>, a text editor, we’ll start a very basic bash script and build its capabilities out.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash/</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> stats <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -293,8 +311,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>When we run it like that, <code>sam_run.sh</code> will run <code>samtools stat</code> like this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> stats my_file.bam <span class="op">&gt;</span> out_stats.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>So what’s going on here is that there is some substitution using common arguments. Let’s look at these.</p>
-<section id="positional-arguments-such-as-1" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="positional-arguments-such-as-1"><span class="header-section-number">5.3.1</span> Positional Arguments such as <code>$1</code></h3>
+<section id="positional-arguments-such-as-1" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="positional-arguments-such-as-1"><span class="header-section-number">6.3.1</span> Positional Arguments such as <code>$1</code></h3>
 <p>How did the script know where to substitute each of our arguments? It has to do with the argument variables. Arguments (terms that follow our command) are indexed starting with the number 1. We can access the value at the first position using the special variable <code>$1</code>.</p>
 <p>Note that this works even in quotes.</p>
 <p>So, to unpack our script, we are substituting our first argument for the <code>$1</code>, and our second argument for the <code>$2</code> in our script.</p>
@@ -335,8 +353,8 @@ Answer
 </div>
 </section>
 </section>
-<section id="using-pipes-stdin-stdout-stderr" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="using-pipes-stdin-stdout-stderr"><span class="header-section-number">5.4</span> Using pipes: STDIN, STDOUT, STDERR</h2>
+<section id="using-pipes-stdin-stdout-stderr" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="using-pipes-stdin-stdout-stderr"><span class="header-section-number">6.4</span> Using pipes: STDIN, STDOUT, STDERR</h2>
 <p>We will need to use pipes to chain our commands together. Specifically, we need to take a command that generates a list of files on the platform, and then spawns individual jobs to process each file. For this reason, understanding a little bit more about how pipes (<code>|</code>) work in Bash is helpful.</p>
 <p>If we want to understand how to chain our scripts together into a pipeline, it is helpful to know about the different streams that are available to the utilities.</p>
 <div id="fig-std" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -359,11 +377,11 @@ Answer
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-std-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.1: Inputs/outputs to a script
+Figure&nbsp;6.1: Inputs/outputs to a script
 </figcaption>
 </figure>
 </div>
-<p>Every script has three streams available to it: Standard In (STDIN), Standard Out (STDOUT), and Standard Error (STDERR) (<a href="#fig-std" class="quarto-xref">Figure&nbsp;<span>5.1</span></a>).</p>
+<p>Every script has three streams available to it: Standard In (STDIN), Standard Out (STDOUT), and Standard Error (STDERR) (<a href="#fig-std" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>).</p>
 <p>STDIN contains information that is directed to the input of a script (usually text output via STDOUT from another script).</p>
 <p>Why do these matter? To work in a Unix pipeline, a script must be able to utilize STDIN, and generate STDOUT, and STDERR.</p>
 <p>Specifically, in pipelines, STDOUT of a script (here it’s <code>run_samtools</code>) is directed into STDIN of another command (here <code>wc</code>, or word count)</p>
@@ -389,7 +407,7 @@ Figure&nbsp;5.1: Inputs/outputs to a script
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.2: Piping a script <code>run_samtools.sh</code> into another command (<code>wc</code>)
+Figure&nbsp;6.2: Piping a script <code>run_samtools.sh</code> into another command (<code>wc</code>)
 </figcaption>
 </figure>
 </div>
@@ -407,13 +425,13 @@ Why this is important on the platform
 <p>We’ll use pipes and pipelines not only in starting a bunch of jobs using batch scripting on our home computer, but also when we are processing files within a job.</p>
 </div>
 </div>
-<section id="for-more-info-about-pipes-and-pipelines" class="level3" data-number="5.4.1">
-<h3 data-number="5.4.1" class="anchored" data-anchor-id="for-more-info-about-pipes-and-pipelines"><span class="header-section-number">5.4.1</span> For more info about pipes and pipelines</h3>
+<section id="for-more-info-about-pipes-and-pipelines" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="for-more-info-about-pipes-and-pipelines"><span class="header-section-number">6.4.1</span> For more info about pipes and pipelines</h3>
 <p><a href="https://swcarpentry.github.io/shell-novice/04-pipefilter/index.html" class="uri">https://swcarpentry.github.io/shell-novice/04-pipefilter/index.html</a> <a href="https://datascienceatthecommandline.com/2e/chapter-2-getting-started.html?q=stdin#combining-command-line-tools" class="uri">https://datascienceatthecommandline.com/2e/chapter-2-getting-started.html?q=stdin#combining-command-line-tools</a></p>
 </section>
 </section>
-<section id="sec-xargs" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="sec-xargs"><span class="header-section-number">5.5</span> Batch Processing Basics: Iterating using <code>xargs</code></h2>
+<section id="sec-xargs" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="sec-xargs"><span class="header-section-number">6.5</span> Batch Processing Basics: Iterating using <code>xargs</code></h2>
 <p>A really common pattern is taking a delimited list of files and doing something with them. We can do some useful things such as seeing the first few lines of a set of files, or doing some sort of processing with the set of jobs.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -461,8 +479,8 @@ dx find data --name "*.bam" --brief
 <p>For our second file, <code>hpc-basics.qmd</code>, we would substitute that for the <code>%</code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="st">'head hpc-basics.qmd; echo "---\n"'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Until we cycle through all of the files in our list.</p>
-<section id="the-basic-xargs-pattern" class="level3" data-number="5.5.1">
-<h3 data-number="5.5.1" class="anchored" data-anchor-id="the-basic-xargs-pattern"><span class="header-section-number">5.5.1</span> The Basic <code>xargs</code> pattern</h3>
+<section id="the-basic-xargs-pattern" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="the-basic-xargs-pattern"><span class="header-section-number">6.5.1</span> The Basic <code>xargs</code> pattern</h3>
 <div id="fig-xargs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-xargs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -483,11 +501,11 @@ dx find data --name "*.bam" --brief
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-xargs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.3: Basics of using <code>xargs</code> to iterate on a list of files
+Figure&nbsp;6.3: Basics of using <code>xargs</code> to iterate on a list of files
 </figcaption>
 </figure>
 </div>
-<p>As you cycle through lists of files, keep in mind this basic pattern (<a href="#fig-xargs" class="quarto-xref">Figure&nbsp;<span>5.3</span></a>):</p>
+<p>As you cycle through lists of files, keep in mind this basic pattern (<a href="#fig-xargs" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>):</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="op">&lt;</span>wildcard<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-I%</span> sh <span class="at">-c</span> <span class="st">"&lt;command to run&gt; %"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -539,13 +557,13 @@ Why this is important on HPC
 </div>
 </div>
 </section>
-<section id="for-more-information" class="level3" data-number="5.5.2">
-<h3 data-number="5.5.2" class="anchored" data-anchor-id="for-more-information"><span class="header-section-number">5.5.2</span> For more information</h3>
+<section id="for-more-information" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="for-more-information"><span class="header-section-number">6.5.2</span> For more information</h3>
 <p><a href="https://www.baeldung.com/linux/xargs-multiple-arguments" class="uri">https://www.baeldung.com/linux/xargs-multiple-arguments</a></p>
 </section>
 </section>
-<section id="sec-bash-variables" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="sec-bash-variables"><span class="header-section-number">5.6</span> Variables in Bash Scripts</h2>
+<section id="sec-bash-variables" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="sec-bash-variables"><span class="header-section-number">6.6</span> Variables in Bash Scripts</h2>
 <p>We’ve already encountered a placeholder variable, <code>%</code>, that we used in running <code>xargs</code>. Let’s talk about declaring variables in bash scripts and using them using variable expansion.</p>
 <p>In Bash, we can declare a variable by using <code>&lt;variable_name&gt;=&lt;value&gt;</code>. Note there are no spaces between the variable (<code>my_variable</code>), equals sign, and the value (<code>"ggplot2"</code>).</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="va">my_variable</span><span class="op">=</span><span class="st">"ggplot2"</span></span>
@@ -561,8 +579,8 @@ Why this is important on HPC
 <pre><code>echo "$my_var_1.vcf.gz"</code></pre>
 <p>Bash would look for the variable <code>$my_var_1</code>, which doesn’t exist. So use the curly braces <code>{}</code> when you expand variables. It’s safer overall.</p>
 <p>There is an alternate method for variable expansion which we will use when we call a <em>sub-shell</em> - a shell within a shell, much like in our <code>xargs</code> command above. We need to use parentheses <code>()</code> to expand them within the sub-shell, but not the top-shell. We’ll use this when we process multiple files within a single worker.</p>
-<section id="basename-can-be-very-handy-when-on-workers" class="level3" data-number="5.6.1">
-<h3 data-number="5.6.1" class="anchored" data-anchor-id="basename-can-be-very-handy-when-on-workers"><span class="header-section-number">5.6.1</span> <code>basename</code> can be very handy when on workers</h3>
+<section id="basename-can-be-very-handy-when-on-workers" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="basename-can-be-very-handy-when-on-workers"><span class="header-section-number">6.6.1</span> <code>basename</code> can be very handy when on workers</h3>
 <p>If we are processing a bunch of files on a worker, we need a way to get the bare filename from a <code>dxfuse</code> path. We will take advantage of this when we run process multiple files on the worker.</p>
 <p>For example:</p>
 <pre><code>basename /mnt/project/worker_scripts/srun-script.sh</code></pre>
@@ -571,8 +589,8 @@ Why this is important on HPC
 <p>Which can be really handy when we name our outputs. This command is so handy it is used in WDL.</p>
 </section>
 </section>
-<section id="quoting-and-escaping-filenames-in-bash" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="quoting-and-escaping-filenames-in-bash"><span class="header-section-number">5.7</span> Quoting and Escaping Filenames in Bash</h2>
+<section id="quoting-and-escaping-filenames-in-bash" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="quoting-and-escaping-filenames-in-bash"><span class="header-section-number">6.7</span> Quoting and Escaping Filenames in Bash</h2>
 <p>One point of confusion is when do you quote things in Bash? When do you use single quotes (<code>'</code>) versus double-quotes (<code>"</code>)? When do you use <code>\</code> to escape characters?</p>
 <p>Let’s talk about some quoting rules in Bash. I’ve tried to make things as simplified and generalized as possible, rather than stating all of the rules for each quote.</p>
 <ol type="1">
@@ -582,33 +600,33 @@ Why this is important on HPC
 <li>If you need to preserve an escaped character, use single quotes</li>
 </ol>
 <p>Let’s go over each of these with an example.</p>
-<section id="if-you-have-spaces-in-a-filename-use-double-quotes-most-common" class="level3" data-number="5.7.1">
-<h3 data-number="5.7.1" class="anchored" data-anchor-id="if-you-have-spaces-in-a-filename-use-double-quotes-most-common"><span class="header-section-number">5.7.1</span> If you have spaces in a filename, use double quotes (Most common)</h3>
+<section id="if-you-have-spaces-in-a-filename-use-double-quotes-most-common" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="if-you-have-spaces-in-a-filename-use-double-quotes-most-common"><span class="header-section-number">6.7.1</span> If you have spaces in a filename, use double quotes (Most common)</h3>
 <p>For example, if your filename is <code>chr 1 file.bam</code>, then use double quotes in your argument</p>
 <pre><code>samtools view -c "chr 1 file.bam"</code></pre>
 </section>
-<section id="if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common" class="level3" data-number="5.7.2">
-<h3 data-number="5.7.2" class="anchored" data-anchor-id="if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common"><span class="header-section-number">5.7.2</span> If you have a single quote in the name, use double quotes to wrap it (less common)</h3>
+<section id="if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common" class="level3" data-number="6.7.2">
+<h3 data-number="6.7.2" class="anchored" data-anchor-id="if-you-have-a-single-quote-in-the-name-use-double-quotes-to-wrap-it-less-common"><span class="header-section-number">6.7.2</span> If you have a single quote in the name, use double quotes to wrap it (less common)</h3>
 <p>Say you have a file called <code>ted's new file.bam</code>. This can be a problem when you are calling it, especially because of the single quote.</p>
 <p>In this case, you can do this:</p>
 <pre><code>samtools view -c "ted's new file.bam"</code></pre>
 </section>
-<section id="only-escape-characters-when-necessary-less-common" class="level3" data-number="5.7.3">
-<h3 data-number="5.7.3" class="anchored" data-anchor-id="only-escape-characters-when-necessary-less-common"><span class="header-section-number">5.7.3</span> Only escape characters when necessary (less common)</h3>
+<section id="only-escape-characters-when-necessary-less-common" class="level3" data-number="6.7.3">
+<h3 data-number="6.7.3" class="anchored" data-anchor-id="only-escape-characters-when-necessary-less-common"><span class="header-section-number">6.7.3</span> Only escape characters when necessary (less common)</h3>
 <p>There are a number of special characters (such as Tab, and Newline) that can be specified as escape characters. In double quotes, characters such as <code>$</code> are signals to Bash to expand or evaluate code.</p>
 <p>Say that someone had a <code>$</code> in their file name such as <code>Thi$file is money.bam</code></p>
 <p>How do we refer to it? We can escape the character with a backslash <code>\</code>:</p>
 <pre><code>samtools view -c "Thi\$file is money.bam"</code></pre>
 <p>The backslash is a clue to Bash that we don’t want variable expansion in this case. Without it, bash would look for a variable called <code>$file</code>.</p>
 </section>
-<section id="if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common" class="level3" data-number="5.7.4">
-<h3 data-number="5.7.4" class="anchored" data-anchor-id="if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common"><span class="header-section-number">5.7.4</span> If you need to preserve an escaped character, use single quotes (least common)</h3>
+<section id="if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common" class="level3" data-number="6.7.4">
+<h3 data-number="6.7.4" class="anchored" data-anchor-id="if-you-need-to-preserve-an-escaped-character-use-single-quotes-least-common"><span class="header-section-number">6.7.4</span> If you need to preserve an escaped character, use single quotes (least common)</h3>
 <p>This is rarely used, but if you need to keep an escaped character in your filename, you can use single quotes. Say we have a filename called <code>Thi\$file.bam</code> and you need that backslash in the file name (btw, please don’t do this), you can use single quotes to preserve that backslash:</p>
 <pre><code>samtools view -c 'Thi\$file.bam'</code></pre>
 <p>Again, hopefully you won’t need this.</p>
 </section>
-<section id="for-more-info" class="level3" data-number="5.7.5">
-<h3 data-number="5.7.5" class="anchored" data-anchor-id="for-more-info"><span class="header-section-number">5.7.5</span> For More Info</h3>
+<section id="for-more-info" class="level3" data-number="6.7.5">
+<h3 data-number="6.7.5" class="anchored" data-anchor-id="for-more-info"><span class="header-section-number">6.7.5</span> For More Info</h3>
 <p><a href="https://www.grymoire.com/Unix/Quote.html#uh-3" class="uri">https://www.grymoire.com/Unix/Quote.html#uh-3</a></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -644,8 +662,8 @@ What about X use case?
 </div>
 </section>
 </section>
-<section id="what-you-learned-in-this-chapter" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="what-you-learned-in-this-chapter"><span class="header-section-number">5.8</span> What you learned in this chapter</h2>
+<section id="what-you-learned-in-this-chapter" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="what-you-learned-in-this-chapter"><span class="header-section-number">6.8</span> What you learned in this chapter</h2>
 <p>Whew, this was a whirlwind tour. Keep this chapter in mind when you’re working on a cluster - the bash programming patterns will serve you well. We’ll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.</p>
 <ul>
 <li>Setting up bash scripts with positional arguments</li>
@@ -1080,12 +1098,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./running-stuff.html" class="pagination-link" aria-label="Running Executables on HPC">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./interactive_shell.html" class="pagination-link" aria-label="Testing Scripts in Containers Interactively">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testing Scripts in Containers Interactively</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./interactive_shell.html" class="pagination-link" aria-label="Interactively Testing Scripts in Nodes">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

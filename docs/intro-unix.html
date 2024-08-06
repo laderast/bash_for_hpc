@@ -224,13 +224,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">3.1</span> Learning Objectives</a></li>
   <li><a href="#terminal-setup" id="toc-terminal-setup" class="nav-link" data-scroll-target="#terminal-setup"><span class="header-section-number">3.2</span> Terminal setup</a></li>
-  <li><a href="#where-am-i-understanding-the-unix-filesystem" id="toc-where-am-i-understanding-the-unix-filesystem" class="nav-link" data-scroll-target="#where-am-i-understanding-the-unix-filesystem"><span class="header-section-number">3.3</span> Where Am I? Understanding the Unix Filesystem</a></li>
+  <li><a href="#hostname-what-machine-am-i-on" id="toc-hostname-what-machine-am-i-on" class="nav-link" data-scroll-target="#hostname-what-machine-am-i-on"><span class="header-section-number">3.3</span> <code>hostname</code>: What machine am I on?</a></li>
   <li><a href="#environment-variables" id="toc-environment-variables" class="nav-link" data-scroll-target="#environment-variables"><span class="header-section-number">3.4</span> Environment Variables</a>
   <ul class="collapse">
   <li><a href="#setting-environment-variables" id="toc-setting-environment-variables" class="nav-link" data-scroll-target="#setting-environment-variables"><span class="header-section-number">3.4.1</span> Setting Environment Variables</a></li>
   <li><a href="#a-very-special-environment-variable-path" id="toc-a-very-special-environment-variable-path" class="nav-link" data-scroll-target="#a-very-special-environment-variable-path"><span class="header-section-number">3.4.2</span> A Very Special Environment Variable: <code>$PATH</code></a></li>
   <li><a href="#making-your-own-environment-variables" id="toc-making-your-own-environment-variables" class="nav-link" data-scroll-target="#making-your-own-environment-variables"><span class="header-section-number">3.4.3</span> Making your own environment variables</a></li>
-  <li><a href="#bashrc-versus-.bash_profile" id="toc-bashrc-versus-.bash_profile" class="nav-link" data-scroll-target="#bashrc-versus-.bash_profile"><span class="header-section-number">3.4.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></a></li>
+  <li><a href="#sec-bashrc" id="toc-sec-bashrc" class="nav-link" data-scroll-target="#sec-bashrc"><span class="header-section-number">3.4.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></a></li>
   </ul></li>
   <li><a href="#working-with-shell-scripts" id="toc-working-with-shell-scripts" class="nav-link" data-scroll-target="#working-with-shell-scripts"><span class="header-section-number">3.5</span> Working with Shell Scripts</a>
   <ul class="collapse">
@@ -315,14 +315,14 @@ A Little More Advanced
 </div>
 <p>On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include <a href="https://code.visualstudio.com/">Visual Studio Code (VS Code)</a>, or built in editors such as <code>nano</code>. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.</p>
 </section>
-<section id="where-am-i-understanding-the-unix-filesystem" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="where-am-i-understanding-the-unix-filesystem"><span class="header-section-number">3.3</span> Where Am I? Understanding the Unix Filesystem</h2>
+<section id="hostname-what-machine-am-i-on" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="hostname-what-machine-am-i-on"><span class="header-section-number">3.3</span> <code>hostname</code>: What machine am I on?</h2>
 <p>One of the most confusing things about working on HPC is that sometimes you have a shell open on the head node, but oftentimes, you are on a worker node.</p>
 <p>Your totem for telling which node you’re in is <code>hostname</code>, which will give you the host name of the machine you’re on.</p>
 <p>For example, if I used <code>grabnode</code> to grab a <code>gizmo</code> node for interactive work, I can check which node I’m in by using:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>gizmok164</code></pre>
-<p>If you’re confused about which node you’re in, remember <code>hostname</code>. It will save you from making mistakes.</p>
+<p>If you’re confused about which node you’re in, remember <code>hostname</code>. It will save you from making mistakes, especially when using utilities like <code>screen</code>.</p>
 </section>
 <section id="environment-variables" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="environment-variables"><span class="header-section-number">3.4</span> Environment Variables</h2>
@@ -357,19 +357,19 @@ Environment Variables in Windows
 <section id="setting-environment-variables" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="setting-environment-variables"><span class="header-section-number">3.4.1</span> Setting Environment Variables</h3>
 <p>In Bash, we use the <code>export</code> command to declare an environment variable. For example, if we wanted to declare the environment variable <code>$SAMTOOLS_PATH</code> we’d do the following:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SAMTOOLS_PATH</span><span class="op">=</span><span class="st">"/home/tladera2/miniconda/bin/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># works: note no spaces</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SAMTOOLS_PATH</span><span class="op">=</span><span class="st">"/home/tladera2/miniconda/bin/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>One thing to note is that spacing matters when you declare environment variables. For example, this won’t declare the <code>$SAMTOOLS_PATH</code> variable:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SAMTOOLS_PATH</span> <span class="op">=</span> <span class="st">"/home/tladera2/miniconda/bin/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Another thing to note is that we declare environment variables differently than we use them. If we wanted to use <code>$SAMTOOLS_PATH</code> in a script, we use a dollar sign (<code>$</code>) in front of it:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash/</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">$SAMTOOLS_PATH</span><span class="ex">/samtools</span> view <span class="at">-c</span> <span class="va">$input_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># won't work because of spaces</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SAMTOOLS_PATH</span> <span class="op">=</span> <span class="st">"/home/tladera2/miniconda/bin/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Another thing to note is that we declare environment variables differently than we use them. If we wanted to use <code>SAMTOOLS_PATH</code> in a script, we use a dollar sign (<code>$</code>) in front of it:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$SAMTOOLS_PATH</span><span class="ex">/samtools</span> view <span class="at">-c</span> <span class="va">$input_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this case, the value of <code>$SAMTOOLS_PATH</code> will be expanded (substituted) to give the overall path:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash/</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/tladera2/miniconda/bin/samtools</span> view <span class="at">-c</span> <span class="va">$input_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/tladera2/miniconda/bin/samtools</span> view <span class="at">-c</span> <span class="va">$input_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="a-very-special-environment-variable-path" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="a-very-special-environment-variable-path"><span class="header-section-number">3.4.2</span> A Very Special Environment Variable: <code>$PATH</code></h3>
-<p>The most important environment variable is the <code>$PATH</code> variable. This variable is important because it determines where to search for software executables (also called binaries).</p>
+<p>The most important environment variable is the <code>$PATH</code> variable. This variable is important because it determines where to search for software executables (also called binaries). If you have softwware installed by a package manager (such as <code>miniconda</code>), you may need to add the location of your executables to your <code>$PATH</code>.</p>
 <p>We can add more directories to the <code>$PATH</code> by appending to it. You might have seen the following bit of code in your <code>.bashrc</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:/home/tladera2/samtools/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this line, we are adding the path <code>/home/tladera2/samtools/</code> to our <code>$PATH</code> environment variable. Note that how we refer to the <code>PATH</code> variable is different depending on which side the variable is on of the equals sign.</p>
@@ -398,8 +398,8 @@ For FH Users
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/Bash</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">my_file_location</span><span class="op">=</span><span class="va">$TCR_FILE_HOME</span>/fasta_files/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="bashrc-versus-.bash_profile" class="level3" data-number="3.4.4">
-<h3 data-number="3.4.4" class="anchored" data-anchor-id="bashrc-versus-.bash_profile"><span class="header-section-number">3.4.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></h3>
+<section id="sec-bashrc" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="sec-bashrc"><span class="header-section-number">3.4.4</span> <code>.bashrc</code> versus <code>.bash_profile</code></h3>
 <p>Ok, what’s the difference between <code>.bashrc</code> and <code>.bash_profile</code>?</p>
 <p>The main difference is when these two files are sourced. <code>bash_profile</code> is used when you do an interactive login, and <code>.bashrc</code> is used for non-interactive shells.</p>
 <p><code>.bashrc</code> should contain the environment variables that you use all the time, such as <code>$PATH</code> and <code>$JAVA_HOME</code> for example.</p>

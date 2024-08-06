@@ -33,7 +33,7 @@ If you are on Windows, you can install [Windows Subsystem for Linux](https://lea
 
 On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in editors such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
 
-## Where Am I? Understanding the Unix Filesystem
+## `hostname`: What machine am I on?
 
 One of the most confusing things about working on HPC is that sometimes you have a shell open on the head node, but oftentimes, you are on a worker node. 
 
@@ -48,7 +48,7 @@ hostname
 ```
 gizmok164
 ```
-If you're confused about which node you're in, remember `hostname`. It will save you from making mistakes.
+If you're confused about which node you're in, remember `hostname`. It will save you from making mistakes, especially when using utilities like `screen`.
 
 
 ## Environment Variables
@@ -95,31 +95,31 @@ I recommend looking at the PowerShell documentation for more information about W
 In Bash, we use the `export` command to declare an environment variable. For example, if we wanted to declare the environment variable `$SAMTOOLS_PATH` we'd do the following:
 
 ```bash
+# works: note no spaces
 export SAMTOOLS_PATH="/home/tladera2/miniconda/bin/"
 ```
 
 One thing to note is that spacing matters when you declare environment variables. For example, this won't declare the `$SAMTOOLS_PATH` variable:
 
 ```bash
+# won't work because of spaces
 export SAMTOOLS_PATH = "/home/tladera2/miniconda/bin/"
 ```
 
-Another thing to note is that we declare environment variables differently than we use them. If we wanted to use `$SAMTOOLS_PATH` in a script, we use a dollar sign (`$`) in front of it:
+Another thing to note is that we declare environment variables differently than we use them. If we wanted to use `SAMTOOLS_PATH` in a script, we use a dollar sign (`$`) in front of it:
 
 ```bash
-#!/bin/bash/
 $SAMTOOLS_PATH/samtools view -c $input_file
 ```
 In this case, the value of `$SAMTOOLS_PATH` will be expanded (substituted) to give the overall path:
 
 ```bash
-#!/bin/bash/
 /home/tladera2/miniconda/bin/samtools view -c $input_file
 ```
 
 ### A Very Special Environment Variable: `$PATH`
 
-The most important environment variable is the `$PATH` variable. This variable is important because it determines where to search for software executables (also called binaries). 
+The most important environment variable is the `$PATH` variable. This variable is important because it determines where to search for software executables (also called binaries). If you have softwware installed by a package manager (such as `miniconda`), you may need to add the location of your executables to your `$PATH`.
 
 We can add more directories to the `$PATH` by appending to it. You might have seen the following bit of code in your `.bashrc`:
 

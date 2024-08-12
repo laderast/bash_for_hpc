@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.55">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; Running a R script on the command line – Bash for HPC</title>
+<title>12&nbsp; Running a R script on the command line – Bash for HPC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -126,7 +126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./r-commandline.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./r-commandline.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -165,50 +165,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./hpc-safety.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">HPC Security and Safety</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./intro-unix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./filesystems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./running-stuff.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scripting-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./container-concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./running_containers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./working-with-wdl.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./r-commandline.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
   </div>
 </li>
     </ul>
@@ -221,15 +233,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-basic-process" id="toc-the-basic-process" class="nav-link active" data-scroll-target="#the-basic-process"><span class="header-section-number">10.1</span> The Basic Process</a></li>
-  <li><a href="#using-rscript-on-the-command-line" id="toc-using-rscript-on-the-command-line" class="nav-link" data-scroll-target="#using-rscript-on-the-command-line"><span class="header-section-number">10.2</span> Using <code>Rscript</code> on the command-line</a></li>
-  <li><a href="#wrapping-it-up-in-a-bash-script" id="toc-wrapping-it-up-in-a-bash-script" class="nav-link" data-scroll-target="#wrapping-it-up-in-a-bash-script"><span class="header-section-number">10.3</span> Wrapping it up in a bash script</a>
+  <li><a href="#the-basic-process" id="toc-the-basic-process" class="nav-link active" data-scroll-target="#the-basic-process"><span class="header-section-number">12.1</span> The Basic Process</a></li>
+  <li><a href="#using-rscript-on-the-command-line" id="toc-using-rscript-on-the-command-line" class="nav-link" data-scroll-target="#using-rscript-on-the-command-line"><span class="header-section-number">12.2</span> Using <code>Rscript</code> on the command-line</a></li>
+  <li><a href="#wrapping-it-up-in-a-bash-script" id="toc-wrapping-it-up-in-a-bash-script" class="nav-link" data-scroll-target="#wrapping-it-up-in-a-bash-script"><span class="header-section-number">12.3</span> Wrapping it up in a bash script</a>
   <ul class="collapse">
-  <li><a href="#using-named-arguments-in-an-r-script" id="toc-using-named-arguments-in-an-r-script" class="nav-link" data-scroll-target="#using-named-arguments-in-an-r-script"><span class="header-section-number">10.3.1</span> Using Named Arguments in an R script</a></li>
-  <li><a href="#running-our-r-script" id="toc-running-our-r-script" class="nav-link" data-scroll-target="#running-our-r-script"><span class="header-section-number">10.3.2</span> Running our R Script</a></li>
+  <li><a href="#using-named-arguments-in-an-r-script" id="toc-using-named-arguments-in-an-r-script" class="nav-link" data-scroll-target="#using-named-arguments-in-an-r-script"><span class="header-section-number">12.3.1</span> Using Named Arguments in an R script</a></li>
+  <li><a href="#running-our-r-script" id="toc-running-our-r-script" class="nav-link" data-scroll-target="#running-our-r-script"><span class="header-section-number">12.3.2</span> Running our R Script</a></li>
   </ul></li>
-  <li><a href="#quarto-documents" id="toc-quarto-documents" class="nav-link" data-scroll-target="#quarto-documents"><span class="header-section-number">10.4</span> Quarto Documents</a></li>
-  <li><a href="#sec-apptainer" id="toc-sec-apptainer" class="nav-link" data-scroll-target="#sec-apptainer"><span class="header-section-number">10.5</span> Apptainer</a></li>
+  <li><a href="#quarto-documents" id="toc-quarto-documents" class="nav-link" data-scroll-target="#quarto-documents"><span class="header-section-number">12.4</span> Quarto Documents</a></li>
+  <li><a href="#sec-apptainer" id="toc-sec-apptainer" class="nav-link" data-scroll-target="#sec-apptainer"><span class="header-section-number">12.5</span> Apptainer</a></li>
   </ul>
 </nav>
     </div>
@@ -238,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></h1>
 </div>
 
 
@@ -255,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="the-basic-process" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="the-basic-process"><span class="header-section-number">10.1</span> The Basic Process</h2>
+<section id="the-basic-process" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="the-basic-process"><span class="header-section-number">12.1</span> The Basic Process</h2>
 <ol type="1">
 <li>Specify named arguments for your R script.</li>
 <li>Wrap running <code>Rscript</code> in a bash file, passing on arguments to the R Script</li>
@@ -278,16 +290,16 @@ For FH Users
 </div>
 </div>
 </section>
-<section id="using-rscript-on-the-command-line" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="using-rscript-on-the-command-line"><span class="header-section-number">10.2</span> Using <code>Rscript</code> on the command-line</h2>
+<section id="using-rscript-on-the-command-line" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="using-rscript-on-the-command-line"><span class="header-section-number">12.2</span> Using <code>Rscript</code> on the command-line</h2>
 <p>Let’s talk about wrapping R scripts in a Bash script. This might seem like an extra layer of redundancy, but remember that we need to specify our software environment before we run something, so our bash script lets us do that.</p>
 <p>Our main executable for running R on the command-line is <code>Rscript</code>.</p>
 <p>When we run R on the command line, it will look something like this:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> process_data.R <span class="at">--input_file</span><span class="op">=</span>my_genome_file.vcf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note that you can have named inputs when you run on the command line,</p>
 </section>
-<section id="wrapping-it-up-in-a-bash-script" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="wrapping-it-up-in-a-bash-script"><span class="header-section-number">10.3</span> Wrapping it up in a bash script</h2>
+<section id="wrapping-it-up-in-a-bash-script" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="wrapping-it-up-in-a-bash-script"><span class="header-section-number">12.3</span> Wrapping it up in a bash script</h2>
 <p>Say you have an R Script you need to run on the command line. In our bash script, we can do the following:</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -299,8 +311,8 @@ For FH Users
 </div>
 </div>
 <p>This calls <code>Rscript</code>, which is the command line executable, to run our R script. Note that we have a named argument called <code>input_file</code> and it is done differently than in Bash - how do we use this in our R Script?</p>
-<section id="using-named-arguments-in-an-r-script" class="level3" data-number="10.3.1">
-<h3 data-number="10.3.1" class="anchored" data-anchor-id="using-named-arguments-in-an-r-script"><span class="header-section-number">10.3.1</span> Using Named Arguments in an R script</h3>
+<section id="using-named-arguments-in-an-r-script" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="using-named-arguments-in-an-r-script"><span class="header-section-number">12.3.1</span> Using Named Arguments in an R script</h3>
 <p>We can pass arguments from our bash script to our R script by using <code>commandArgs()</code> - this will populate a list of named arguments (such as <code>CSVFILE</code>) that are passed into the R Script. We assign the output of <code>commandArgs()</code> into the <code>args</code> object.</p>
 <p>We refer to our <code>CSVFILE</code> argument as <code>args$CSVFILE</code> in our script.</p>
 <div class="cell">
@@ -322,8 +334,8 @@ For FH Users
 </div>
 </div>
 </section>
-<section id="running-our-r-script" class="level3" data-number="10.3.2">
-<h3 data-number="10.3.2" class="anchored" data-anchor-id="running-our-r-script"><span class="header-section-number">10.3.2</span> Running our R Script</h3>
+<section id="running-our-r-script" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="running-our-r-script"><span class="header-section-number">12.3.2</span> Running our R Script</h3>
 <p>Now that we’ve set it up, we can run the R script from the command line as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> my_bash_script.sh my_csvfile.csv </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -331,8 +343,8 @@ For FH Users
 <p>In our bash script, <code>my_bash_script.sh</code>, we’re using positional argument (for simplicity) to specify our csvfile, and then passing the positional argument to named ones (<code>CSVFILE</code>) for <code>my_r_script.R</code>.</p>
 </section>
 </section>
-<section id="quarto-documents" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="quarto-documents"><span class="header-section-number">10.4</span> Quarto Documents</h2>
+<section id="quarto-documents" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="quarto-documents"><span class="header-section-number">12.4</span> Quarto Documents</h2>
 <p>Quarto is the next generation of RMarkdown and supports a number of output formats.</p>
 <p>You might want to apply a workflow that you’ve built in a quarto document.</p>
 <p>The main difference is that you’d use <code>quarto run</code> rather than <code>Rscript run</code>.</p>
@@ -341,8 +353,8 @@ For FH Users
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> run my_quarto_doc.qmd </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="sec-apptainer" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="sec-apptainer"><span class="header-section-number">10.5</span> Apptainer</h2>
+<section id="sec-apptainer" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="sec-apptainer"><span class="header-section-number">12.5</span> Apptainer</h2>
 <p>Apptainer (previous Singularity) is a secure way to run Docker containers on a HPC system. The commands are very similar to Docker, but aren’t.</p>
 
 
@@ -772,7 +784,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./working-with-wdl.html" class="pagination-link" aria-label="Working with WDL">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with WDL</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Working with WDL</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

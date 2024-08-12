@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.55">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -133,50 +133,62 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./hpc-safety.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">HPC Security and Safety</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./intro-unix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./filesystems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./running-stuff.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scripting-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./container-concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./running_containers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./working-with-wdl.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./r-commandline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
   </div>
 </li>
     </ul>
@@ -195,7 +207,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#learning-objectives-for-this-book" id="toc-learning-objectives-for-this-book" class="nav-link" data-scroll-target="#learning-objectives-for-this-book"><span class="header-section-number">1.2</span> Learning Objectives for this Book</a></li>
   <li><a href="#what-is-not-covered" id="toc-what-is-not-covered" class="nav-link" data-scroll-target="#what-is-not-covered"><span class="header-section-number">1.3</span> What is not covered</a></li>
   <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">1.4</span> Notes</a></li>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"><span class="header-section-number">1.5</span> Prerequisites</a></li>
+  <li><a href="#other-resources" id="toc-other-resources" class="nav-link" data-scroll-target="#other-resources"><span class="header-section-number">1.5</span> Other Resources</a></li>
   <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors"><span class="header-section-number">1.6</span> Contributors</a></li>
   <li><a href="#want-to-be-a-contributor" id="toc-want-to-be-a-contributor" class="nav-link" data-scroll-target="#want-to-be-a-contributor"><span class="header-section-number">1.7</span> Want to be a Contributor?</a></li>
   <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><span class="header-section-number">1.8</span> License</a></li>
@@ -272,13 +284,8 @@ ul.task-list li input[type="checkbox"] {
 <p>It is designed to build on each of the concepts in a gradual manner. Where possible, we link to the official HPC documentation.</p>
 <p>At each step, you’ll be able to do useful things with your data. We will focus on skills and programming patterns that are useful.</p>
 </section>
-<section id="prerequisites" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">1.5</span> Prerequisites</h2>
-<p>Before you tackle this book, you should be able to accomplish the following:</p>
-<ul>
-<li><strong>Open</strong> and <strong>utilize</strong> a shell on a remote system using a terminal or SSH tool such as PuTTY. This section from the Missing Semester of your CS Education is very helpful: <a href="https://missing.csail.mit.edu/2020/course-shell/" class="uri">https://missing.csail.mit.edu/2020/course-shell/</a></li>
-<li><a href="https://swcarpentry.github.io/shell-novice/02-filedir/index.html"><strong>Utilize</strong> and <strong>navigate</strong></a> File Paths (both absolute and relative) in a Unix system</li>
-</ul>
+<section id="other-resources" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="other-resources"><span class="header-section-number">1.5</span> Other Resources</h2>
 <p>We recommend reviewing a course such as the <a href="https://swcarpentry.github.io/shell-novice/">Software Carpentry course for Shell Scripting</a> before getting started with this book. <a href="https://missing.csail.mit.edu/">The Missing Semester of your CS Education</a> is another great introduction/resource.</p>
 </section>
 <section id="contributors" class="level2" data-number="1.6">
@@ -288,7 +295,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="want-to-be-a-contributor" class="level2" data-number="1.7">
 <h2 data-number="1.7" class="anchored" data-anchor-id="want-to-be-a-contributor"><span class="header-section-number">1.7</span> Want to be a Contributor?</h2>
 <p>This is the first draft of this book. It’s not going to be perfect, and we need help. Specifically, we need help with testing the setup and the exercises.</p>
-<p>If you have an problem, you can file it as an issue using <a href="https://github.com/laderast/bash_for_bioinformatics/issues/new/choose">this link</a>.</p>
+<p>If you have an problem, you can file it as an issue using <a href="https://github.com/laderast/bash_for_hpc/issues/new/choose">this link</a>.</p>
 <p>In your issue, please note the following:</p>
 <ul>
 <li>Your Name</li>

@@ -11,11 +11,13 @@ book:
   chapters:
     - index.qmd
     - "hpc-basics.qmd"
+    - "hpc-safety.qmd"
     - "intro-unix.qmd"
     - "filesystems.qmd"
     - "running-stuff.qmd"
     - "scripting-basics.qmd"
     - "interactive_shell.qmd"
+    - "container-concepts.qmd"
     - "running_containers.qmd"
     - "working-with-wdl.qmd"
     - "r-commandline.qmd"

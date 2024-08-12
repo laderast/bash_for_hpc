@@ -10,17 +10,18 @@ With an interactive shell, we open a bash prompt on a worker directly. We can th
 ```{mermaid}
 flowchart TD
    A[Open Shell on Worker] --> B
-   B[Test Scripts] --> E
-   E --> F[Exit Worker]
-```
+   B[Test Scripts] --> F
+   F[Exit Worker]
+``` 
 
 ## Learning Objectives
 
 After reading this, you will be able to:
 
 - **Open** an interactive shell on a SLURM worker node using `salloc` or `grabnode`
-- **Open** an interactive shell in a Docker Container using Apptainer
-- **Articulate** how to connect container filesystems to the external filesystem
+- **Test** your code on a SLURM worker
+- **Exit** the shell of a remote worker
+- **Utilize** `screen` to keep a shell open and running on a remote worker.
 
 ## Grabbing an interactive shell on a worker
 
@@ -47,7 +48,7 @@ salloc bash
 ```
 
 :::{.callout-note}
-## For FH Users: `grabnode`
+## For FH Users: `grabnode` {#sec-grabnode}
 
 On the FH system, we can use a command called `grabnode`, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node. 
 
@@ -88,9 +89,34 @@ If you're doing interactive analysis that is going to span over a few days, I re
 When you are doing interactive analysis, it is easy to forget in which node you're working in. Just as a quick check, I use `hostname` to remind myself whether I'm in `rhino`, `gizmo`, or within an apptainer container.
 :::
 
+
+## Testing Your Scripts
+
+Part of the reason for interactive testing is to make sure that the worker node can "see" and access all of your resources, including files and executables.
+
+This is especially helpful when you are testing individual steps of a WDL workflow to make sure they work.
+
+:::{.callout}
+## Working Interactively
+
+Many people will request a node and do their interactive analysis completely on that node. This can work great, but if you are requesting a huge allocation (such as a 64-core machine), you may be waiting a while to even get access to that allocation.
+
+If you do the work of breaking up your scripts into WDL tasks, that makes utilizing the smaller spec'd machines for tasks like alignment much faster than waiting for a large allocation.
+
+Believe me, it's worth doing this.
+:::
+
+## `exit` when done
+
+When you're done with the worker, you can `exit` the shell. This will put you back into the root node.
+
+## `screen` for keeping your shell open
+
+Remember the `screen` utility? (@sec-screen). You can utilize `screen` to keep your shell open on a remote worker.  This is necessary when running interactive jobs when not connected.
+
 ## What Next?
 
-You've learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:
+You've learned how to open interactive shells in a remote node. There are a number of ways to go from here:
 
 - Try running your script using `srun`
-- 
+- Try running your script in a container (@sec-containers)

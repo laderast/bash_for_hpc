@@ -30,15 +30,15 @@ flowchart TD
 
 ## FH users: the main filesystems {#sec-filesystems}
 
-When working on the HPC, there are three filesystems you should consider:
+When working on the Fred Hutch HPC, there are three main filesystems you should consider:
 
-- `/home/` - The home filesystem. Your scripts can live here
+- `/home/` - The home filesystem. Your scripts can live here. Also where your configuration files (such as `.bashrc`) live.
 - `/fh/fast/` (also known as fast) - Research storage. Raw files and processed results should live here. 
 - `/fh/temp/` (also known as temp) - The temporary filesystem. This filesystem is faster to access for gizmo nodes on the cluster, so files can be copied to for computation. The output files you generate should be moved back into an appropriate folder on `/fh/fast/`. Note that files on `/fh/temp/` will be deleted after 30 days. 
 
 ### A Simplified Workflow: `/fh/fast/` and `/fh/temp/`
 
-A simple approach is to have your scripts also live in your project folder in `fast`. Then, you can sync the project in `/fh/fast/` over to `/fh/temp/`, run the scripts in `/fh/temp/`, and then sync the two folders again.
+A simple approach is to have your scripts also live in your project folder in `fast`. Then, you can sync the project in `/fh/fast/` over to `/fh/temp/`, run the scripts in `/fh/temp/`, and then sync the two folders again. You can do the file sync'ing in both directions with Motuz (@sec-motuz), which has its own advantages. 
 
 If you want to go this route, you should think about using a Folder Based Workflow (@sec-project), where everything lives in a folder. 
 
@@ -46,8 +46,8 @@ Another thing to consider is to have a backup of the scripts that is either on y
 
 ```{mermaid}
 graph LR
-    A["/fh/fast/my_lab/project/\nRaw Data & Scripts"] --"1. Sync Data\n& scripts"-->B
-    B["/fh/temp/my_lab/project\n2. Run Scripts here"] --"3. Sync\nresults"-->A
+    A["Fast\n/fh/fast/my_lab/project/\nRaw Data & Scripts"] --"1. Sync Data\n& scripts"-->B
+    B["Temp\n/fh/temp/my_lab/project\n2. Run Scripts here"] --"3. Sync\nresults"-->A
 ```
 
 ### Another Approach
@@ -55,8 +55,8 @@ graph LR
 Below is a a diagram with another way to work with these multiple filesystems. 
 
 1. We transfer the raw files to be processed from `/fh/fast/` to our directory `/fh/temp/`. For example, a set of `.bam` files.
-2. We run our scripts from `/home/`, on the raw files in `/fh/temp/` and produce results in `/fh/temp/`
-3. We transfer our results from `/fh/temp/` to `/fh/fast/`
+2. We run our scripts from `/home/`, on the raw files in `/fh/temp/` and produce results in `/fh/temp/`.
+3. We transfer our results from `/fh/temp/` to `/fh/fast/`.
 
 ```{mermaid}
 graph LR
@@ -65,9 +65,11 @@ graph LR
     C["Temp\n/fh/temp/tladera2"] --"3. transfer\nresults"--> B
 ```
 
-### Transferring Files between Filesystems
+### Transferring Files between Filesystems {#sec-motuz}
 
-Your main mechanism for getting files to and from fast and scratch is [Motuz](https://sciwiki.fredhutch.org/compdemos/motuz/), which is a GUI based file transfer utility. One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again. 
+Your main mechanism for getting files to and from fast and scratch is [Motuz](https://sciwiki.fredhutch.org/compdemos/motuz/), which is a GUI based file transfer utility. 
+
+One of the advantages of Motuz is that it supports file resuming in case of disconnection, avoiding having to reupload the whole batch of files over again. 
 
 Motuz also supports file transfers between other filesystems at FH, including the FH Amazon S3 bucket. Highly recommended.
 
@@ -77,7 +79,7 @@ The `pwd` command (short for *present working directory*) will let you know your
 
 ## Going `/home`: `~/` {#sec-home}
 
-There is one important shortcut you should always remember: `~/` is shorthand for your own home directory.
+There is one important file alias you should always remember: `~/` is shorthand for your own home directory.
 
 Depending on the linux distribution, this can be a different location. On the FH filesystem, when I use `~/`, it maps to:
 
@@ -85,14 +87,14 @@ Depending on the linux distribution, this can be a different location. On the FH
 
 The home directory is also important because it is where your configuration files live, such as `.bashrc` (see @sec-bashrc).
 
-Depending on how you work, you may want to store your scripts and workflows in `/home/`. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see @sec-project
+Depending on how you work, you may want to store your scripts and workflows in `/home/`. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see @sec-project.
 
 ## Absolute versus relative paths {#sec-paths}
 
 Absolute paths contain all the information needed to find a file in a file system from the root `/` directory. For example, this would be an absolute path:
 
 ```
-/fh/fast/laderast/immuno_project/raw_data/tcr_data.fasta
+/fh/fast/laderast/immuno_project/raw_data/chr2.fa.gz
 ```
 
 In terms of folder structure, this is what this looks like:
@@ -111,40 +113,39 @@ Absolute paths always start with `/`, because that is the root directory, where 
 
 Relative paths break up an absolute path into two pieces of information: 1) your current directory and 2) the path *relative* to that directory. Relative paths are really helpful because things don't break when you move your folder or files. 
 
+
+If my current working directory is the directory `/fh/fast/laderas_t/immuno_project/`, then the relative path to that same file would be:
+
+```
+raw_data/chr2.fa.gz
+```
+
+We can visualize the relative path like this, where our working directory is indicated by a star
+
 ```
 /
-├── fh
-│   └──fast
-│       └── laderast
-|            └──immuno_project *
+├── fh/fast/laderast/immuno_project/ *
+|      ^working directory        └──raw_data
+│                                   └──chr2.fa.gz
+                                    ^relative path
 ```
 
-If my current path the directory `/fh/fast/laderas_t/immuno_project/`, then the relative path to that same file would be:
-
-```
-raw_data/tcr_data.fasta
-```
 
 Note that this relative path does not start with a `/`, because our current directory isn't the root directory. Relative paths are incredibly useful when scripting in a reproducible manner, such as using project-based workflows to process files in a single folder.
 
-### Keep Everything in a Folder
+### Keep Everything in Folders
 
 We need to talk about code and data organization. For the FH system, we have a `/home/` directory, and if we have generated research data, a `/fh/fast/` directory. If we want our scripts to live in `/home/` and our data is in `/fh/temp/`, we'll need to refer to each of these file locations.
 
 Ideally, we want to make the naming conventions of our code and our data as similar as possible.
 
-The requirements of bioinformatics analysis usually require a huge amount of data, so storing data and scripts in a single directory is usually not recommended.
-
-
-
-
 ## Project/folder based workflows {#sec-project}
 
 On a particular machine, using *absolute* paths is safe. However, you do this at the cost of *portability* - code that you write on one machine may not run on another. 
 
-If you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest. 
+If you ever anticipate doing the analysis on a separate machine, using project structures with relative paths is the safest. For example, you may want to move from the on-premise FH system to working with the data in AWS. 
 
-For example, here's one example of putting everything into a single folder:
+Here's one example of putting everything into a single folder:
 
 ```bash
 my_project
@@ -186,6 +187,15 @@ You may have seen relative paths such as `../another_directory/` - the `..` mean
 
 In general for portability and reproducibility, you will want to use relative paths **within a directory**, and avoid using relative paths like `../../my_folder`, where you are navigating up. In general, use relative paths to navigate down. 
 
+:::{.callout}
+## Why This is Important
+
+When you start executing scripts, it's important to know where the results go. When you execute SAMtools on a file in `/fh/temp/`, for example, where does the output go?
+
+Workflow Runners such as Cromwell and Nextflow will output into certain file structures by default. This can be changed, but knowing the default behavior is super helpful when you don't specify an output directory.
+
+:::
+
 
 ## Moving Things Around {#sec-moving}
 
@@ -204,8 +214,11 @@ mv log.txt my_folder/  ## moves log.txt to be in my_folder
 ```
 This is one thing that trips me up all the time. 
 
-This is one situation where using a GUI such as Motuz can be very helpful. 
+This is one situation where using a GUI such as Motuz (@sec-motuz) can be very helpful. You don't have to worry about accidentally renaming files. 
 
+Other tools for sync'ing between filesystems include `rsync`, which requires careful reading of documentation. 
+
+:::{.callout}
 ### Things I always forget: the difference between `/home/mydir/`  and `home/mydir/`
 
 Some things that trip me up all the time. The difference between 
@@ -219,6 +232,10 @@ and
 home/mydir/    #relative path
 ```
 The first one is an *absolute path*, and the second is a *relative path*. Your clue is the leading `/` at the beginning of a path. If you're getting `file not found` messages, check to make sure the path is the right format.
+:::
 
+## What's Next?
+
+Now that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (@sec-script). 
 
 

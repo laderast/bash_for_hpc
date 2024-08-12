@@ -1,0 +1,26 @@
+# HPC Security and Safety
+
+## Learning Objectives
+
+After reading this chapter, you should be able to:
+
+- **Explain** institutional restrictions on what data can be used in an HPC environment
+- **Decide** whether your restricted use data meets the conditions for use in an HPC environment
+- **Document** your decision to use your data in an HPC environment
+
+## What are the regulations associated with using HPC with restricted use data?
+
+- https://csrc.nist.gov/projects/cprt/catalog#/cprt/framework/version/SP_800_53_5_1_1/home?element=AT-01
+- https://www.nrel.gov/hpc/data-security-policy.html
+- https://ipo.llnl.gov/technologies/it-and-communications/processing-protected-data-high-performance-computing-clusters
+- [DHS Decision Charts](https://www.hhs.gov/ohrp/regulations-and-policy/decision-charts-2018/index.html#c1)
+
+## Be Safe with Restricted Use Data
+
+Subject privacy is extremely important. Be careful that you only use covariates that you need, and remove those covariates that are under safe harbor regulations.
+
+- **Use the [Safe Harbor Method](https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html#safeharborguidance) for de-identifying your clinical data**. 
+- **Use deidentified versions of the patient data on HPC**. When in doubt, use [de-identified data](https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html) for processing data. Most of the applications to HPC will be processing genomic or other datatypes. 
+- **Use only the covariates necessary in your study.** For example, for a GWAS study of type II diabetes, bring in 
+- **If using data under a Data Use Agreement (DUA), make sure you are comfortable with the terms**. Many DUAS
+

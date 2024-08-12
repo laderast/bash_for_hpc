@@ -228,7 +228,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visual-table-of-contents" id="toc-visual-table-of-contents" class="nav-link active" data-scroll-target="#visual-table-of-contents"><span class="header-section-number">7.1</span> Visual Table of Contents</a></li>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives"><span class="header-section-number">7.2</span> Learning Objectives</a></li>
   <li><a href="#grabbing-an-interactive-shell-on-a-worker" id="toc-grabbing-an-interactive-shell-on-a-worker" class="nav-link" data-scroll-target="#grabbing-an-interactive-shell-on-a-worker"><span class="header-section-number">7.3</span> Grabbing an interactive shell on a worker</a></li>
-  <li><a href="#what-next" id="toc-what-next" class="nav-link" data-scroll-target="#what-next"><span class="header-section-number">7.4</span> What Next?</a></li>
+  <li><a href="#testing-your-scripts" id="toc-testing-your-scripts" class="nav-link" data-scroll-target="#testing-your-scripts"><span class="header-section-number">7.4</span> Testing Your Scripts</a></li>
+  <li><a href="#exit-when-done" id="toc-exit-when-done" class="nav-link" data-scroll-target="#exit-when-done"><span class="header-section-number">7.5</span> <code>exit</code> when done</a></li>
+  <li><a href="#screen-for-keeping-your-shell-open" id="toc-screen-for-keeping-your-shell-open" class="nav-link" data-scroll-target="#screen-for-keeping-your-shell-open"><span class="header-section-number">7.6</span> <code>screen</code> for keeping your shell open</a></li>
+  <li><a href="#what-next" id="toc-what-next" class="nav-link" data-scroll-target="#what-next"><span class="header-section-number">7.7</span> What Next?</a></li>
   </ul>
 </nav>
     </div>
@@ -265,8 +268,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
    A[Open Shell on Worker] --&gt; B
-   B[Test Scripts] --&gt; E
-   E --&gt; F[Exit Worker]
+   B[Test Scripts] --&gt; F
+   F[Exit Worker]
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -279,8 +282,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>After reading this, you will be able to:</p>
 <ul>
 <li><strong>Open</strong> an interactive shell on a SLURM worker node using <code>salloc</code> or <code>grabnode</code></li>
-<li><strong>Open</strong> an interactive shell in a Docker Container using Apptainer</li>
-<li><strong>Articulate</strong> how to connect container filesystems to the external filesystem</li>
+<li><strong>Test</strong> your code on a SLURM worker</li>
+<li><strong>Exit</strong> the shell of a remote worker</li>
+<li><strong>Utilize</strong> <code>screen</code> to keep a shell open and running on a remote worker.</li>
 </ul>
 </section>
 <section id="grabbing-an-interactive-shell-on-a-worker" class="level2" data-number="7.3">
@@ -339,12 +343,40 @@ Remember <code>hostname</code>
 </div>
 </div>
 </section>
-<section id="what-next" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="what-next"><span class="header-section-number">7.4</span> What Next?</h2>
-<p>You’ve learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:</p>
+<section id="testing-your-scripts" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="testing-your-scripts"><span class="header-section-number">7.4</span> Testing Your Scripts</h2>
+<p>Part of the reason for interactive testing is to make sure that the worker node can “see” and access all of your resources, including files and executables.</p>
+<p>This is especially helpful when you are testing individual steps of a WDL workflow to make sure they work.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Working Interactively
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Many people will request a node and do their interactive analysis completely on that node. This can work great, but if you are requesting a huge allocation (such as a 64-core machine), you may be waiting a while to even get access to that allocation.</p>
+<p>If you do the work of breaking up your scripts into WDL tasks, that makes utilizing the smaller spec’d machines for tasks like alignment much faster than waiting for a large allocation.</p>
+<p>Believe me, it’s worth doing this.</p>
+</div>
+</div>
+</section>
+<section id="exit-when-done" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="exit-when-done"><span class="header-section-number">7.5</span> <code>exit</code> when done</h2>
+<p>When you’re done with the worker, you can <code>exit</code> the shell. This will put you back into the root node.</p>
+</section>
+<section id="screen-for-keeping-your-shell-open" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="screen-for-keeping-your-shell-open"><span class="header-section-number">7.6</span> <code>screen</code> for keeping your shell open</h2>
+<p>Remember the <code>screen</code> utility? (<a href="intro-unix.html#sec-screen" class="quarto-xref"><span>Section 3.6.2</span></a>). You can utilize <code>screen</code> to keep your shell open on a remote worker. This is necessary when running interactive jobs when not connected.</p>
+</section>
+<section id="what-next" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="what-next"><span class="header-section-number">7.7</span> What Next?</h2>
+<p>You’ve learned how to open interactive shells in a remote node. There are a number of ways to go from here:</p>
 <ul>
 <li>Try running your script using <code>srun</code></li>
-<li></li>
+<li>Try running your script in a container (<a href="running_containers.html" class="quarto-xref"><span>Chapter 8</span></a>)</li>
 </ul>
 
 

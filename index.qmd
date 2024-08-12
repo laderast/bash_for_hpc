@@ -38,12 +38,7 @@ It is designed to build on each of the concepts in a gradual manner. Where possi
 
 At each step, you'll be able to do useful things with your data. We will focus on skills and programming patterns that are useful.
 
-## Prerequisites
-
-Before you tackle this book, you should be able to accomplish the following:
-
--   **Open** and **utilize** a shell on a remote system using a terminal or SSH tool such as PuTTY. This section from the Missing Semester of your CS Education is very helpful: <https://missing.csail.mit.edu/2020/course-shell/>
--   [**Utilize** and **navigate**](https://swcarpentry.github.io/shell-novice/02-filedir/index.html) File Paths (both absolute and relative) in a Unix system
+## Other Resources
 
 We recommend reviewing a course such as the [Software Carpentry course for Shell Scripting](https://swcarpentry.github.io/shell-novice/) before getting started with this book. [The Missing Semester of your CS Education](https://missing.csail.mit.edu/) is another great introduction/resource.
 
@@ -55,7 +50,7 @@ TBD.
 
 This is the first draft of this book. It's not going to be perfect, and we need help. Specifically, we need help with testing the setup and the exercises.
 
-If you have an problem, you can file it as an issue using [this link](https://github.com/laderast/bash_for_bioinformatics/issues/new/choose).
+If you have an problem, you can file it as an issue using [this link](https://github.com/laderast/bash_for_hpc/issues/new/choose).
 
 In your issue, please note the following:
 

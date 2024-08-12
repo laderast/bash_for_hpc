@@ -1,5 +1,5 @@
 ---
-title: "Using JupyterLab on DNAnexus"
+title: "Using JupyterLab on HPC"
 ---
 
 ## Learning Objectives
@@ -74,7 +74,7 @@ It will take a few minutes for JupyterLab to start up, even after the status of 
 
 ## Two kinds of Storage
 
-We have talked about the multiple storage systems we need to contend with to be successful on the platform. 
+We have talked about the multiple storage systems we need to contend with to be successful on the cluster. 
 
 Let's focus on the *Project Storage* and the *temporary worker storage*. When we work with JupyterLabs, we need to contend with both.
 
@@ -102,14 +102,6 @@ In the words of Nintendo: *Everything not saved will be lost*.
 The much safer way to work in a project is to use **DNAnexus >> New Notebook** in the JupyterLab menu which will create a new notebook in project storage. There is an autosave feature for these notebooks, but when in doubt, *save often*.
 
 You can identify in the JupyterLab interface which notebooks are being accessed from project storage by the `[DX]` in their title. 
-
-:::{.callout}
-## Wait, I thought that files were immutable on the platform. Not notebooks?
-
-If you know a little bit about the DNAnexus filesystem, you might be wondering about the notebook saving into project storage. If you know that file objects are immutable, you might be wondering what's going on.
-
-The secret is that old versions of notebooks (including autosaved ones) get archived into a folder callled `.Notebook_archive/` in your project. These are all time stamped. 
-:::
 
 ## A Basic JupyterLabs Workflow
 
@@ -144,7 +136,7 @@ penguins.describe() #<3>
 ```python
 dx upload penguins.csv --destination /users/tladeras/ #<4>
 ```
-4. Say we made a modification to `penguins` in our work. We can get that result back into project storage using `dx upload`. Note that with the `--destination` parameter, directories will be created on the platform if they do not yet exist.
+4. Say we made a modification to `penguins` in our work. We can get that result back into project storage using `dx upload`. Note that with the `--destination` parameter, directories will be created on the cluster if they do not yet exist.
 
 ## An alternate way of transferring files: dxFUSE
 

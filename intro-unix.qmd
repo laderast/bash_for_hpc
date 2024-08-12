@@ -31,7 +31,7 @@ FH Users: after connecting through the Fred Hutch VPN you'll connect to `rhino` 
 If you are on Windows, you can install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), and specifically the Ubuntu distribution. That will give you a command-line shell that you can use to interact with the remote server. I prefer this route, but PuTTY works great as well.
 :::
 
-On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in editors such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you.
+On your machine, I recommend using a text editor to edit the scripts in your remote shell. Good ones include [Visual Studio Code (VS Code) ](https://code.visualstudio.com/), or built in editors such as `nano`. You can use VSCode to edit scripts remotely using the SSH extension. Editing scripts remotely like this may be more comfortable for you. Note that if you are on a Windows machine that is remotely administered, you will need to contact the admins to enable the OpenSSH extension in Windows for it to work. 
 
 ## `hostname`: What machine am I on?
 
@@ -51,7 +51,7 @@ gizmok164
 If you're confused about which node you're in, remember `hostname`. It will save you from making mistakes, especially when using utilities like `screen`.
 
 
-## Environment Variables
+## Environment Variables {#sec-environment}
 
 Environment variables are variables which can be seen globally in the Linux (or Windows) system across executables. 
 
@@ -250,7 +250,7 @@ In general, we recommend connecting an editor such as VS Code with the SSH exten
 
 That's what `nano` and `vim` are for. Of these, `nano` has the smallest learning curve, since it works like most editors. `vim` is powerful (especially for searching and substitution), but there is a steep learning curve associated with it. 
 
-### `screen` or `tmux`: keep your session open
+### `screen` or `tmux`: keep your session open {#sec-screen}
 
 {{< video https://youtu.be/fYWszwc-LXM >}}
 

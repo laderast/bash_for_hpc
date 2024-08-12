@@ -1,14 +1,12 @@
-# Working with containers
+# Working with containers {#sec-containers}
 
 ## Visual Table of Contents
 
 ```{mermaid}
 flowchart TD
-   A[Open Shell on Worker] --> B
    B["Open Shell in Container\n(with Bindpaths)"]
    B --> D[Test Scripts in container]
    D --> E[Exit Container]
-   E --> F[Exit Worker]
 ```
 
 
@@ -18,7 +16,7 @@ In this section, we talk about testing scripts in a container using `apptainer`.
 
 In order to do our testing, we'll first pull the Docker container, map our bind point (so our container can access files outside of its file system), and then run scripts in the container.
 
-Even if you aren't going to frequently use Apptainer in your work, I recommend trying an interactive shell in a container at least once or twice to learn about the container filesystem and how you connect it to the external filesystem.
+Even if you aren't going to frequently use Apptainer in your work, I recommend trying an interactive shell in a container at least once or twice to learn about the container filesystem and conceptually understand how you connect it to the external filesystem.
 
 
 ### Pulling a Docker Container
@@ -59,13 +57,14 @@ exit
 ```
 
 :::{.callout-note}
-## Opening a Shell in a Docker Container
+## Opening a Shell in a Docker Container with Docker
 
-For the most part, due to security reasons, we don't use `docker` on HPC systems. However, if you have admin level access (for example, on your own laptop), you can open up an interactive shell with `docker run`:
+For the most part, due to security reasons, we don't use `docker` on HPC systems. In short, the `docker` group essentially has root-level access to the machine, and it's not a good for security on a shared resource like an HPC.  However, if you have admin level access (for example, on your own laptop), you can open up an interactive shell with `docker run`:
 
 ```bash
 docker run -it biocontainers/samtools:v1.9-4-deb_cv1 /bin/bash
 ```
+This will open a bash shell much like `apptainer shell`. Note that volumes (the docker equivalent of bind paths) are specified differently in Docker compared to Apptainer.
 :::
 
 ## Testing out bind paths in containers {#sec-bindpaths}
@@ -134,6 +133,52 @@ Again, trying out scripts in the container is the best way to understand what th
 
 You can `exit`, like any shell you open. You should be out of the container. Confirm by using `hostname` to make sure you're out of the container.
 
+## Testing outside of the container
+
+Let's take everything that we learned and put it in a script that we can run on the HPC:
+
+```bash
+# Script to samtools view -c an input file:
+# Usage: ./run_sam.sh <my_bam_file.bam>
+# Outputs a count file: my_bam_file.bam.counts.txt
+#!/bin/bash
+module load Apptainer/1.1.6
+apptainer run --bind /fh/fast/mydata:/mydata docker://biocontainers/samtools:v1.9-4-deb_cv1 samtools view -c /mydata/$1 > /mydata/$1.counts.txt
+#apptainer cache clean
+module purge
+```
+
+We can use this script by the following command:
+
+```
+./run_sam.sh chr1.bam 
+```
+
+And it will output a file called `chr1.bam.counts.txt`.
+
+## Apptainer Cache
+
+[The apptainer cache](https://apptainer.org/docs/user/1.0/build_env.html) is where your docker images live. They are translated to the native apptainer `.sif` format.
+
+You can see what's in your cache by using
+
+```
+apptainer cache list
+```
+
+By default the cache lives at `~/.apptainer/cache`.
+
+If you need to clear out the cache, you can run 
+
+```
+apptainer cache clean
+```
+
+to clear out the cache.
+
+There are a number of environment variables (@sec-environment) that can be set, including login tokens for pulling from a private registry. [More information is here](https://apptainer.org/docs/user/1.0/build_env.html#environment-variables).
+
+
 ## Entrypoints
 
 You can think of an entrypoint as a way of automatically starting something up in your container when you run it. For example, if you have a web stack container, one of the things you want to start is a web server when you start running it. 
@@ -150,4 +195,4 @@ The main reason to be aware of entrypoints is when they exist in a Dockerfile. I
 You've learned how to open interactive shells in both a remote node and in a container. There are a number of ways to go from here:
 
 - Integrate containers into your scripts
-- Customize your container using a Dockerfile
+- Customize your containers using Dockerfiles

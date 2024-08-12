@@ -86,7 +86,7 @@ bash sam_run.sh my_file.bam out_stats.txt
 
 ## Using pipes: STDIN, STDOUT, STDERR
 
-We will need to use pipes to chain our commands together. Specifically, we need to take a command that generates a list of files on the platform, and then spawns individual jobs to process each file. For this reason, understanding a little bit more about how pipes (`|`) work in Bash is helpful.
+We will need to use pipes to chain our commands together. Specifically, we need to take a command that generates a list of files on the cluster shared filesystem, and then spawns individual jobs to process each file. For this reason, understanding a little bit more about how pipes (`|`) work in Bash is helpful.
 
 If we want to understand how to chain our scripts together into a pipeline, it is helpful to know about the different streams that are available to the utilities.
 
@@ -123,7 +123,7 @@ Piping a script `run_samtools.sh` into another command (`wc`)
 We will mostly use STDOUT in our bash scripts, but STDERR can be really helpful in debugging what's going wrong. 
 
 :::{.callout-note}
-## Why this is important on the platform
+## Why this is important on the Cluster
 
 We'll use pipes and pipelines not only in starting a bunch of jobs using batch scripting on our home computer, but also when we are processing files within a job.
 :::
@@ -255,7 +255,7 @@ ls data/*.json | xargs -I% sh -c "tail %; echo '---\n'"
 :::{.callout-note}
 ## Why this is important on HPC
 
-We can use `xargs` to execute small batch jobs on a small number of files. This especially becomes powerful on the platform when we use `ls` to list files in our HPC project.
+We can use `xargs` to execute small batch jobs on a small number of files. This especially becomes powerful on the cluster when we use `ls` to list files in our HPC project.
 
 Note that as we *graduate* to workflow tools like WDL/Nextflow, there are other mechanisms for running jobs on multiple files (such as WDL/Cromwell) that we should move to. 
 
@@ -405,7 +405,7 @@ echo "there are $(ls -l | wc -l) files in this directory"
 :::{.callout-note}
 ## What about X use case?
 
-There are a lot of rules for Bash variable expansion and quoting that I don't cover here. I try to show you a way to do things that work in multiple situations on the platform.
+There are a lot of rules for Bash variable expansion and quoting that I don't cover here. I try to show you a way to do things that work in multiple situations on the cluster.
 
 That's why I focus on double quotes for filenames and `${}` for variable expansion in general. They will work whether your Bash script is on the command line or in an App, or in WDL. 
 
@@ -414,7 +414,7 @@ That's why I focus on double quotes for filenames and `${}` for variable expansi
 
 ## What you learned in this chapter
 
-Whew, this was a whirlwind tour. Keep this chapter in mind when you're working on a cluster - the bash programming patterns will serve you well. We'll refer to these patterns a lot when we get to doing more bioinformatics tasks on the platform.
+Whew, this was a whirlwind tour. Keep this chapter in mind when you're working on a cluster - the bash programming patterns will serve you well. We'll refer to these patterns a lot when we get to doing more bioinformatics tasks on the cluster.
 
 - Setting up bash scripts with positional arguments
 - Iterating over a list of files using `xargs`

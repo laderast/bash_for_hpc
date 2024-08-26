@@ -67,55 +67,8 @@ Here are some guidelines to think about when you are working with a container.
 - **Avoid kitchen-sink images**. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.
 
 
-
-## Making Dockerfiles
-
-The other way to build image files is to use a Dockerfile. A Dockerfile is a recipe for installing software and its dependencies.
-
-Let's take a look at a Dockerfile. By default, it is contained within a folder and is called `Dockerfile`:
-
-```
-FROM ubuntu:18.04
-
-RUN apt-get update && \
-    apt-get install -y build-essential  && \
-    apt-get install -y wget && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-ENV CONDA_DIR /opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-     /bin/bash ~/miniconda.sh -b -p /opt/conda
-
-ENV PATH=$CONDA_DIR/bin:$PATH
-
-#install plink with conda
-RUN conda install -c "bioconda/label/cf201901" plink
-RUN conda install -c "bioconda/label/cf201901" samtools
-```
-
-We can build the Docker image in our directory using:
-
-```
-docker build . -t gatk_sam_plink:0.0.1
-```
-
-When it's done, we can then make sure it's been built by using
-
-```
-docker images
-```
-
-And we can use it like any other image. 
-
-## Going Further with Docker
-
-Now that you know how to build a snapshot file, you've also learned another step in building apps: specifying software dependencies. You can use these snapshot files to specify executables in your app.
-
-You can also use these snapshot files in your WDL workflow.
-
 ## What you learned in this chapter
 
 - How containers enable reproducibility
 - Defined specific container terminology
-- 
+-

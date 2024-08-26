@@ -650,31 +650,11 @@
     ]
   },
   {
-    "objectID": "container-concepts.html#making-dockerfiles",
-    "href": "container-concepts.html#making-dockerfiles",
-    "title": "9  Containers and Reproducibility",
-    "section": "9.6 Making Dockerfiles",
-    "text": "9.6 Making Dockerfiles\nThe other way to build image files is to use a Dockerfile. A Dockerfile is a recipe for installing software and its dependencies.\nLet’s take a look at a Dockerfile. By default, it is contained within a folder and is called Dockerfile:\nFROM ubuntu:18.04\n\nRUN apt-get update && \\\n    apt-get install -y build-essential  && \\\n    apt-get install -y wget && \\\n    apt-get clean && \\\n    rm -rf /var/lib/apt/lists/*\n\nENV CONDA_DIR /opt/conda\nRUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \\\n     /bin/bash ~/miniconda.sh -b -p /opt/conda\n\nENV PATH=$CONDA_DIR/bin:$PATH\n\n#install plink with conda\nRUN conda install -c \"bioconda/label/cf201901\" plink\nRUN conda install -c \"bioconda/label/cf201901\" samtools\nWe can build the Docker image in our directory using:\ndocker build . -t gatk_sam_plink:0.0.1\nWhen it’s done, we can then make sure it’s been built by using\ndocker images\nAnd we can use it like any other image.",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
-    ]
-  },
-  {
-    "objectID": "container-concepts.html#going-further-with-docker",
-    "href": "container-concepts.html#going-further-with-docker",
-    "title": "9  Containers and Reproducibility",
-    "section": "9.7 Going Further with Docker",
-    "text": "9.7 Going Further with Docker\nNow that you know how to build a snapshot file, you’ve also learned another step in building apps: specifying software dependencies. You can use these snapshot files to specify executables in your app.\nYou can also use these snapshot files in your WDL workflow.",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
-    ]
-  },
-  {
     "objectID": "container-concepts.html#what-you-learned-in-this-chapter",
     "href": "container-concepts.html#what-you-learned-in-this-chapter",
     "title": "9  Containers and Reproducibility",
-    "section": "9.8 What you learned in this chapter",
-    "text": "9.8 What you learned in this chapter\n\nHow containers enable reproducibility\nDefined specific container terminology",
+    "section": "9.6 What you learned in this chapter",
+    "text": "9.6 What you learned in this chapter\n\nHow containers enable reproducibility\nDefined specific container terminology",
     "crumbs": [
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
     ]

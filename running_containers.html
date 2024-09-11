@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#visual-table-of-contents" id="toc-visual-table-of-contents" class="nav-link active" data-scroll-target="#visual-table-of-contents"><span class="header-section-number">10.1</span> Visual Table of Contents</a></li>
-  <li><a href="#opening-shells-in-containers-for-testing" id="toc-opening-shells-in-containers-for-testing" class="nav-link" data-scroll-target="#opening-shells-in-containers-for-testing"><span class="header-section-number">10.2</span> Opening Shells in Containers for Testing</a>
+  <li><a href="#sec-open-container" id="toc-sec-open-container" class="nav-link" data-scroll-target="#sec-open-container"><span class="header-section-number">10.2</span> Opening Shells in Containers for Testing</a>
   <ul class="collapse">
   <li><a href="#pulling-a-docker-container" id="toc-pulling-a-docker-container" class="nav-link" data-scroll-target="#pulling-a-docker-container"><span class="header-section-number">10.2.1</span> Pulling a Docker Container</a></li>
   </ul></li>
@@ -296,8 +296,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="opening-shells-in-containers-for-testing" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="opening-shells-in-containers-for-testing"><span class="header-section-number">10.2</span> Opening Shells in Containers for Testing</h2>
+<section id="sec-open-container" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="sec-open-container"><span class="header-section-number">10.2</span> Opening Shells in Containers for Testing</h2>
 <p>In this section, we talk about testing scripts in a container using <code>apptainer</code>. We use <code>apptainer</code> (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.</p>
 <p>In order to do our testing, we’ll first pull the Docker container, map our bind point (so our container can access files outside of its file system), and then run scripts in the container.</p>
 <p>Even if you aren’t going to frequently use Apptainer in your work, I recommend trying an interactive shell in a container at least once or twice to learn about the container filesystem and conceptually understand how you connect it to the external filesystem.</p>

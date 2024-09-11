@@ -10,7 +10,7 @@ flowchart TD
 ```
 
 
-## Opening Shells in Containers for Testing
+## Opening Shells in Containers for Testing {#sec-open-container}
 
 In this section, we talk about testing scripts in a container using `apptainer`. We use `apptainer` (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.
 

@@ -1088,5 +1088,15 @@
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
     ]
+  },
+  {
+    "objectID": "running_containers.html#sec-open-container",
+    "href": "running_containers.html#sec-open-container",
+    "title": "10  Working with containers",
+    "section": "10.2 Opening Shells in Containers for Testing",
+    "text": "10.2 Opening Shells in Containers for Testing\nIn this section, we talk about testing scripts in a container using apptainer. We use apptainer (formerly Singularity) in order to run Docker containers on a shared HPC system. This is because Docker itself requires root-level privileges, which is not secure on shared systems.\nIn order to do our testing, we’ll first pull the Docker container, map our bind point (so our container can access files outside of its file system), and then run scripts in the container.\nEven if you aren’t going to frequently use Apptainer in your work, I recommend trying an interactive shell in a container at least once or twice to learn about the container filesystem and conceptually understand how you connect it to the external filesystem.\n\n10.2.1 Pulling a Docker Container\nLet’s pull a docker container from the Docker registry. Note we have to specify docker:// when we pull the container, because Apptainer has its own internal format called SIF.\napptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Working with containers</span>"
+    ]
   }
 ]

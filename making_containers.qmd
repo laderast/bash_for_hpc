@@ -2,7 +2,7 @@
 
 ## Making Dockerfiles
 
-The other way to build image files is to use a Dockerfile. A Dockerfile is a recipe for installing software and its dependencies.
+One way to build Docker Images is to use a Dockerfile. A Dockerfile is a recipe for installing software and its dependencies.
 
 Let's take a look at a Dockerfile. By default, it is contained within a folder and is called `Dockerfile`:
 

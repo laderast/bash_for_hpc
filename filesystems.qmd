@@ -234,6 +234,74 @@ home/mydir/    #relative path
 The first one is an *absolute path*, and the second is a *relative path*. Your clue is the leading `/` at the beginning of a path. If you're getting `file not found` messages, check to make sure the path is the right format.
 :::
 
+
+## File Permissions
+
+File permissions are *metadata* that are attached to file objects. They are how the system prevents certain files from being messed with.
+
+All files have the following level of access permissions:
+
+|Level|Description|
+|-----|-----------|
+|Owner-level|The owner of the file|
+|Group-level|The group of the file|
+|Everyone|The rest of the world|
+
+Each level has the following type of access
+
+|Type|Description|Abbreviation|Example|
+|----|-----------|------------|-------|
+|Read|Level can only read contents of file|`r`|A list of users in a text file|
+|Write|Level can write to the file|`w`|Appending an entry to the end of a log|
+|Execute|Level can run the file as an executable|`x`|samtools|
+
+The cardinal rule to remember is that 
+
+> If you want to run a file as an executable, you need to have executable level permission.
+
+For example, if I want to run a script called `run_samtools.sh` in my directory like this:
+
+```
+./run_samtools.sh my_bam_file.bam
+```
+
+I will need to have execute privileges at the user, group, or others level.
+
+:::{.callout}
+## Helpful unix permissions situations
+
+I tend to just go by memory when setting file permissions. If I have collaborators who just want to set 
+
+|Situation|Command|
+|---------|-------|
+|Only I can execute/read/write a file|`chmod 700 <file>`|
+|Only I and my group can read a file|`chmod 110 <file>` |
+|Grant a group read permissions|`chmod 710 <file>`|
+|Make executable/read/write by all|`chmod 777 <file?`|
+
+:::
+
+:::{.callout}
+## Even if you don't have execute permissions
+
+With bash scripts, you can still run them if you have `read` permissions. You can still run bash scripts by using the `bash` command:
+
+```
+bash run_samtools.sh my_bam_file.bam
+```
+
+This has saved me a number of times.
+:::
+
+### For More Info
+
+- <https://mason.gmu.edu/~montecin/UNIXpermiss.htm>
+
+## Common Unix Directories
+
+![Common Unix Directories across all systems (image via [ByteByteGo](https://bytebytego.com/))](images/1725596486922.gif)
+
+
 ## What's Next?
 
 Now that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (@sec-script). 

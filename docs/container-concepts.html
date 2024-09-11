@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>9&nbsp; Containers and Reproducibility – Bash for HPC</title>
+<title>9&nbsp; Container Basics – Bash for HPC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,6 +80,9 @@ ul.task-list li input[type="checkbox"] {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -93,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./container-concepts.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./container-concepts.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -169,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./container-concepts.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -202,13 +205,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">9.1</span> Learning Objectives</a></li>
   <li><a href="#why-containers" id="toc-why-containers" class="nav-link" data-scroll-target="#why-containers"><span class="header-section-number">9.2</span> Why Containers?</a></li>
-  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology"><span class="header-section-number">9.3</span> Terminology</a>
-  <ul class="collapse">
-  <li><a href="#be-secure" id="toc-be-secure" class="nav-link" data-scroll-target="#be-secure"><span class="header-section-number">9.3.1</span> Be Secure</a></li>
-  </ul></li>
-  <li><a href="#making-dockerfiles" id="toc-making-dockerfiles" class="nav-link" data-scroll-target="#making-dockerfiles"><span class="header-section-number">9.4</span> Making Dockerfiles</a></li>
-  <li><a href="#going-further-with-docker" id="toc-going-further-with-docker" class="nav-link" data-scroll-target="#going-further-with-docker"><span class="header-section-number">9.5</span> Going Further with Docker</a></li>
-  <li><a href="#what-you-learned-in-this-chapter" id="toc-what-you-learned-in-this-chapter" class="nav-link" data-scroll-target="#what-you-learned-in-this-chapter"><span class="header-section-number">9.6</span> What you learned in this chapter</a></li>
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology"><span class="header-section-number">9.3</span> Terminology</a></li>
+  <li><a href="#what-is-a-container" id="toc-what-is-a-container" class="nav-link" data-scroll-target="#what-is-a-container"><span class="header-section-number">9.4</span> What is a Container?</a></li>
+  <li><a href="#docker-vs.-apptainer" id="toc-docker-vs.-apptainer" class="nav-link" data-scroll-target="#docker-vs.-apptainer"><span class="header-section-number">9.5</span> Docker vs.&nbsp;Apptainer</a></li>
+  <li><a href="#be-secure" id="toc-be-secure" class="nav-link" data-scroll-target="#be-secure"><span class="header-section-number">9.6</span> Be Secure</a></li>
+  <li><a href="#what-you-learned-in-this-chapter" id="toc-what-you-learned-in-this-chapter" class="nav-link" data-scroll-target="#what-you-learned-in-this-chapter"><span class="header-section-number">9.7</span> What you learned in this chapter</a></li>
   </ul>
 </nav>
     </div>
@@ -217,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-containers" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></h1>
+<h1 class="title"><span id="sec-containers" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></span></h1>
 </div>
 
 
@@ -251,25 +252,68 @@ ul.task-list li input[type="checkbox"] {
 <section id="terminology" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="terminology"><span class="header-section-number">9.3</span> Terminology</h2>
 <p>In order to be unambiguous with our language, we’ll use the following definitions:</p>
-<div id="fig-docker1" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-docker1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/docker_terminology.png" class="img-fluid figure-img">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    A["Docker Image"] --"apptainer pull/apptainer build"--&gt; B
+    B["Docker Container"] --"apptainer run"--&gt; C
+    C["Snapshot"]
+</pre>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-docker1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: Docker Terms
-</figcaption>
-</figure>
+<p></p></figure><p></p>
+</div>
+</div>
 </div>
 <ul>
 <li><strong>Registry</strong> - collection of repositories that you pull docker images from. Example repositories include DockerHub and Quay.io.</li>
-<li><strong>Docker Image</strong> - what you download from a registry - the “recipe” for building the software environment. Stored in a registry. use <code>docker pull</code> to get image, <code>docker commit</code> to push changes to registry, can also generate image from a Dockerfile,</li>
-<li><strong>Docker Container</strong> - The executable software environment actually installed and running on a machine. Runnable. Generate from <code>docker pull</code> from a repository.</li>
-<li><strong>Snapshot File</strong> - An single archive file (<code>.tar.gz</code>) that contains the Docker container. Generate using <code>docker save</code> on a container. Also known as an <em>image file</em> on the platform.</li>
+<li><strong>Image</strong> - what you download from a registry - the “recipe” for building the software environment. Stored in a registry. use <code>apptainer pull</code> to get image from a registry. Can also generate image from a Dockerfile</li>
+<li><strong>Container</strong> - The executable software environment actually installed and running on a machine. Runnable. Generate from <code>docker pull</code> from a repository.</li>
+<li><strong>Snapshot File</strong> - An single archive file (<code>.tar.gz</code>) that contains the Docker container. Generate using <code>docker save</code> on a container. Also known as an <em>image file</em>. When we do</li>
+<li><strong>Dockerfile</strong> - a file that specifies how to install software and its dependencies. You often base a Dockerfile on an existing Docker image</li>
+<li><strong>Tag</strong> - a bit of metadata that is used to <em>version</em> a container.</li>
 </ul>
-<section id="be-secure" class="level3" data-number="9.3.1">
-<h3 data-number="9.3.1" class="anchored" data-anchor-id="be-secure"><span class="header-section-number">9.3.1</span> Be Secure</h3>
-<p>Before we get started, security is always a concern when running containers. The <code>docker</code> group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities.</p>
+</section>
+<section id="what-is-a-container" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="what-is-a-container"><span class="header-section-number">9.4</span> What is a Container?</h2>
+<p>A container is a self-contained unit of software. It contains everything needed to run the software on a variety of machines. If you have the container software installed on your machine, it doesn’t matter whether it is MacOS, Linux, or Windows - the container will behave consistently across different operating systems and architectures.</p>
+<p>The container has the following contents:</p>
+<ul>
+<li><strong>Software</strong> - The software we want to run in a container. For bioinformatics work, this is usually something like an aligner like <code>bwa</code>, or utilities such as <code>samtools</code></li>
+<li><strong>Software Dependencies</strong> - various software packages needed to run the software. For example, if we wanted to run <code>tidyverse</code> in a container, we need to have <code>R</code> installed in the container as well</li>
+<li><strong>Filesystem</strong> - containers have their own isolated filesystem that can be connected to the “outside world” - everything outside of the container. We’ll learn more about customizing these with bind paths (<a href="running_containers.html#sec-bindpaths" class="quarto-xref"><span>Section 10.4</span></a>).</li>
+</ul>
+<p>In short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft.</p>
+<p>Containers are ephemeral. They leverage the the file system of their host to manage files. These are called both <em>Volumes</em> (the Docker term) and Bind Paths (the apptainer term).</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What about Virtual Machines?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Virtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger than containers.</p>
+</div>
+</div>
+</section>
+<section id="docker-vs.-apptainer" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="docker-vs.-apptainer"><span class="header-section-number">9.5</span> Docker vs.&nbsp;Apptainer</h2>
+<p>There are two basic ways to run Docker containers:</p>
+<ol type="1">
+<li>Using the Docker software</li>
+<li>Using the Apptainer software (for HPC systems)</li>
+</ol>
+<p>In general, Docker is used on systems where you have a high level of access to the system. This is because docker uses a special user group called <code>docker</code> that has essentially root level privileges.</p>
+<p>This is not the case for HPC systems, which are shared. This is when we use Apptainer (which used to be called Singularity), which requires a much lower level of user privileges to execute tasks. For more info, see <span class="quarto-unresolved-ref">?sec-open-container</span> .</p>
+</section>
+<section id="be-secure" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="be-secure"><span class="header-section-number">9.6</span> Be Secure</h2>
+<p>Before we get started, security is always a concern when running containers. The <code>docker</code> group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities. Note that on HPC systems, the main mechanism for running containers is <code>apptainer</code>, which is designed to be more secure.</p>
 <p>These are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.</p>
 <p>Here are some guidelines to think about when you are working with a container.</p>
 <ul>
@@ -277,46 +321,26 @@ Figure&nbsp;9.1: Docker Terms
 <li><strong>Use container scanners to spot potential vulnerabilities</strong>. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities.</li>
 <li><strong>Avoid kitchen-sink images</strong>. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.</li>
 </ul>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Composing Containers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can connect multiple containers together using a technology called Docker Compose. This means that we can run software pipelines that involve multiple containers.</p>
+<p>For the most part, we don’t leverage Docker Compose, because it is usually used in putting together Web Application Stacks, though there are sometimes when it is helpful. In those cases, we can use <a href="https://singularityhub.github.io/singularity-compose/#/">Singularity compose</a> to do it.</p>
+</div>
+</div>
 </section>
-</section>
-<section id="making-dockerfiles" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="making-dockerfiles"><span class="header-section-number">9.4</span> Making Dockerfiles</h2>
-<p>The other way to build image files is to use a Dockerfile. A Dockerfile is a recipe for installing software and its dependencies.</p>
-<p>Let’s take a look at a Dockerfile. By default, it is contained within a folder and is called <code>Dockerfile</code>:</p>
-<pre><code>FROM ubuntu:18.04
-
-RUN apt-get update &amp;&amp; \
-    apt-get install -y build-essential  &amp;&amp; \
-    apt-get install -y wget &amp;&amp; \
-    apt-get clean &amp;&amp; \
-    rm -rf /var/lib/apt/lists/*
-
-ENV CONDA_DIR /opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh &amp;&amp; \
-     /bin/bash ~/miniconda.sh -b -p /opt/conda
-
-ENV PATH=$CONDA_DIR/bin:$PATH
-
-#install plink with conda
-RUN conda install -c "bioconda/label/cf201901" plink
-RUN conda install -c "bioconda/label/cf201901" samtools</code></pre>
-<p>We can build the Docker image in our directory using:</p>
-<pre><code>docker build . -t gatk_sam_plink:0.0.1</code></pre>
-<p>When it’s done, we can then make sure it’s been built by using</p>
-<pre><code>docker images</code></pre>
-<p>And we can use it like any other image.</p>
-</section>
-<section id="going-further-with-docker" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="going-further-with-docker"><span class="header-section-number">9.5</span> Going Further with Docker</h2>
-<p>Now that you know how to build a snapshot file, you’ve also learned another step in building apps: specifying software dependencies. You can use these snapshot files to specify executables in your app.</p>
-<p>You can also use these snapshot files in your WDL workflow.</p>
-</section>
-<section id="what-you-learned-in-this-chapter" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="what-you-learned-in-this-chapter"><span class="header-section-number">9.6</span> What you learned in this chapter</h2>
+<section id="what-you-learned-in-this-chapter" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="what-you-learned-in-this-chapter"><span class="header-section-number">9.7</span> What you learned in this chapter</h2>
 <ul>
 <li>How containers enable reproducibility</li>
 <li>Defined specific container terminology</li>
-<li></li>
 </ul>
 
 

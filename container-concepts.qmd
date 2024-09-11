@@ -1,4 +1,4 @@
-# Containers and Reproducibility {#sec-containers}
+# Container Basics {#sec-containers}
 
 ## Learning Objectives
 
@@ -22,7 +22,7 @@ In order to be unambiguous with our language, we'll use the following definition
 ```{mermaid}
 graph TD
     A["Docker Image"] --"apptainer pull/apptainer build"--> B
-    B["Docker Container"] --"apptainer run"> C
+    B["Docker Container"] --"apptainer run"--> C
     C["Snapshot"]
 ```
 
@@ -43,20 +43,30 @@ The container has the following contents:
 - **Software Dependencies** - various software packages needed to run the software. For example, if we wanted to run `tidyverse` in a container, we need to have `R` installed in the container as well
 - **Filesystem** - containers have their own isolated filesystem that can be connected to the "outside world" - everything outside of the container. We'll learn more about customizing these with bind paths (@sec-bindpaths).
 
-In short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft.
+In short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft. 
+
+Containers are ephemeral. They leverage the the file system of their host to manage files. These are called both *Volumes* (the Docker term) and Bind Paths (the apptainer term).
 
 :::{.callout}
 ## What about Virtual Machines?
 
-Virtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger
-
-Containers, by contrast, are ephemeral. Oftentimes in Bioinformatics analysis.
-
+Virtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger than containers.
 :::
+
+## Docker vs. Apptainer
+
+There are two basic ways to run Docker containers: 
+
+1. Using the Docker software
+2. Using the Apptainer software (for HPC systems)
+
+In general, Docker is used on systems where you have a high level of access to the system. This is because docker uses a special user group called `docker` that has essentially root level privileges. 
+
+This is not the case for HPC systems, which are shared. This is when we use Apptainer (which used to be called Singularity), which requires a much lower level of user privileges to execute tasks. For more info, see @sec-open-container . 
 
 ## Be Secure
 
-Before we get started, security is always a concern when running containers. The `docker` group has elevated status on a system, so we need to be careful that when we're running them, they aren't introducing any system vulnerabilities.
+Before we get started, security is always a concern when running containers. The `docker` group has elevated status on a system, so we need to be careful that when we're running them, they aren't introducing any system vulnerabilities. Note that on HPC systems, the main mechanism for running containers is `apptainer`, which is designed to be more secure.
 
 These are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.
 
@@ -66,9 +76,15 @@ Here are some guidelines to think about when you are working with a container.
 - **Use container scanners to spot potential vulnerabilities**. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities. 
 - **Avoid kitchen-sink images**. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.
 
+:::{.callout}
+## Composing Containers
+
+We can connect multiple containers together using a technology called Docker Compose. This means that we can run software pipelines that involve multiple containers. 
+
+For the most part, we don't leverage Docker Compose, because it is usually used in putting together Web Application Stacks, though there are sometimes when it is helpful. In those cases, we can use [Singularity compose](https://singularityhub.github.io/singularity-compose/#/) to do it. 
+:::
 
 ## What you learned in this chapter
 
 - How containers enable reproducibility
 - Defined specific container terminology
--

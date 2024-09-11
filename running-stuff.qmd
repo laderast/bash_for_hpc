@@ -2,7 +2,10 @@
 
 Ok, we've gotten comfortable navigating around the HPC filesystem. Now how do we run executables on files?
 
-Let's talk about the two problems: 1) How do we find executables on a cluster, and 2) how do we load them up and run them?
+Let's talk about the two problems: 
+
+1) How do we find executables on a cluster, and 
+2) how do we load them up and run them?
 
 ## A empty environment
 
@@ -70,7 +73,7 @@ When you're done with a software module, you should use `module purge` to clear 
 module purge
 ```
 
-This is because there may be conflicting 
+This is because there may be conflicting dependencies between modules (Python software especially). So `purge` your module when you're done and clean up your environment.
 
 ### Full Script Example
 
@@ -78,9 +81,12 @@ This is an example of a full script that uses environment modules.
 
 ```bash
 #!/bin/bash
-module load SAMtools/1.19.2-GCC-13.2.0
-samtools view -c $1 > $1.counts.txt
-module purge
+# samtools_count.sh
+# Usage: ./samtools_count.sh my_bam_file.sh
+# Outputs: my_bam_file.bam.counts.txt
+module load SAMtools/1.19.2-GCC-13.2.0  #load the module
+samtools view -c $1 > $1.counts.txt     #run the script 
+module purge                            #purge the module
 ```
 
 We can use this script by making it executable, and then run it with:
@@ -89,9 +95,7 @@ We can use this script by making it executable, and then run it with:
 ./samtools_count.sh my_bam_file.sh
 ```
 
-This will output a counts file called `my_bam_file.counts.txt` in our home directory.
-
-We'll talk more about arguments in the scripting chapter (@sec-positional).
+This will output a counts file called `my_bam_file.bam.counts.txt` in our home directory.
 
 ## Running Software that's not available.
 
@@ -103,5 +107,5 @@ If there is not a module available for our software, then we have a few options,
 
 For more information about these different methods, please refer to this article: [Why your computational environment is important](https://sciwiki.fredhutch.org/dasldemos/computational_rank/).
 
-We will get more in-depth into containers in the [Interactive Shell chapter](interactive_shell.html).
+We will get more in-depth into containers in the [Interactive Shell chapter](running_containers.html).
 

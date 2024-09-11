@@ -104,7 +104,7 @@
     "href": "hpc-basics.html#learning-objectives",
     "title": "2  HPC Basics",
     "section": "",
-    "text": "Define key players in both local computing and HPC\nArticulate key differences between local computing and HPC\nDescribe the sequence of events in launching jobs in the HPC cluster\nDifferentiate local storage from shared storage and articulate the advantages of shared storage.",
+    "text": "Define key players in both local computing and HPC\nArticulate key differences between local computing and HPC\nDescribe the sequence of events in launching jobs in the HPC cluster\nDifferentiate local storage from shared storage and articulate the advantages of shared storage.\nDescribe the differences between a single job and a batch job.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -114,7 +114,7 @@
     "href": "hpc-basics.html#important-terminology",
     "title": "2  HPC Basics",
     "section": "2.2 Important Terminology",
-    "text": "2.2 Important Terminology\nLet’s establish the terminology we need to talk about HPC computing.\n\nHigh Performance Computing - A type of computing that uses higher spec machines, or multiple machines that are joined together in a cluster. These machines can either be on-premise (also called on-prem), or in the cloud (such as Amazon EC machines, or Azure Batch).\nCluster - a group of machines networked such that users can use one or more machines at once.\nAllocation - a temporary set of one or more computers requested from a cluster.\nToolchain - a piece of software and its dependencies needed to build a tool on a computer. For example, cromwell (a workflow runner), and java.\nSoftware Environment - everything needed to run a piece of software on a brand new computer. For example, this would include installing tidyverse, but also all of its dependencies (R) as well. A toolchain is similar, but might not contain all system dependencies.\nExecutable - software that is available on the HPC.\nShared Filesystem - Part of the platform that stores our files and other objects. We’ll see that these other objects include applets, databases, and other object types.\nSLURM - The workload manager of the HPC. Commands in SLURM such as srun, (see Section 2.4) kick off the processes on executing jobs on the worker nodes.\nInteractive Analysis - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to non-interactive analysis, which is done via scripts.",
+    "text": "2.2 Important Terminology\nLet’s establish the terminology we need to talk about HPC computing.\n\nHigh Performance Computing - A type of computing that uses higher spec machines, or multiple machines that are joined together in a cluster. These machines can either be on-premise (also called on-prem), or in the cloud (such as Amazon EC machines, or Azure Batch).\nCluster - a group of machines networked such that users can use one or more machines at once.\nAllocation - a temporary set of one or more computers requested from a cluster.\nToolchain - a piece of software and its dependencies needed to build a tool on a computer. For example, cromwell (a workflow runner), and java.\nSoftware Environment - everything needed to run a piece of software on a brand new computer. For example, this would include installing tidyverse, but also all of its dependencies (R) as well. A toolchain is similar, but might not contain all system dependencies.\nExecutable - software that is available on the HPC.\nShared Filesystem - Part of the HPC that stores our files and other objects. We’ll see that these other objects include applets, databases, and other object types.\nSLURM - The workload manager of the HPC. Commands in SLURM such as srun, (see Section 2.4) kick off the processes on executing jobs on the worker nodes.\nInteractive Analysis - Any analysis that requires interactive input from the user. Using RStudio and JupyterLab are two examples of interactive analysis. As opposed to non-interactive analysis, which is done via scripts.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -124,7 +124,7 @@
     "href": "hpc-basics.html#understanding-the-key-players",
     "title": "2  HPC Basics",
     "section": "2.3 Understanding the key players",
-    "text": "2.3 Understanding the key players\nIn order to understand what’s going on with HPC, we will have to change our mental model of computing.\nLet’s contrast the key players in local computing with the key players in HPC.\n\n2.3.1 Key Players in Local Computing\n\n\n\n\n\n\nFigure 2.1: Local Computing\n\n\n\n\nOur Machine\n\nWhen we run an analysis or process files on our computer, we are in control of all aspects of our computer. We are able to install a software environment, such as R or Python, and then execute scripts/notebooks that reside on our computer on data that’s on our computer.\nOur main point of access to either the HPC cluster is going to be our computer.\n\n\n2.3.2 Key Players in HPC\nLet’s contrast our view of local computing with the key players in the HPC cluster (Figure 2.2).\n\n\n\n\n\n\nFigure 2.2: Key Players in HPC\n\n\n\n\nOur Machine - We interact with the platform via the dx-toolkit installed on our machine. When we utilize HPC resources, we request them from our own computer using commands from the dx toolkit.\nHead Node - Although there are many parts, we can treat the HPC cluster as a single entity that we interact with. Our request gets sent to the platform, and given availability, it will grant access to a temporary worker. Also contains project storage.\nWorker Node - A temporary machine that comes from a pool of available machines in the cluster. We’ll see that it starts out as a blank slate, and we need to establish a software environment to run things on a worker.\nShared Filesystem A distributed filesystem that can be seen by all of the nodes in the cluster. Our scripts and data live here.\n\n\n\n2.3.3 Further Reading\n\nWorking on a remote HPC system is also a good overview of the different parts of HPC.\n\n\n\n\n\n\n\nFor Fred Hutch Users\n\n\n\nThe gizmo cluster at Fred Hutch actually has 3 head nodes called rhino (rhino01, rhino02, rhino03) that are high spec machines (70+ cores, lots of memory). You can run jobs on these nodes, but be aware that others may be running jobs here as well.\nThe nodes from gizmo all have names like gizmoj6, depending on their architecture.",
+    "text": "2.3 Understanding the key players\nIn order to understand what’s going on with HPC, we will have to change our mental model of computing.\nLet’s contrast the key players in local computing with the key players in HPC.\n\n2.3.1 Key Players in Local Computing\n\n\n\n\n\n\nFigure 2.1: Local Computing\n\n\n\n\nOur Machine\n\nWhen we run an analysis or process files on our computer, we are in control of all aspects of our computer. We are able to install a software environment, such as R or Python, and then execute scripts/notebooks that reside on our computer on data that’s on our computer.\nOur main point of access to either the HPC cluster is going to be our computer.\n\n\n2.3.2 Key Players in HPC\nLet’s contrast our view of local computing with the key players in the HPC cluster (Figure 2.2).\n\n\n\n\n\n\nFigure 2.2: Key Players in HPC\n\n\n\n\nOur Machine - We interact with the HPC via the terminal installed on our machine. When we utilize HPC resources, we request them from our own computer using commands from the dx toolkit.\nHead Node - The “boss” of the cluster. It keeps tract of which worker nodes is doing what, and which nodes are available for allocations. Our request gets sent to the HPC cluster, and given availability, it will grant access to temporary worker.\nWorker Node - A temporary machine that comes from a pool of available machines in the cluster. We’ll see that it starts out as a blank slate, and we need to establish a software environment to run things on a worker.\nShared Filesystem A distributed filesystem that can be seen by all of the nodes in the cluster. Our scripts and data live here.\n\n\n\n2.3.3 Further Reading\n\nWorking on a remote HPC system is also a good overview of the different parts of HPC.\n\n\n\n\n\n\n\nFor Fred Hutch Users\n\n\n\nThe gizmo cluster at Fred Hutch actually has 3 head nodes called rhino (rhino01, rhino02, rhino03) that are high spec machines (70+ cores, lots of memory). You can run jobs on these nodes, but be aware that others may be running jobs here as well.\nThe worker nodes on the gizmo cluster all have names like gizmoj6, depending on their architecture. You can request certain kinds of nodes in an allocation in several ways:\n\nWhen you use grabnode (?sec-grabnode)\nIn your request when you run srun or sbatch\nIn your WDL or Nextflow Workflow.\n\n\n\n\n\n\n\n\n\nFH Users: Launching Jobs on gizmo\n\n\n\nIn a SLURM cluster like gizmo, SLURM (Simple Linux Utility for Resource Management) is software that runs on the head node that manages jobs on individual nodes.\nThe two main mechanisms for running SLURM jobs are srun (used for single jobs) and sbatch (used for multiple related jobs, such as aligning a set of FASTA files).\nWhen scaling to a larger number of files, we do recommend that you use a workflow manager such as Cromwell, or PROOF, or Nextflow for batching files.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -134,7 +134,7 @@
     "href": "hpc-basics.html#sec-srun",
     "title": "2  HPC Basics",
     "section": "2.4 Sequence of Events of Running a Job",
-    "text": "2.4 Sequence of Events of Running a Job\nLet’s run through the order of operations of running a job on the platform. Let’s focus on running an aligner (BWA-MEM) on a FASTQ file. Our output will be a .BAM (aligned reads) file.\nLet’s go over the order of operations needed to execute our job on the HPC cluster (Figure 2.3).\n\n\n\n\n\n\nFigure 2.3: Order of Operations\n\n\n\nA. Start a job using srun to send a request to the platform. In order to start a job, we will need two things: software (samtools), and a file to process from the shared filesystem (not shown). When we use srun, a request is sent to the platform.\nB. Platform requests for a worker from available workers; worker made available on platform. In this step, the head node looks for a set of workers that can meet our needs. Then the computations run on the worker; output files are generated.** Once our app is ready and our file is transferred, we can run the computation on the worker.\nC. Output files transferred back to project storage. Any files that we generate during our computation (53525342.bam) must be transferred back into the shared filesystem.\nWhen you are working with an HPC cluster, especially with batch jobs, keep in mind this order of execution. Being familiar with how the key players interact on the platform is key to running efficient jobs.\n\n2.4.1 Key Differences with local computing\nAs you might have surmised, running a job on the HPC platform is very different from computing on your local computer. Here are a few key differences:\n\nWe don’t own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.\nWe have to be explicit about what kind of machine we want. We’ll talk much more about this in terms of machine types and classifieds.",
+    "text": "2.4 Sequence of Events of Running a Job\nLet’s run through the order of operations of running a job on the HPC cluster. Let’s focus on running an aligner (BWA-MEM) on a FASTQ file. Our output will be a .BAM (aligned reads) file.\nLet’s go over the order of operations needed to execute our job on the HPC cluster (Figure 2.3).\n\n\n\n\n\n\nFigure 2.3: Order of Operations\n\n\n\nA. Start a job using srun to send a request to the cluster. In order to start a job, we will need two things: software (samtools), and a file to process from the shared filesystem (not shown). When we use srun, a request is sent to the cluster.\nB. Head node requests for a worker from available workers; worker made available on cluster. In this step, the head node looks for a set of workers that can meet our needs. Then the computations run on the worker; output files are generated.** Once our app is ready and our file is transferred, we can run the computation on the worker.\nC. Output files transferred back to project storage. Any files that we generate during our computation (53525342.bam) must be transferred back into the shared filesystem.\nWhen you are working with an HPC cluster, especially with batch jobs, keep in mind this order of execution. Being familiar with how the key players interact on the cluster is key to running efficient jobs.\n\n2.4.1 Key Differences with local computing\nAs you might have surmised, running a job on the HPC cluster is very different from computing on your local computer. Here are a few key differences:\n\nWe don’t own the worker machine, we only have temporary access to it. A lot of the complications of running HPC computations comes from this.\nWe have to be explicit about what kind of machine we want. We’ll talk much more about this in terms of machine types and classifieds.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -154,7 +154,7 @@
     "href": "hpc-basics.html#scattering-distribute-the-work",
     "title": "2  HPC Basics",
     "section": "2.7 Scattering: Distribute the Work",
-    "text": "2.7 Scattering: Distribute the Work\n\n\n\n\n\n\nFigure 2.4: The scattering process\n\n\n\nSo far, everything we’ve seen so far can be run on a single computer. In the cluster, we have access to higher spec’ed machines, but using the cluster in this way doesn’t take advantage of the efficiency of distributed computing, or dividing the work up among multiple worker nodes.\nWe can see an example of this in Figure 2.4. In distributed computing, we break our job up into smaller parts. One of the easiest way to do this is to split up a list of files (file1.bam, file2.bam, file3.bam) that we need to process, process each file separately on a different node, and then bring the results back together. Each node is only doing part of the work, but because we have multiple nodes, it is getting done 3 times faster.\nYou can orchestrate this process yourself with tools such as sbatch, but it is usually much easier to utilize workflow runners such as Cromwell/PROOF (for .wdl files) or Nextflow (for .nf files), because they automatically handle saving the results of intermediate steps.\nTrust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management and node management makes it much easier in the long run.\n\n\n\n\n\n\nNodes versus CPUs\n\n\n\nOne thing that confused me was understanding the difference between requesting a system with multiple cores versus requesting multiple nodes.\nCores roughly correspond to processors, so a 24-core allocation is a single node that has 24 CPUs.\nNodes correspond to machines - so a 24 node allocation is 24 machines.\nThe reason why this is important is that you use them differently - we use scatter to utilize a 24 node allocation, whereas we can use multicore packages such as {parallel} and mcapply() to utilize a multi-core system.\nIn general, scatter over multiple nodes is handled by sbatch or your workflow runner.\n\n\n\n\n\n\n\n\nFor FH Users: Running Workflows\n\n\n\nAt Fred Hutch, we have two main ways to run workflows on gizmo: Cromwell and NextFlow. Cromwell users have a nifty UI to run their workflows called PROOF.",
+    "text": "2.7 Scattering: Distribute the Work\n\n\n\n\n\n\nFigure 2.4: The scattering process\n\n\n\nSo far, everything we’ve seen so far can be run on a single computer. In the cluster, we have access to higher spec’ed machines, but using the cluster in this way doesn’t take advantage of the efficiency of distributed computing, or dividing the work up among multiple worker nodes.\nWe can see an example of this in Figure 2.4. In distributed computing, we break our job up into smaller parts. One of the easiest way to do this is to split up a list of files (file1.bam, file2.bam, file3.bam) that we need to process, process each file separately on a different node, and then bring the results back together. Each node is only doing part of the work, but because we have multiple nodes, it is getting done 3 times faster.\nYou can orchestrate this process yourself with tools such as sbatch, but it is usually much easier to utilize workflow runners such as Cromwell/PROOF (for .wdl files) or Nextflow (for .nf files), because they automatically handle saving the results of intermediate steps.\nTrust me, it is a little more of a learning curve to learn Cromwell or Nextflow, but once you know more about it, the automatic file management and node management makes it much easier in the long run.\n\n\n\n\n\n\nNodes versus CPUs\n\n\n\nOne thing that confused me was understanding the difference between requesting a system with multiple cores versus requesting multiple nodes.\nCores roughly correspond to processors, so a 24-core allocation is a single node that has 24 CPUs.\nNodes correspond to machines - so a 24 node allocation is 24 machines.\nThe reason why this is important is that you use them differently - we use scatter to utilize a 24 node allocation, whereas we can use multicore packages such as {parallel} and mcapply() to utilize a multi-core system.\nIn general, scatter over multiple nodes is handled by sbatch or your workflow runner.\n\n\n\n\n\n\n\n\nFor FH Users: Running Workflows\n\n\n\nAt Fred Hutch, we have two main ways to run workflows on gizmo: Cromwell and NextFlow. Cromwell users have a nifty GUI to run their workflows called PROOF.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
     ]
@@ -242,51 +242,51 @@
   {
     "objectID": "running-stuff.html",
     "href": "running-stuff.html",
-    "title": "5  Running Executables on HPC",
+    "title": "6  Running Executables on HPC",
     "section": "",
-    "text": "5.1 A empty environment\nRemember, we can poke around and see whether samtools is installed on the machine using which:\nIf samtools is available, it will give the path. If it isn’t, you will have an empty response.\nSo if we don’t have samtools immediately available, how do we find it on our system? We can use environment modules to load software.",
+    "text": "6.1 A empty environment\nRemember, we can poke around and see whether samtools is installed on the machine using which:\nIf samtools is available, it will give the path. If it isn’t, you will have an empty response.\nSo if we don’t have samtools immediately available, how do we find it on our system? We can use environment modules to load software.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#a-empty-environment",
     "href": "running-stuff.html#a-empty-environment",
-    "title": "5  Running Executables on HPC",
+    "title": "6  Running Executables on HPC",
     "section": "",
     "text": "which samtools",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#environment-modules",
     "href": "running-stuff.html#environment-modules",
-    "title": "5  Running Executables on HPC",
-    "section": "5.2 Environment Modules",
-    "text": "5.2 Environment Modules\nBefore you install your own versions of software, it’s important to realize that this problem may be solved for you.\nYour first stop should be looking for environment modules on the HPC. Not all HPCs have these, but if they have them, this should be your first stop to find executables.\nlmod is a system for loading and unloading software modules. It is usually installed on HPCs. The commands all start with module, and there are a number of ones that are useful for you.\n\nmodule avail\nmodule load\nmodule purge",
+    "title": "6  Running Executables on HPC",
+    "section": "6.2 Environment Modules",
+    "text": "6.2 Environment Modules\nBefore you install your own versions of software, it’s important to realize that this problem may be solved for you.\nYour first stop should be looking for environment modules on the HPC. Not all HPCs have these, but if they have them, this should be your first stop to find executables.\nlmod is a system for loading and unloading software modules. It is usually installed on HPCs. The commands all start with module, and there are a number of ones that are useful for you.\n\nmodule avail\nmodule load\nmodule purge",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#for-fh-users-modules-benefit-everyone",
     "href": "running-stuff.html#for-fh-users-modules-benefit-everyone",
-    "title": "5  Running Executables on HPC",
-    "section": "5.3 For FH Users: Modules benefit everyone",
-    "text": "5.3 For FH Users: Modules benefit everyone\nIf there is a particular bit of software that you need to run on the FH cluster that’s not there, make sure to request it from SciComp. Someone else probably needs it and so making it known so they can add it as a Environment module will help other people.",
+    "title": "6  Running Executables on HPC",
+    "section": "6.3 For FH Users: Modules benefit everyone",
+    "text": "6.3 For FH Users: Modules benefit everyone\nIf there is a particular bit of software that you need to run on the FH cluster that’s not there, make sure to request it from SciComp. Someone else probably needs it and so making it known so they can add it as a Environment module will help other people.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
     "objectID": "running-stuff.html#running-software-thats-not-available.",
     "href": "running-stuff.html#running-software-thats-not-available.",
-    "title": "5  Running Executables on HPC",
-    "section": "5.4 Running Software that’s not available.",
-    "text": "5.4 Running Software that’s not available.\nIf there is not a module available for our software, then we have a few options, in terms of effort.\n\nUse a Docker container with apptainer that has our software in it\nInstall the binary into our /home directory using conda\nCompile the executable ourselves\n\nFor more information about these different methods, please refer to this article: Why your computational environment is important.\nWe will get more in-depth into containers in the Interactive Shell chapter.",
+    "title": "6  Running Executables on HPC",
+    "section": "6.4 Running Software that’s not available.",
+    "text": "6.4 Running Software that’s not available.\nIf there is not a module available for our software, then we have a few options, in terms of effort.\n\nUse a Docker container with apptainer that has our software in it\nInstall the binary into our /home directory using conda\nCompile the executable ourselves\n\nFor more information about these different methods, please refer to this article: Why your computational environment is important.\nWe will get more in-depth into containers in the Interactive Shell chapter.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Running Executables on HPC</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Running Executables on HPC</span>"
     ]
   },
   {
@@ -382,21 +382,21 @@
   {
     "objectID": "interactive_shell.html",
     "href": "interactive_shell.html",
-    "title": "7  Interactively Testing Scripts in Nodes",
+    "title": "8  Interactively Testing Scripts in Nodes",
     "section": "",
-    "text": "7.1 Visual Table of Contents\nflowchart TD\n   A[Open Shell on Worker] --&gt; B\n   B[Test Scripts] --&gt; F\n   F[Exit Worker]",
+    "text": "8.1 Visual Table of Contents\nflowchart TD\n   A[Open Shell on Worker] --&gt; B\n   B[Test Scripts] --&gt; F\n   F[Exit Worker]",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
     "objectID": "interactive_shell.html#learning-objectives",
     "href": "interactive_shell.html#learning-objectives",
-    "title": "7  Interactively Testing Scripts in Nodes",
-    "section": "7.2 Learning Objectives",
-    "text": "7.2 Learning Objectives\nAfter reading this, you will be able to:\n\nOpen an interactive shell on a SLURM worker node using salloc or grabnode\nTest your code on a SLURM worker\nExit the shell of a remote worker\nUtilize screen to keep a shell open and running on a remote worker.",
+    "title": "8  Interactively Testing Scripts in Nodes",
+    "section": "8.2 Learning Objectives",
+    "text": "8.2 Learning Objectives\nAfter reading this, you will be able to:\n\nOpen an interactive shell on a SLURM worker node using salloc or grabnode\nTest your code on a SLURM worker\nExit the shell of a remote worker\nUtilize screen to keep a shell open and running on a remote worker.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -432,71 +432,71 @@
   {
     "objectID": "r-commandline.html",
     "href": "r-commandline.html",
-    "title": "7  Running a R script on the command line",
+    "title": "12  Running a R script on the command line",
     "section": "",
-    "text": "7.1 The Basic Process",
+    "text": "12.1 The Basic Process",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Running a R script on the command line</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Running a R script on the command line</span>"
     ]
   },
   {
     "objectID": "r-commandline.html#the-basic-process",
     "href": "r-commandline.html#the-basic-process",
-    "title": "7  Running a R script on the command line",
+    "title": "12  Running a R script on the command line",
     "section": "",
     "text": "Specify named arguments for your R script.\nWrap running Rscript in a bash file, passing on arguments to the R Script\nUse bash to execute your bash script, with appropriate arguments.\n\n\n\n\n\n\n\nFor FH Users\n\n\n\nIn your bash script you’ll need to load the appropriate environment module (usually at least fhR):\nmodule load fhR/4.3.3-foss-2023b\nYou can also run things from the Bioconductor / Rocker containers using Apptainer (?sec-fh-apptainer).",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Running a R script on the command line</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Running a R script on the command line</span>"
     ]
   },
   {
     "objectID": "r-commandline.html#using-rscript-on-the-command-line",
     "href": "r-commandline.html#using-rscript-on-the-command-line",
-    "title": "7  Running a R script on the command line",
-    "section": "7.2 Using Rscript on the command-line",
-    "text": "7.2 Using Rscript on the command-line\nLet’s talk about wrapping R scripts in a Bash script. This might seem like an extra layer of redundancy, but remember that we need to specify our software environment before we run something, so our bash script lets us do that.\nOur main executable for running R on the command-line is Rscript.\nWhen we run R on the command line, it will look something like this:\nRscript process_data.R --input_file=my_genome_file.vcf\nNote that you can have named inputs when you run on the command line,",
+    "title": "12  Running a R script on the command line",
+    "section": "12.2 Using Rscript on the command-line",
+    "text": "12.2 Using Rscript on the command-line\nLet’s talk about wrapping R scripts in a Bash script. This might seem like an extra layer of redundancy, but remember that we need to specify our software environment before we run something, so our bash script lets us do that.\nOur main executable for running R on the command-line is Rscript.\nWhen we run R on the command line, it will look something like this:\nRscript process_data.R --input_file=my_genome_file.vcf\nNote that you can have named inputs when you run on the command line,",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Running a R script on the command line</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Running a R script on the command line</span>"
     ]
   },
   {
     "objectID": "r-commandline.html#wrapping-it-up-in-a-bash-script",
     "href": "r-commandline.html#wrapping-it-up-in-a-bash-script",
-    "title": "7  Running a R script on the command line",
-    "section": "7.3 Wrapping it up in a bash script",
-    "text": "7.3 Wrapping it up in a bash script\nSay you have an R Script you need to run on the command line. In our bash script, we can do the following:\n\n\n\nscripting-basics/wrap_r_script.sh\n\n#!/bin/bash\nRscript process_data.R input_file=\"${1}\"\n\n\nThis calls Rscript, which is the command line executable, to run our R script. Note that we have a named argument called input_file and it is done differently than in Bash - how do we use this in our R Script?\n\n7.3.1 Using Named Arguments in an R script\nWe can pass arguments from our bash script to our R script by using commandArgs() - this will populate a list of named arguments (such as CSVFILE) that are passed into the R Script. We assign the output of commandArgs() into the args object.\nWe refer to our CSVFILE argument as args$CSVFILE in our script.\n\n\n\nscripting-basics/r_script.R\n\nlibrary(tidyverse)\n\nargs &lt;- commandArgs()\n# Use arg$CSVFILE in read.csv\ncsv_file &lt;- read.csv(file=args$input_file)\n\n# Do some work with csv_file\ncsv_filtered &lt;- csv_file |&gt; dplyr::filter()\n\n# Write output\nwrite.csv(csv_filtered, file = paste0(args$CSVFILE, \"_filtered.csv\"))\n\n\n\n\n7.3.2 Running our R Script\nNow that we’ve set it up, we can run the R script from the command line as follows:\n\nbash my_bash_script.sh my_csvfile.csv \n\nIn our bash script, my_bash_script.sh, we’re using positional argument (for simplicity) to specify our csvfile, and then passing the positional argument to named ones (CSVFILE) for my_r_script.R.",
+    "title": "12  Running a R script on the command line",
+    "section": "12.3 Wrapping it up in a bash script",
+    "text": "12.3 Wrapping it up in a bash script\nSay you have an R Script you need to run on the command line. In our bash script, we can do the following:\n\n\n\nscripting-basics/wrap_r_script.sh\n\n#!/bin/bash\nRscript process_data.R input_file=\"${1}\"\n\n\nThis calls Rscript, which is the command line executable, to run our R script. Note that we have a named argument called input_file and it is done differently than in Bash - how do we use this in our R Script?\n\n12.3.1 Using Named Arguments in an R script\nWe can pass arguments from our bash script to our R script by using commandArgs() - this will populate a list of named arguments (such as CSVFILE) that are passed into the R Script. We assign the output of commandArgs() into the args object.\nWe refer to our CSVFILE argument as args$CSVFILE in our script.\n\n\n\nscripting-basics/r_script.R\n\nlibrary(tidyverse)\n\nargs &lt;- commandArgs()\n# Use arg$CSVFILE in read.csv\ncsv_file &lt;- read.csv(file=args$input_file)\n\n# Do some work with csv_file\ncsv_filtered &lt;- csv_file |&gt; dplyr::filter()\n\n# Write output\nwrite.csv(csv_filtered, file = paste0(args$CSVFILE, \"_filtered.csv\"))\n\n\n\n\n12.3.2 Running our R Script\nNow that we’ve set it up, we can run the R script from the command line as follows:\n\nbash my_bash_script.sh my_csvfile.csv \n\nIn our bash script, my_bash_script.sh, we’re using positional argument (for simplicity) to specify our csvfile, and then passing the positional argument to named ones (CSVFILE) for my_r_script.R.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Running a R script on the command line</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Running a R script on the command line</span>"
     ]
   },
   {
     "objectID": "r-commandline.html#quarto-documents",
     "href": "r-commandline.html#quarto-documents",
-    "title": "7  Running a R script on the command line",
-    "section": "7.4 Quarto Documents",
-    "text": "7.4 Quarto Documents\nQuarto is the next generation of RMarkdown and supports a number of output formats.\nYou might want to apply a workflow that you’ve built in a quarto document.\nThe main difference is that you’d use quarto run rather than Rscript run.\n\n#!/bin/bash\nquarto run my_quarto_doc.qmd",
+    "title": "12  Running a R script on the command line",
+    "section": "12.4 Quarto Documents",
+    "text": "12.4 Quarto Documents\nQuarto is the next generation of RMarkdown and supports a number of output formats.\nYou might want to apply a workflow that you’ve built in a quarto document.\nThe main difference is that you’d use quarto run rather than Rscript run.\n\n#!/bin/bash\nquarto run my_quarto_doc.qmd",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Running a R script on the command line</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Running a R script on the command line</span>"
     ]
   },
   {
     "objectID": "r-commandline.html#sec-apptainer",
     "href": "r-commandline.html#sec-apptainer",
-    "title": "7  Running a R script on the command line",
-    "section": "7.5 Apptainer",
-    "text": "7.5 Apptainer\nApptainer (previous Singularity) is a secure way to run Docker containers on a HPC system. The commands are very similar to Docker, but aren’t.",
+    "title": "12  Running a R script on the command line",
+    "section": "12.5 Apptainer",
+    "text": "12.5 Apptainer\nApptainer (previous Singularity) is a secure way to run Docker containers on a HPC system. The commands are very similar to Docker, but aren’t.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Running a R script on the command line</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Running a R script on the command line</span>"
     ]
   },
   {
     "objectID": "interactive_shell.html#grabbing-an-interactive-shell-on-a-worker",
     "href": "interactive_shell.html#grabbing-an-interactive-shell-on-a-worker",
-    "title": "7  Interactively Testing Scripts in Nodes",
-    "section": "7.3 Grabbing an interactive shell on a worker",
-    "text": "7.3 Grabbing an interactive shell on a worker\nWhen you’re testing code that’s going to run on a worker node, you need to be aware of what the worker node sees.\nIt’s also important in estimating how long our tasks are going to run since we can test how long a task runs for a representative dataset.\nOn a SLURM system, the way to open interactive shells on a node has changed. Check your version first:\nsrun --version\nIf you’re on a version before 20.11, you can use srun -i --pty bash to open an interactive terminal on a worker:\nsrun -i --pty bash\nIf the version is past 20.11, we can open an interactive shell on a worker with salloc.\nsalloc bash\n\n\n\n\n\n\nFor FH Users: grabnode\n\n\n\nOn the FH system, we can use a command called grabnode, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node.\ntladera2@rhino01:~$ grabnode\ngrabnode will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. Here, I’m grabbing a node with 8 cores, 8 Gb of memory, using it for 1 day, and no GPU.\nHow many CPUs/cores would you like to grab on the node? [1-36] 8\nHow much memory (GB) would you like to grab? [160] 8\nPlease enter the max number of days you would like to grab this node: [1-7] 1\nDo you need a GPU ? [y/N]n\n\nYou have requested 8 CPUs on this node/server for 1 days or until you type exit.\n\nWarning: If you exit this shell before your jobs are finished, your jobs\non this node/server will be terminated. Please use sbatch for larger jobs.\n\nShared PI folders can be found in: /fh/fast, /fh/scratch and /fh/secure.\n\nRequesting Queue: campus-new cores: 8 memory: 8 gpu: NONE\nsrun: job 40898906 queued and waiting for resources\nAfter a little bit, you’ll arrive at a new prompt:\n(base) tladera2@gizmok164:~$\nIf you’re doing interactive analysis that is going to span over a few days, I recommend that you use screen or tmux.\n\n\n\n\n\n\n\n\nRemember hostname\n\n\n\nWhen you are doing interactive analysis, it is easy to forget in which node you’re working in. Just as a quick check, I use hostname to remind myself whether I’m in rhino, gizmo, or within an apptainer container.",
+    "title": "8  Interactively Testing Scripts in Nodes",
+    "section": "8.3 Grabbing an interactive shell on a worker",
+    "text": "8.3 Grabbing an interactive shell on a worker\nWhen you’re testing code that’s going to run on a worker node, you need to be aware of what the worker node sees.\nIt’s also important in estimating how long our tasks are going to run since we can test how long a task runs for a representative dataset.\nOn a SLURM system, the way to open interactive shells on a node has changed. Check your version first:\nsrun --version\nIf you’re on a version before 20.11, you can use srun -i --pty bash to open an interactive terminal on a worker:\nsrun -i --pty bash\nIf the version is past 20.11, we can open an interactive shell on a worker with salloc.\nsalloc bash\n\n\n\n\n\n\nFor FH Users: grabnode\n\n\n\nOn the FH system, we can use a command called grabnode, which will let us request a node. It will ask us for our requirements (numbers of cores, memory, etc.) for our node.\ntladera2@rhino01:~$ grabnode\ngrabnode will then ask us for what kind of instance we want, in terms of CPUs, Memory, and GPUs. Here, I’m grabbing a node with 8 cores, 8 Gb of memory, using it for 1 day, and no GPU.\nHow many CPUs/cores would you like to grab on the node? [1-36] 8\nHow much memory (GB) would you like to grab? [160] 8\nPlease enter the max number of days you would like to grab this node: [1-7] 1\nDo you need a GPU ? [y/N]n\n\nYou have requested 8 CPUs on this node/server for 1 days or until you type exit.\n\nWarning: If you exit this shell before your jobs are finished, your jobs\non this node/server will be terminated. Please use sbatch for larger jobs.\n\nShared PI folders can be found in: /fh/fast, /fh/scratch and /fh/secure.\n\nRequesting Queue: campus-new cores: 8 memory: 8 gpu: NONE\nsrun: job 40898906 queued and waiting for resources\nAfter a little bit, you’ll arrive at a new prompt:\n(base) tladera2@gizmok164:~$\nIf you’re doing interactive analysis that is going to span over a few days, I recommend that you use screen or tmux.\n\n\n\n\n\n\n\n\nRemember hostname\n\n\n\nWhen you are doing interactive analysis, it is easy to forget in which node you’re working in. Just as a quick check, I use hostname to remind myself whether I’m in rhino, gizmo, or within an apptainer container.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -522,11 +522,11 @@
   {
     "objectID": "interactive_shell.html#what-next",
     "href": "interactive_shell.html#what-next",
-    "title": "7  Interactively Testing Scripts in Nodes",
-    "section": "7.7 What Next?",
-    "text": "7.7 What Next?\nYou’ve learned how to open interactive shells in a remote node. There are a number of ways to go from here:\n\nTry running your script using srun\nTry running your script in a container (Chapter 8)",
+    "title": "8  Interactively Testing Scripts in Nodes",
+    "section": "8.7 What Next?",
+    "text": "8.7 What Next?\nYou’ve learned how to open interactive shells in a remote node. There are a number of ways to go from here:\n\nTry running your script using srun\nTry running your script in a container (Chapter 10)",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -612,51 +612,51 @@
   {
     "objectID": "working-with-wdl.html",
     "href": "working-with-wdl.html",
-    "title": "9  Working with WDL",
+    "title": "11  Working with WDL",
     "section": "",
-    "text": "9.1 Learning Objectives",
+    "text": "11.1 Learning Objectives",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#learning-objectives",
     "href": "working-with-wdl.html#learning-objectives",
-    "title": "9  Working with WDL",
+    "title": "11  Working with WDL",
     "section": "",
     "text": "Explain the basic architecture of a WDL file\nExplain the role of a task in WDL\nUtilize Cromwell to execute a WDL script on one file\nUttilze Cromwell to batch execute a WDL script on multiple files",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#architecture-of-a-wdl-file",
     "href": "working-with-wdl.html#architecture-of-a-wdl-file",
-    "title": "9  Working with WDL",
-    "section": "9.2 Architecture of a WDL file",
-    "text": "9.2 Architecture of a WDL file\nThe best way to read WDL files is to read them top down. We’ll focus on the basic sections of a WDL file before we see how they work together.\nThe code below is from the WILDs WDL Repo.\nworkflow SRA_STAR2Pass {\n  input { \n    Array[String] sra_id_list\n    RefGenome ref_genome\n  }\n\n  scatter ( id in sra_id_list ){\n    call fastqdump {\n        ...\n    }\n\n    call STARalignTwoPass {\n        ...\n    }\n  } # End scatter \n\n  # Outputs that will be retained when execution is complete\n  output {\n    ...\n  }\n\n}",
+    "title": "11  Working with WDL",
+    "section": "11.2 Architecture of a WDL file",
+    "text": "11.2 Architecture of a WDL file\nThe best way to read WDL files is to read them top down. We’ll focus on the basic sections of a WDL file before we see how they work together.\nThe code below is from the WILDs WDL Repo.\nworkflow SRA_STAR2Pass {\n  input { \n    Array[String] sra_id_list\n    RefGenome ref_genome\n  }\n\n  scatter ( id in sra_id_list ){\n    call fastqdump {\n        ...\n    }\n\n    call STARalignTwoPass {\n        ...\n    }\n  } # End scatter \n\n  # Outputs that will be retained when execution is complete\n  output {\n    ...\n  }\n\n}",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#anatomy-of-a-task",
     "href": "working-with-wdl.html#anatomy-of-a-task",
-    "title": "9  Working with WDL",
-    "section": "9.3 Anatomy of a Task",
-    "text": "9.3 Anatomy of a Task\ntask fastqdump {\n  input {\n    String sra_id\n    Int ncpu = 12\n  }\n\n  command &lt;&lt;&lt;\n    set -eo pipefail\n    # check if paired ended\n    numLines=$(fastq-dump -X 1 -Z --split-spot \"~{sra_id}\" | wc -l)\n    paired_end=\"false\"\n    if [ $numLines -eq 8 ]; then\n      paired_end=\"true\"\n    fi\n    # perform fastqdump\n    if [ $paired_end == 'true' ]; then\n      echo true &gt; paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --split-files \\\n        --gzip\n    else\n      touch paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --gzip\n    fi\n  &gt;&gt;&gt;\n\n  output {\n    File r1_end = \"~{sra_id}_1.fastq.gz\"\n    File r2_end = \"~{sra_id}_2.fastq.gz\"\n    String paired_end = read_string('paired_file')\n  }\n\n  runtime {\n    memory: 2 * ncpu + \" GB\"\n    docker: \"getwilds/pfastqdump:0.6.7\"\n    cpu: ncpu\n  }\n\n  parameter_meta {\n    ...\n  }\n}",
+    "title": "11  Working with WDL",
+    "section": "11.3 Anatomy of a Task",
+    "text": "11.3 Anatomy of a Task\ntask fastqdump {\n  input {\n    String sra_id\n    Int ncpu = 12\n  }\n\n  command &lt;&lt;&lt;\n    set -eo pipefail\n    # check if paired ended\n    numLines=$(fastq-dump -X 1 -Z --split-spot \"~{sra_id}\" | wc -l)\n    paired_end=\"false\"\n    if [ $numLines -eq 8 ]; then\n      paired_end=\"true\"\n    fi\n    # perform fastqdump\n    if [ $paired_end == 'true' ]; then\n      echo true &gt; paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --split-files \\\n        --gzip\n    else\n      touch paired_file\n      parallel-fastq-dump \\\n        --sra-id ~{sra_id} \\\n        --threads ~{ncpu} \\\n        --outdir ./ \\\n        --gzip\n    fi\n  &gt;&gt;&gt;\n\n  output {\n    File r1_end = \"~{sra_id}_1.fastq.gz\"\n    File r2_end = \"~{sra_id}_2.fastq.gz\"\n    String paired_end = read_string('paired_file')\n  }\n\n  runtime {\n    memory: 2 * ncpu + \" GB\"\n    docker: \"getwilds/pfastqdump:0.6.7\"\n    cpu: ncpu\n  }\n\n  parameter_meta {\n    ...\n  }\n}",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
     "objectID": "working-with-wdl.html#resources",
     "href": "working-with-wdl.html#resources",
-    "title": "9  Working with WDL",
-    "section": "9.4 Resources",
-    "text": "9.4 Resources\n\nDeveloping WDL Workflows is a full guide from the Data Science Lab (DaSL) showing you how to develop your own WDL Workflows and has a much more in detail section of WDL file architecture.",
+    "title": "11  Working with WDL",
+    "section": "11.4 Resources",
+    "text": "11.4 Resources\n\nDeveloping WDL Workflows is a full guide from the Data Science Lab (DaSL) showing you how to develop your own WDL Workflows and has a much more in detail section of WDL file architecture.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Working with WDL</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Working with WDL</span>"
     ]
   },
   {
@@ -734,7 +734,7 @@
     "href": "filesystems.html#sec-home",
     "title": "5  Navigating the Unix Filesystem",
     "section": "5.4 Going /home: ~/",
-    "text": "5.4 Going /home: ~/\nThere is one important file alias you should always remember: ~/ is shorthand for your own home directory.\nDepending on the linux distribution, this can be a different location. On the FH filesystem, when I use ~/, it maps to:\n/home/tladera2/\nThe home directory is also important because it is where your configuration files live, such as .bashrc (see Section 3.4.4).\nDepending on how you work, you may want to store your scripts and workflows in /home/. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see Section 5.6.",
+    "text": "5.4 Going /home: ~/\nThere is one important file alias you should always remember: ~/ is shorthand for your own home directory.\nDepending on the linux distribution, this can be a different location. On the FH filesystem, when I use ~/, it maps to:\n/home/tladera2/\nThe home directory is also important because it is where your configuration files live, such as .bashrc (see Section 4.4.4).\nDepending on how you work, you may want to store your scripts and workflows in /home/. Some people prefer to keep their scripts, data, and results in a single folder. For more info, see Section 5.6.",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
     ]
@@ -822,31 +822,31 @@
   {
     "objectID": "interactive_shell.html#testing-your-scripts",
     "href": "interactive_shell.html#testing-your-scripts",
-    "title": "7  Interactively Testing Scripts in Nodes",
-    "section": "7.4 Testing Your Scripts",
-    "text": "7.4 Testing Your Scripts\nPart of the reason for interactive testing is to make sure that the worker node can “see” and access all of your resources, including files and executables.\nThis is especially helpful when you are testing individual steps of a WDL workflow to make sure they work.\n\n\n\n\n\n\nWorking Interactively\n\n\n\nMany people will request a node and do their interactive analysis completely on that node. This can work great, but if you are requesting a huge allocation (such as a 64-core machine), you may be waiting a while to even get access to that allocation.\nIf you do the work of breaking up your scripts into WDL tasks, that makes utilizing the smaller spec’d machines for tasks like alignment much faster than waiting for a large allocation.\nBelieve me, it’s worth doing this.",
+    "title": "8  Interactively Testing Scripts in Nodes",
+    "section": "8.4 Testing Your Scripts",
+    "text": "8.4 Testing Your Scripts\nPart of the reason for interactive testing is to make sure that the worker node can “see” and access all of your resources, including files and executables.\nThis is especially helpful when you are testing individual steps of a WDL workflow to make sure they work.\n\n\n\n\n\n\nWorking Interactively\n\n\n\nMany people will request a node and do their interactive analysis completely on that node. This can work great, but if you are requesting a huge allocation (such as a 64-core machine), you may be waiting a while to even get access to that allocation.\nIf you do the work of breaking up your scripts into WDL tasks, that makes utilizing the smaller spec’d machines for tasks like alignment much faster than waiting for a large allocation.\nBelieve me, it’s worth doing this.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
     "objectID": "interactive_shell.html#exit-when-done",
     "href": "interactive_shell.html#exit-when-done",
-    "title": "7  Interactively Testing Scripts in Nodes",
-    "section": "7.5 exit when done",
-    "text": "7.5 exit when done\nWhen you’re done with the worker, you can exit the shell. This will put you back into the root node.",
+    "title": "8  Interactively Testing Scripts in Nodes",
+    "section": "8.5 exit when done",
+    "text": "8.5 exit when done\nWhen you’re done with the worker, you can exit the shell. This will put you back into the root node.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
     "objectID": "interactive_shell.html#screen-for-keeping-your-shell-open",
     "href": "interactive_shell.html#screen-for-keeping-your-shell-open",
-    "title": "7  Interactively Testing Scripts in Nodes",
-    "section": "7.6 screen for keeping your shell open",
-    "text": "7.6 screen for keeping your shell open\nRemember the screen utility? (Section 3.6.2). You can utilize screen to keep your shell open on a remote worker. This is necessary when running interactive jobs when not connected.",
+    "title": "8  Interactively Testing Scripts in Nodes",
+    "section": "8.6 screen for keeping your shell open",
+    "text": "8.6 screen for keeping your shell open\nRemember the screen utility? (Section 4.6.2). You can utilize screen to keep your shell open on a remote worker. This is necessary when running interactive jobs when not connected.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Interactively Testing Scripts in Nodes</span>"
     ]
   },
   {
@@ -882,41 +882,41 @@
   {
     "objectID": "container-concepts.html",
     "href": "container-concepts.html",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "",
     "text": "9.1 Learning Objectives",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#learning-objectives",
     "href": "container-concepts.html#learning-objectives",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "",
     "text": "Explain the benefits of using containers for reproducibility and for batch processing\nDefine the terms image, container, and snapshot in the context of Docker",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#why-containers",
     "href": "container-concepts.html#why-containers",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "9.2 Why Containers?",
     "text": "9.2 Why Containers?\nThere is a replication crisis out there. Even given a script and the raw data, it is often difficult to replicate the results generated by a study.\nWhy is this difficult? One reason is that the results are tied to software and database versions.\nThis is one motivation for using containers - they are a way of packaging software that ‘freezes’ the software versions. It allows you to recreate the software environment associated with running your software,\nAdditionally, containers are portable - they function as mini-operating systems that can run on any machine that runs your container software. other people should be able to replicate your results even if they’re on a different operating system.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#terminology",
     "href": "container-concepts.html#terminology",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "9.3 Terminology",
-    "text": "9.3 Terminology\nIn order to be unambiguous with our language, we’ll use the following definitions:\n\n\n\n\n\n\nFigure 9.1: Docker Terms\n\n\n\n\nRegistry - collection of repositories that you pull docker images from. Example repositories include DockerHub and Quay.io.\nDocker Image - what you download from a registry - the “recipe” for building the software environment. Stored in a registry. use docker pull to get image, docker commit to push changes to registry, can also generate image from a Dockerfile,\nDocker Container - The executable software environment actually installed and running on a machine. Runnable. Generate from docker pull from a repository.\nSnapshot File - An single archive file (.tar.gz) that contains the Docker container. Generate using docker save on a container. Also known as an image file on the platform.\n\n\n9.3.1 Be Secure\nBefore we get started, security is always a concern when running containers. The docker group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities.\nThese are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.\nHere are some guidelines to think about when you are working with a container.\n\nUse vendor-specific Docker Images when possible.\nUse container scanners to spot potential vulnerabilities. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities.\nAvoid kitchen-sink images. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.",
+    "text": "9.3 Terminology\nIn order to be unambiguous with our language, we’ll use the following definitions:\n\n\n\n\n\ngraph TD\n    A[\"Docker Image\"] --\"apptainer pull/apptainer build\"--&gt; B\n    B[\"Docker Container\"] --\"apptainer run\"--&gt; C\n    C[\"Snapshot\"]\n\n\n\n\n\n\n\nRegistry - collection of repositories that you pull docker images from. Example repositories include DockerHub and Quay.io.\nImage - what you download from a registry - the “recipe” for building the software environment. Stored in a registry. use apptainer pull to get image from a registry. Can also generate image from a Dockerfile\nContainer - The executable software environment actually installed and running on a machine. Runnable. Generate from docker pull from a repository.\nSnapshot File - An single archive file (.tar.gz) that contains the Docker container. Generate using docker save on a container. Also known as an image file. When we do\nDockerfile - a file that specifies how to install software and its dependencies. You often base a Dockerfile on an existing Docker image\nTag - a bit of metadata that is used to version a container.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
@@ -942,11 +942,11 @@
   {
     "objectID": "container-concepts.html#what-you-learned-in-this-chapter",
     "href": "container-concepts.html#what-you-learned-in-this-chapter",
-    "title": "9  Containers and Reproducibility",
-    "section": "9.6 What you learned in this chapter",
-    "text": "9.6 What you learned in this chapter\n\nHow containers enable reproducibility\nDefined specific container terminology",
+    "title": "9  Container Basics",
+    "section": "9.7 What you learned in this chapter",
+    "text": "9.7 What you learned in this chapter\n\nHow containers enable reproducibility\nDefined specific container terminology",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
@@ -963,8 +963,8 @@
     "objectID": "hpc-safety.html#be-safe-with-restricted-use-data",
     "href": "hpc-safety.html#be-safe-with-restricted-use-data",
     "title": "3  HPC Security and Safety",
-    "section": "3.3 Be Safe with Restricted Use Data",
-    "text": "3.3 Be Safe with Restricted Use Data\nSubject privacy is extremely important.\n\nUse the Safe Harbor Method for de-identifying your clinical data.\nUse deidentified versions of the patient data on HPC. When in doubt, use de-identified data for processing data. Most of the applications to HPC will be processing genomic or other datatypes.\nUse only the covariates necessary in your study. For example, for a GWAS study of type II diabetes, bring in\nIf using data under a Data Use Agreement (DUA), make sure you are comfortable with the terms. Many DUAS",
+    "section": "3.4 Be Safe with Restricted Use Data",
+    "text": "3.4 Be Safe with Restricted Use Data\nSubject privacy is extremely important. Be careful that you only use covariates that you need, and remove those covariates that are under safe harbor regulations.\n\nUse the Safe Harbor Method for de-identifying your clinical data.\nUse deidentified versions of the patient data on HPC. When in doubt, use de-identified data for processing data. Most of the applications to HPC will be processing genomic or other datatypes.\nUse only the covariates necessary in your study. For example, for a GWAS study of type II diabetes, bring in\nIf using data under a Data Use Agreement (DUA), make sure you are comfortable with the terms. Many DUAS",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>HPC Security and Safety</span>"
     ]
@@ -993,8 +993,8 @@
     "objectID": "filesystems.html#whats-next",
     "href": "filesystems.html#whats-next",
     "title": "5  Navigating the Unix Filesystem",
-    "section": "5.8 What’s Next?",
-    "text": "5.8 What’s Next?\nNow that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (Chapter 7).",
+    "section": "5.10 What’s Next?",
+    "text": "5.10 What’s Next?\nNow that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (Chapter 7).",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
     ]
@@ -1017,6 +1017,76 @@
     "text": "10.6 Apptainer Cache\nThe apptainer cache is where your docker images live. They are translated to the native apptainer .sif format.\nYou can see what’s in your cache by using\napptainer cache list\nBy default the cache lives at ~/.apptainer/cache.\nIf you need to clear out the cache, you can run\napptainer cache clean\nto clear out the cache.\nThere are a number of environment variables (Section 4.4) that can be set, including login tokens for pulling from a private registry. More information is here.",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Working with containers</span>"
+    ]
+  },
+  {
+    "objectID": "hpc-basics.html#whats-next",
+    "href": "hpc-basics.html#whats-next",
+    "title": "2  HPC Basics",
+    "section": "2.8 What’s Next?",
+    "text": "2.8 What’s Next?",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>HPC Basics</span>"
+    ]
+  },
+  {
+    "objectID": "container-concepts.html#what-is-a-container",
+    "href": "container-concepts.html#what-is-a-container",
+    "title": "9  Container Basics",
+    "section": "9.4 What is a Container?",
+    "text": "9.4 What is a Container?\nA container is a self-contained unit of software. It contains everything needed to run the software on a variety of machines. If you have the container software installed on your machine, it doesn’t matter whether it is MacOS, Linux, or Windows - the container will behave consistently across different operating systems and architectures.\nThe container has the following contents:\n\nSoftware - The software we want to run in a container. For bioinformatics work, this is usually something like an aligner like bwa, or utilities such as samtools\nSoftware Dependencies - various software packages needed to run the software. For example, if we wanted to run tidyverse in a container, we need to have R installed in the container as well\nFilesystem - containers have their own isolated filesystem that can be connected to the “outside world” - everything outside of the container. We’ll learn more about customizing these with bind paths (Section 10.4).\n\nIn short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft.\nContainers are ephemeral. They leverage the the file system of their host to manage files. These are called both Volumes (the Docker term) and Bind Paths (the apptainer term).\n\n\n\n\n\n\nWhat about Virtual Machines?\n\n\n\nVirtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger than containers.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
+    ]
+  },
+  {
+    "objectID": "container-concepts.html#be-secure",
+    "href": "container-concepts.html#be-secure",
+    "title": "9  Container Basics",
+    "section": "9.6 Be Secure",
+    "text": "9.6 Be Secure\nBefore we get started, security is always a concern when running containers. The docker group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities. Note that on HPC systems, the main mechanism for running containers is apptainer, which is designed to be more secure.\nThese are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.\nHere are some guidelines to think about when you are working with a container.\n\nUse vendor-specific Docker Images when possible.\nUse container scanners to spot potential vulnerabilities. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities.\nAvoid kitchen-sink images. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.\n\n\n\n\n\n\n\nComposing Containers\n\n\n\nWe can connect multiple containers together using a technology called Docker Compose. This means that we can run software pipelines that involve multiple containers.\nFor the most part, we don’t leverage Docker Compose, because it is usually used in putting together Web Application Stacks, though there are sometimes when it is helpful. In those cases, we can use Singularity compose to do it.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
+    ]
+  },
+  {
+    "objectID": "hpc-safety.html#focus-on-data-processing",
+    "href": "hpc-safety.html#focus-on-data-processing",
+    "title": "3  HPC Security and Safety",
+    "section": "3.3 Focus on Data Processing",
+    "text": "3.3 Focus on Data Processing",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HPC Security and Safety</span>"
+    ]
+  },
+  {
+    "objectID": "container-concepts.html#docker-vs.-apptainer",
+    "href": "container-concepts.html#docker-vs.-apptainer",
+    "title": "9  Container Basics",
+    "section": "9.5 Docker vs. Apptainer",
+    "text": "9.5 Docker vs. Apptainer\nThere are two basic ways to run Docker containers:\n\nUsing the Docker software\nUsing the Apptainer software (for HPC systems)\n\nIn general, Docker is used on systems where you have a high level of access to the system. This is because docker uses a special user group called docker that has essentially root level privileges.\nThis is not the case for HPC systems, which are shared. This is when we use Apptainer (which used to be called Singularity), which requires a much lower level of user privileges to execute tasks. For more info, see ?sec-open-container .",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#file-permissions",
+    "href": "filesystems.html#file-permissions",
+    "title": "5  Navigating the Unix Filesystem",
+    "section": "5.8 File Permissions",
+    "text": "5.8 File Permissions\nFile permissions are metadata that are attached to file objects. They are how the system prevents certain files from being messed with.\nAll files have the following level of access permissions:\n\n\n\nLevel\nDescription\n\n\n\n\nOwner-level\nThe owner of the file\n\n\nGroup-level\nThe group of the file\n\n\nEveryone\nThe rest of the world\n\n\n\nEach level has the following type of access\n\n\n\n\n\n\n\n\n\nType\nDescription\nAbbreviation\nExample\n\n\n\n\nRead\nLevel can only read contents of file\nr\nA list of users in a text file\n\n\nWrite\nLevel can write to the file\nw\nAppending an entry to the end of a log\n\n\nExecute\nLevel can run the file as an executable\nx\nsamtools\n\n\n\nThe cardinal rule to remember is that\n\nIf you want to run a file as an executable, you need to have executable level permission.\n\nFor example, if I want to run a script called run_samtools.sh in my directory like this:\n./run_samtools.sh my_bam_file.bam\nI will need to have execute privileges at the user, group, or others level.\n\n\n\n\n\n\nHelpful unix permissions situations\n\n\n\nI tend to just go by memory when setting file permissions. If I have collaborators who just want to set\n\n\n\nSituation\nCommand\n\n\n\n\nOnly I can execute/read/write a file\nchmod 700 &lt;file&gt;\n\n\nOnly I and my group can read a file\nchmod 110 &lt;file&gt;\n\n\nGrant a group read permissions\nchmod 710 &lt;file&gt;\n\n\nMake executable/read/write by all\nchmod 777 &lt;file?\n\n\n\n\n\n\n\n\n\n\n\nEven if you don’t have execute permissions\n\n\n\nWith bash scripts, you can still run them if you have read permissions. You can still run bash scripts by using the bash command:\nbash run_samtools.sh my_bam_file.bam\nThis has saved me a number of times.\n\n\n\n5.8.1 For More Info\n\nhttps://mason.gmu.edu/~montecin/UNIXpermiss.htm",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#common-unix-directories",
+    "href": "filesystems.html#common-unix-directories",
+    "title": "5  Navigating the Unix Filesystem",
+    "section": "5.9 Common Unix Directories",
+    "text": "5.9 Common Unix Directories\n\n\n\nCommon Unix Directories across all systems (image via ByteByteGo)",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
     ]
   }
 ]

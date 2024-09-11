@@ -138,20 +138,6 @@ dx upload penguins.csv --destination /users/tladeras/ #<4>
 ```
 4. Say we made a modification to `penguins` in our work. We can get that result back into project storage using `dx upload`. Note that with the `--destination` parameter, directories will be created on the cluster if they do not yet exist.
 
-## An alternate way of transferring files: dxFUSE
-
-```python
-import pandas as pd
-penguins2 = pd.read_csv("/mnt/project/data/penguins.csv") #<1>
-penguins2.describe()
-penguins2.to_csv("penguins2.csv") 
-dx upload penguins2.csv #<2>
-```
-1. We can skip two steps by prepending a `/mnt/project/` to our datafile's path and using this new path (`/mnt/project/data/penguins.csv`) directly in `pd.read_csv()`.
-2. Uploading modified file (`penguins2.csv`) using `dx upload` as usual.
-
-I talk much more about dxFUSE in @sec-dxfuse
-
 ## Installing Software in JupyterLab
 
 Because we have sudo level access to our JupyterLab instance, we can install software on it with a number of methods:
@@ -196,26 +182,4 @@ If you need data files to persist in an analysis, I recommend you get them back 
 
 Also, make sure to rename your snapshot so everyone in your group knows what is in it.
 :::
-
-## Working with Pheno Data in JupyterLab
-
-There are two main ways to access the phenotype data in JupyterLab:
-
-1. Use `dx extract_dataset` using the dx toolkit (available in JupyterLab in the terminal) and supply it with a record-id for our dataset/cohort, and a list of `entity.field_ids`. This will extract the dataset to a CSV file that is available in the temporary storage. You will need to do further decoding of the category data. 
-2. Use the `table-exporter` app, and supply it with the record id and a list of field titles. This will extract the dataset to the *permanent project storage*. If you have specified `-icoding_option` to be `REPLACE` (the default value), you will not have to decode the categorical values.
-
-@tbl-extract shows a table comparison of the two methods:
-
-
-|Step|`dx extract_dataset`|`table-exporter` app|
-|----|--------------------|--------------------|
-|Run | Run in JupyterLab Terminal | Run as application |
-|Output Location | Temporary JupyterLab storage |Permanent Project Storage |
-|Format|CSV or TSV|CSV (default) but can specify delimiter|
-|Decoding?|Yes, necessary| No, if `-icoding-option` is set|
-: Comparison of `dx extract_dataset` versus `table-exporter`. {#tbl-extract}
-
-## Extracting a case-control set
-
-When we do 
 

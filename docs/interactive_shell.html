@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Interactively Testing Scripts in Nodes – Bash for HPC</title>
+<title>8&nbsp; Interactively Testing Scripts in Nodes – Bash for HPC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./running_containers.html" rel="next">
+<link href="./container-concepts.html" rel="next">
 <link href="./scripting-basics.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./interactive_shell.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./interactive_shell.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -169,50 +169,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./hpc-safety.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">HPC Security and Safety</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./intro-unix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Everything about Unix/Linux they didn’t teach you</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./filesystems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Navigating the Unix Filesystem</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./running-stuff.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Running Executables on HPC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scripting-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./interactive_shell.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./container-concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Intro to Containers</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./running_containers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Working with containers</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./working-with-wdl.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Working with WDL</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./r-commandline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Running a R script on the command line</span></span></a>
   </div>
 </li>
     </ul>
@@ -225,13 +237,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#visual-table-of-contents" id="toc-visual-table-of-contents" class="nav-link active" data-scroll-target="#visual-table-of-contents"><span class="header-section-number">7.1</span> Visual Table of Contents</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives"><span class="header-section-number">7.2</span> Learning Objectives</a></li>
-  <li><a href="#grabbing-an-interactive-shell-on-a-worker" id="toc-grabbing-an-interactive-shell-on-a-worker" class="nav-link" data-scroll-target="#grabbing-an-interactive-shell-on-a-worker"><span class="header-section-number">7.3</span> Grabbing an interactive shell on a worker</a></li>
-  <li><a href="#testing-your-scripts" id="toc-testing-your-scripts" class="nav-link" data-scroll-target="#testing-your-scripts"><span class="header-section-number">7.4</span> Testing Your Scripts</a></li>
-  <li><a href="#exit-when-done" id="toc-exit-when-done" class="nav-link" data-scroll-target="#exit-when-done"><span class="header-section-number">7.5</span> <code>exit</code> when done</a></li>
-  <li><a href="#screen-for-keeping-your-shell-open" id="toc-screen-for-keeping-your-shell-open" class="nav-link" data-scroll-target="#screen-for-keeping-your-shell-open"><span class="header-section-number">7.6</span> <code>screen</code> for keeping your shell open</a></li>
-  <li><a href="#what-next" id="toc-what-next" class="nav-link" data-scroll-target="#what-next"><span class="header-section-number">7.7</span> What Next?</a></li>
+  <li><a href="#visual-table-of-contents" id="toc-visual-table-of-contents" class="nav-link active" data-scroll-target="#visual-table-of-contents"><span class="header-section-number">8.1</span> Visual Table of Contents</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives"><span class="header-section-number">8.2</span> Learning Objectives</a></li>
+  <li><a href="#grabbing-an-interactive-shell-on-a-worker" id="toc-grabbing-an-interactive-shell-on-a-worker" class="nav-link" data-scroll-target="#grabbing-an-interactive-shell-on-a-worker"><span class="header-section-number">8.3</span> Grabbing an interactive shell on a worker</a></li>
+  <li><a href="#testing-your-scripts" id="toc-testing-your-scripts" class="nav-link" data-scroll-target="#testing-your-scripts"><span class="header-section-number">8.4</span> Testing Your Scripts</a></li>
+  <li><a href="#exit-when-done" id="toc-exit-when-done" class="nav-link" data-scroll-target="#exit-when-done"><span class="header-section-number">8.5</span> <code>exit</code> when done</a></li>
+  <li><a href="#screen-for-keeping-your-shell-open" id="toc-screen-for-keeping-your-shell-open" class="nav-link" data-scroll-target="#screen-for-keeping-your-shell-open"><span class="header-section-number">8.6</span> <code>screen</code> for keeping your shell open</a></li>
+  <li><a href="#what-next" id="toc-what-next" class="nav-link" data-scroll-target="#what-next"><span class="header-section-number">8.7</span> What Next?</a></li>
   </ul>
 </nav>
     </div>
@@ -240,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Interactively Testing Scripts in Nodes</span></h1>
 </div>
 
 
@@ -259,8 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>You might wonder how to test a script will work on a worker. That’s what interactive shells are for.</p>
 <p>With an interactive shell, we open a bash prompt on a worker directly. We can then directly test our script out on the worker and debug it.</p>
-<section id="visual-table-of-contents" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="visual-table-of-contents"><span class="header-section-number">7.1</span> Visual Table of Contents</h2>
+<section id="visual-table-of-contents" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="visual-table-of-contents"><span class="header-section-number">8.1</span> Visual Table of Contents</h2>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -277,8 +289,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="learning-objectives" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">7.2</span> Learning Objectives</h2>
+<section id="learning-objectives" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">8.2</span> Learning Objectives</h2>
 <p>After reading this, you will be able to:</p>
 <ul>
 <li><strong>Open</strong> an interactive shell on a SLURM worker node using <code>salloc</code> or <code>grabnode</code></li>
@@ -287,8 +299,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Utilize</strong> <code>screen</code> to keep a shell open and running on a remote worker.</li>
 </ul>
 </section>
-<section id="grabbing-an-interactive-shell-on-a-worker" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="grabbing-an-interactive-shell-on-a-worker"><span class="header-section-number">7.3</span> Grabbing an interactive shell on a worker</h2>
+<section id="grabbing-an-interactive-shell-on-a-worker" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="grabbing-an-interactive-shell-on-a-worker"><span class="header-section-number">8.3</span> Grabbing an interactive shell on a worker</h2>
 <p>When you’re testing code that’s going to run on a worker node, you need to be aware of what the worker node sees.</p>
 <p>It’s also important in estimating how long our tasks are going to run since we can test how long a task runs for a representative dataset.</p>
 <p>On a SLURM system, the way to open interactive shells on a node has changed. Check your version first:</p>
@@ -343,8 +355,8 @@ Remember <code>hostname</code>
 </div>
 </div>
 </section>
-<section id="testing-your-scripts" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="testing-your-scripts"><span class="header-section-number">7.4</span> Testing Your Scripts</h2>
+<section id="testing-your-scripts" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="testing-your-scripts"><span class="header-section-number">8.4</span> Testing Your Scripts</h2>
 <p>Part of the reason for interactive testing is to make sure that the worker node can “see” and access all of your resources, including files and executables.</p>
 <p>This is especially helpful when you are testing individual steps of a WDL workflow to make sure they work.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
@@ -363,20 +375,20 @@ Working Interactively
 </div>
 </div>
 </section>
-<section id="exit-when-done" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="exit-when-done"><span class="header-section-number">7.5</span> <code>exit</code> when done</h2>
+<section id="exit-when-done" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="exit-when-done"><span class="header-section-number">8.5</span> <code>exit</code> when done</h2>
 <p>When you’re done with the worker, you can <code>exit</code> the shell. This will put you back into the root node.</p>
 </section>
-<section id="screen-for-keeping-your-shell-open" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="screen-for-keeping-your-shell-open"><span class="header-section-number">7.6</span> <code>screen</code> for keeping your shell open</h2>
-<p>Remember the <code>screen</code> utility? (<a href="intro-unix.html#sec-screen" class="quarto-xref"><span>Section 3.6.2</span></a>). You can utilize <code>screen</code> to keep your shell open on a remote worker. This is necessary when running interactive jobs when not connected.</p>
+<section id="screen-for-keeping-your-shell-open" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="screen-for-keeping-your-shell-open"><span class="header-section-number">8.6</span> <code>screen</code> for keeping your shell open</h2>
+<p>Remember the <code>screen</code> utility? (<a href="intro-unix.html#sec-screen" class="quarto-xref"><span>Section 4.6.2</span></a>). You can utilize <code>screen</code> to keep your shell open on a remote worker. This is necessary when running interactive jobs when not connected.</p>
 </section>
-<section id="what-next" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="what-next"><span class="header-section-number">7.7</span> What Next?</h2>
+<section id="what-next" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="what-next"><span class="header-section-number">8.7</span> What Next?</h2>
 <p>You’ve learned how to open interactive shells in a remote node. There are a number of ways to go from here:</p>
 <ul>
 <li>Try running your script using <code>srun</code></li>
-<li>Try running your script in a container (<a href="running_containers.html" class="quarto-xref"><span>Chapter 8</span></a>)</li>
+<li>Try running your script in a container (<a href="running_containers.html" class="quarto-xref"><span>Chapter 10</span></a>)</li>
 </ul>
 
 
@@ -806,12 +818,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./scripting-basics.html" class="pagination-link" aria-label="Shell Scripting Basics">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Shell Scripting Basics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./running_containers.html" class="pagination-link" aria-label="Working with containers">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Working with containers</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./container-concepts.html" class="pagination-link" aria-label="Intro to Containers">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Intro to Containers</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

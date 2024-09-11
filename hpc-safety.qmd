@@ -15,6 +15,11 @@ After reading this chapter, you should be able to:
 - https://ipo.llnl.gov/technologies/it-and-communications/processing-protected-data-high-performance-computing-clusters
 - [DHS Decision Charts](https://www.hhs.gov/ohrp/regulations-and-policy/decision-charts-2018/index.html#c1)
 
+
+## Focus on Data Processing
+
+
+
 ## Be Safe with Restricted Use Data
 
 Subject privacy is extremely important. Be careful that you only use covariates that you need, and remove those covariates that are under safe harbor regulations.

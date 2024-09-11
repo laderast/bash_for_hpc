@@ -210,11 +210,21 @@
     ]
   },
   {
+    "objectID": "hpc-safety.html#focus-on-data-processing",
+    "href": "hpc-safety.html#focus-on-data-processing",
+    "title": "3  HPC Security and Safety",
+    "section": "3.3 Focus on Data Processing",
+    "text": "3.3 Focus on Data Processing",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HPC Security and Safety</span>"
+    ]
+  },
+  {
     "objectID": "hpc-safety.html#be-safe-with-restricted-use-data",
     "href": "hpc-safety.html#be-safe-with-restricted-use-data",
     "title": "3  HPC Security and Safety",
-    "section": "3.3 Be Safe with Restricted Use Data",
-    "text": "3.3 Be Safe with Restricted Use Data\nSubject privacy is extremely important. Be careful that you only use covariates that you need, and remove those covariates that are under safe harbor regulations.\n\nUse the Safe Harbor Method for de-identifying your clinical data.\nUse deidentified versions of the patient data on HPC. When in doubt, use de-identified data for processing data. Most of the applications to HPC will be processing genomic or other datatypes.\nUse only the covariates necessary in your study. For example, for a GWAS study of type II diabetes, bring in\nIf using data under a Data Use Agreement (DUA), make sure you are comfortable with the terms. Many DUAS",
+    "section": "3.4 Be Safe with Restricted Use Data",
+    "text": "3.4 Be Safe with Restricted Use Data\nSubject privacy is extremely important. Be careful that you only use covariates that you need, and remove those covariates that are under safe harbor regulations.\n\nUse the Safe Harbor Method for de-identifying your clinical data.\nUse deidentified versions of the patient data on HPC. When in doubt, use de-identified data for processing data. Most of the applications to HPC will be processing genomic or other datatypes.\nUse only the covariates necessary in your study. For example, for a GWAS study of type II diabetes, bring in\nIf using data under a Data Use Agreement (DUA), make sure you are comfortable with the terms. Many DUAS",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>HPC Security and Safety</span>"
     ]
@@ -370,11 +380,31 @@
     ]
   },
   {
+    "objectID": "filesystems.html#file-permissions",
+    "href": "filesystems.html#file-permissions",
+    "title": "5  Navigating the Unix Filesystem",
+    "section": "5.8 File Permissions",
+    "text": "5.8 File Permissions\nFile permissions are metadata that are attached to file objects. They are how the system prevents certain files from being messed with.\nAll files have the following level of access permissions:\n\n\n\nLevel\nDescription\n\n\n\n\nOwner-level\nThe owner of the file\n\n\nGroup-level\nThe group of the file\n\n\nEveryone\nThe rest of the world\n\n\n\nEach level has the following type of access\n\n\n\n\n\n\n\n\n\nType\nDescription\nAbbreviation\nExample\n\n\n\n\nRead\nLevel can only read contents of file\nr\nA list of users in a text file\n\n\nWrite\nLevel can write to the file\nw\nAppending an entry to the end of a log\n\n\nExecute\nLevel can run the file as an executable\nx\nsamtools\n\n\n\nThe cardinal rule to remember is that\n\nIf you want to run a file as an executable, you need to have executable level permission.\n\nFor example, if I want to run a script called run_samtools.sh in my directory like this:\n./run_samtools.sh my_bam_file.bam\nI will need to have execute privileges at the user, group, or others level.\n\n\n\n\n\n\nHelpful unix permissions situations\n\n\n\nI tend to just go by memory when setting file permissions. If I have collaborators who just want to set\n\n\n\nSituation\nCommand\n\n\n\n\nOnly I can execute/read/write a file\nchmod 700 &lt;file&gt;\n\n\nOnly I and my group can read a file\nchmod 110 &lt;file&gt;\n\n\nGrant a group read permissions\nchmod 710 &lt;file&gt;\n\n\nMake executable/read/write by all\nchmod 777 &lt;file?\n\n\n\n\n\n\n\n\n\n\n\nEven if you don’t have execute permissions\n\n\n\nWith bash scripts, you can still run them if you have read permissions. You can still run bash scripts by using the bash command:\nbash run_samtools.sh my_bam_file.bam\nThis has saved me a number of times.\n\n\n\n5.8.1 For More Info\n\nhttps://mason.gmu.edu/~montecin/UNIXpermiss.htm",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
+    "objectID": "filesystems.html#common-unix-directories",
+    "href": "filesystems.html#common-unix-directories",
+    "title": "5  Navigating the Unix Filesystem",
+    "section": "5.9 Common Unix Directories",
+    "text": "5.9 Common Unix Directories\n\n\n\nCommon Unix Directories across all systems (image via ByteByteGo)",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
+    ]
+  },
+  {
     "objectID": "filesystems.html#whats-next",
     "href": "filesystems.html#whats-next",
     "title": "5  Navigating the Unix Filesystem",
-    "section": "5.8 What’s Next?",
-    "text": "5.8 What’s Next?\nNow that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (Chapter 7).",
+    "section": "5.10 What’s Next?",
+    "text": "5.10 What’s Next?\nNow that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (Chapter 7).",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Navigating the Unix Filesystem</span>"
     ]
@@ -592,71 +622,81 @@
   {
     "objectID": "container-concepts.html",
     "href": "container-concepts.html",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "",
     "text": "9.1 Learning Objectives",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#learning-objectives",
     "href": "container-concepts.html#learning-objectives",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "",
     "text": "Explain the benefits of using containers for reproducibility and for batch processing\nDefine the terms image, container, and snapshot in the context of Docker",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#why-containers",
     "href": "container-concepts.html#why-containers",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "9.2 Why Containers?",
     "text": "9.2 Why Containers?\nThere is a replication crisis out there. Even given a script and the raw data, it is often difficult to replicate the results generated by a study.\nWhy is this difficult? One reason is that the results are tied to software and database versions.\nThis is one motivation for using containers - they are a way of packaging software that ‘freezes’ the software versions. It allows you to recreate the software environment associated with running your software,\nAdditionally, containers are portable - they function as mini-operating systems that can run on any machine that runs your container software. other people should be able to replicate your results even if they’re on a different operating system.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#terminology",
     "href": "container-concepts.html#terminology",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "9.3 Terminology",
-    "text": "9.3 Terminology\nIn order to be unambiguous with our language, we’ll use the following definitions:\n\n\n\n\n\ngraph TD\n    A[\"Docker Image\"] --\"apptainer pull/apptainer build\"--&gt; B\n    B[\"Docker Container\"] --\"apptainer run\"&gt; C\n    C[\"Snapshot\"]\n\n\n\n\n\n\n\nRegistry - collection of repositories that you pull docker images from. Example repositories include DockerHub and Quay.io.\nImage - what you download from a registry - the “recipe” for building the software environment. Stored in a registry. use apptainer pull to get image from a registry. Can also generate image from a Dockerfile\nContainer - The executable software environment actually installed and running on a machine. Runnable. Generate from docker pull from a repository.\nSnapshot File - An single archive file (.tar.gz) that contains the Docker container. Generate using docker save on a container. Also known as an image file. When we do\nDockerfile - a file that specifies how to install software and its dependencies. You often base a Dockerfile on an existing Docker image\nTag - a bit of metadata that is used to version a container.",
+    "text": "9.3 Terminology\nIn order to be unambiguous with our language, we’ll use the following definitions:\n\n\n\n\n\ngraph TD\n    A[\"Docker Image\"] --\"apptainer pull/apptainer build\"--&gt; B\n    B[\"Docker Container\"] --\"apptainer run\"--&gt; C\n    C[\"Snapshot\"]\n\n\n\n\n\n\n\nRegistry - collection of repositories that you pull docker images from. Example repositories include DockerHub and Quay.io.\nImage - what you download from a registry - the “recipe” for building the software environment. Stored in a registry. use apptainer pull to get image from a registry. Can also generate image from a Dockerfile\nContainer - The executable software environment actually installed and running on a machine. Runnable. Generate from docker pull from a repository.\nSnapshot File - An single archive file (.tar.gz) that contains the Docker container. Generate using docker save on a container. Also known as an image file. When we do\nDockerfile - a file that specifies how to install software and its dependencies. You often base a Dockerfile on an existing Docker image\nTag - a bit of metadata that is used to version a container.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#what-is-a-container",
     "href": "container-concepts.html#what-is-a-container",
-    "title": "9  Containers and Reproducibility",
+    "title": "9  Container Basics",
     "section": "9.4 What is a Container?",
-    "text": "9.4 What is a Container?\nA container is a self-contained unit of software. It contains everything needed to run the software on a variety of machines. If you have the container software installed on your machine, it doesn’t matter whether it is MacOS, Linux, or Windows - the container will behave consistently across different operating systems and architectures.\nThe container has the following contents:\n\nSoftware - The software we want to run in a container. For bioinformatics work, this is usually something like an aligner like bwa, or utilities such as samtools\nSoftware Dependencies - various software packages needed to run the software. For example, if we wanted to run tidyverse in a container, we need to have R installed in the container as well\nFilesystem - containers have their own isolated filesystem that can be connected to the “outside world” - everything outside of the container. We’ll learn more about customizing these with bind paths (Section 10.4).\n\nIn short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft.\n\n\n\n\n\n\nWhat about Virtual Machines?\n\n\n\nVirtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger\nContainers, by contrast, are ephemeral. Oftentimes in Bioinformatics analysis.",
+    "text": "9.4 What is a Container?\nA container is a self-contained unit of software. It contains everything needed to run the software on a variety of machines. If you have the container software installed on your machine, it doesn’t matter whether it is MacOS, Linux, or Windows - the container will behave consistently across different operating systems and architectures.\nThe container has the following contents:\n\nSoftware - The software we want to run in a container. For bioinformatics work, this is usually something like an aligner like bwa, or utilities such as samtools\nSoftware Dependencies - various software packages needed to run the software. For example, if we wanted to run tidyverse in a container, we need to have R installed in the container as well\nFilesystem - containers have their own isolated filesystem that can be connected to the “outside world” - everything outside of the container. We’ll learn more about customizing these with bind paths (Section 10.4).\n\nIn short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft.\nContainers are ephemeral. They leverage the the file system of their host to manage files. These are called both Volumes (the Docker term) and Bind Paths (the apptainer term).\n\n\n\n\n\n\nWhat about Virtual Machines?\n\n\n\nVirtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger than containers.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
+    ]
+  },
+  {
+    "objectID": "container-concepts.html#docker-vs.-apptainer",
+    "href": "container-concepts.html#docker-vs.-apptainer",
+    "title": "9  Container Basics",
+    "section": "9.5 Docker vs. Apptainer",
+    "text": "9.5 Docker vs. Apptainer\nThere are two basic ways to run Docker containers:\n\nUsing the Docker software\nUsing the Apptainer software (for HPC systems)\n\nIn general, Docker is used on systems where you have a high level of access to the system. This is because docker uses a special user group called docker that has essentially root level privileges.\nThis is not the case for HPC systems, which are shared. This is when we use Apptainer (which used to be called Singularity), which requires a much lower level of user privileges to execute tasks. For more info, see ?sec-open-container .",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#be-secure",
     "href": "container-concepts.html#be-secure",
-    "title": "9  Containers and Reproducibility",
-    "section": "9.5 Be Secure",
-    "text": "9.5 Be Secure\nBefore we get started, security is always a concern when running containers. The docker group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities.\nThese are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.\nHere are some guidelines to think about when you are working with a container.\n\nUse vendor-specific Docker Images when possible.\nUse container scanners to spot potential vulnerabilities. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities.\nAvoid kitchen-sink images. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.",
+    "title": "9  Container Basics",
+    "section": "9.6 Be Secure",
+    "text": "9.6 Be Secure\nBefore we get started, security is always a concern when running containers. The docker group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities. Note that on HPC systems, the main mechanism for running containers is apptainer, which is designed to be more secure.\nThese are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.\nHere are some guidelines to think about when you are working with a container.\n\nUse vendor-specific Docker Images when possible.\nUse container scanners to spot potential vulnerabilities. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities.\nAvoid kitchen-sink images. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.\n\n\n\n\n\n\n\nComposing Containers\n\n\n\nWe can connect multiple containers together using a technology called Docker Compose. This means that we can run software pipelines that involve multiple containers.\nFor the most part, we don’t leverage Docker Compose, because it is usually used in putting together Web Application Stacks, though there are sometimes when it is helpful. In those cases, we can use Singularity compose to do it.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {
     "objectID": "container-concepts.html#what-you-learned-in-this-chapter",
     "href": "container-concepts.html#what-you-learned-in-this-chapter",
-    "title": "9  Containers and Reproducibility",
-    "section": "9.6 What you learned in this chapter",
-    "text": "9.6 What you learned in this chapter\n\nHow containers enable reproducibility\nDefined specific container terminology",
+    "title": "9  Container Basics",
+    "section": "9.7 What you learned in this chapter",
+    "text": "9.7 What you learned in this chapter\n\nHow containers enable reproducibility\nDefined specific container terminology",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Containers and Reproducibility</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Container Basics</span>"
     ]
   },
   {

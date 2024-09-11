@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -203,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./container-concepts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -268,7 +268,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Ok, we’ve gotten comfortable navigating around the HPC filesystem. Now how do we run executables on files?</p>
-<p>Let’s talk about the two problems: 1) How do we find executables on a cluster, and 2) how do we load them up and run them?</p>
+<p>Let’s talk about the two problems:</p>
+<ol type="1">
+<li>How do we find executables on a cluster, and</li>
+<li>how do we load them up and run them?</li>
+</ol>
 <section id="a-empty-environment" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="a-empty-environment"><span class="header-section-number">6.1</span> A empty environment</h2>
 <p>Remember, we can poke around and see whether <code>samtools</code> is installed on the machine using <code>which</code>:</p>
@@ -322,19 +326,21 @@ For FH Users
 <h3 data-number="6.3.3" class="anchored" data-anchor-id="tip-module-purge-when-youre-done"><span class="header-section-number">6.3.3</span> Tip: <code>module purge</code> when you’re done</h3>
 <p>When you’re done with a software module, you should use <code>module purge</code> to clear out its’ software environment.</p>
 <pre><code>module purge</code></pre>
-<p>This is because there may be conflicting</p>
+<p>This is because there may be conflicting dependencies between modules (Python software especially). So <code>purge</code> your module when you’re done and clean up your environment.</p>
 </section>
 <section id="full-script-example" class="level3" data-number="6.3.4">
 <h3 data-number="6.3.4" class="anchored" data-anchor-id="full-script-example"><span class="header-section-number">6.3.4</span> Full Script Example</h3>
 <p>This is an example of a full script that uses environment modules.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load SAMtools/1.19.2-GCC-13.2.0</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># samtools_count.sh</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage: ./samtools_count.sh my_bam_file.sh</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Outputs: my_bam_file.bam.counts.txt</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load SAMtools/1.19.2-GCC-13.2.0  <span class="co">#load the module</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$1</span> <span class="op">&gt;</span> <span class="va">$1</span>.counts.txt     <span class="co">#run the script </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge                            <span class="co">#purge the module</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can use this script by making it executable, and then run it with:</p>
 <pre><code>./samtools_count.sh my_bam_file.sh</code></pre>
-<p>This will output a counts file called <code>my_bam_file.counts.txt</code> in our home directory.</p>
-<p>We’ll talk more about arguments in the scripting chapter (<a href="scripting-basics.html#sec-positional" class="quarto-xref"><span>Section 7.3</span></a>).</p>
+<p>This will output a counts file called <code>my_bam_file.bam.counts.txt</code> in our home directory.</p>
 </section>
 <section id="running-software-thats-not-available." class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="running-software-thats-not-available."><span class="header-section-number">6.4</span> Running Software that’s not available.</h2>
@@ -345,7 +351,7 @@ For FH Users
 <li>Compile the executable ourselves</li>
 </ol>
 <p>For more information about these different methods, please refer to this article: <a href="https://sciwiki.fredhutch.org/dasldemos/computational_rank/">Why your computational environment is important</a>.</p>
-<p>We will get more in-depth into containers in the <a href="interactive_shell.html">Interactive Shell chapter</a>.</p>
+<p>We will get more in-depth into containers in the <a href="running_containers.html">Interactive Shell chapter</a>.</p>
 
 
 </section>

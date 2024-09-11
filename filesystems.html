@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./container-concepts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -253,7 +253,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#sec-project" id="toc-sec-project" class="nav-link" data-scroll-target="#sec-project"><span class="header-section-number">5.6</span> Project/folder based workflows</a></li>
   <li><a href="#sec-moving" id="toc-sec-moving" class="nav-link" data-scroll-target="#sec-moving"><span class="header-section-number">5.7</span> Moving Things Around</a></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">5.8</span> What’s Next?</a></li>
+  <li><a href="#file-permissions" id="toc-file-permissions" class="nav-link" data-scroll-target="#file-permissions"><span class="header-section-number">5.8</span> File Permissions</a>
+  <ul class="collapse">
+  <li><a href="#for-more-info" id="toc-for-more-info" class="nav-link" data-scroll-target="#for-more-info"><span class="header-section-number">5.8.1</span> For More Info</a></li>
+  </ul></li>
+  <li><a href="#common-unix-directories" id="toc-common-unix-directories" class="nav-link" data-scroll-target="#common-unix-directories"><span class="header-section-number">5.9</span> Common Unix Directories</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">5.10</span> What’s Next?</a></li>
   </ul>
 </nav>
     </div>
@@ -489,8 +494,148 @@ Things I always forget: the difference between <code>/home/mydir/</code> and <co
 </div>
 </div>
 </section>
-<section id="whats-next" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">5.8</span> What’s Next?</h2>
+<section id="file-permissions" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="file-permissions"><span class="header-section-number">5.8</span> File Permissions</h2>
+<p>File permissions are <em>metadata</em> that are attached to file objects. They are how the system prevents certain files from being messed with.</p>
+<p>All files have the following level of access permissions:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Owner-level</td>
+<td>The owner of the file</td>
+</tr>
+<tr class="even">
+<td>Group-level</td>
+<td>The group of the file</td>
+</tr>
+<tr class="odd">
+<td>Everyone</td>
+<td>The rest of the world</td>
+</tr>
+</tbody>
+</table>
+<p>Each level has the following type of access</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 32%">
+<col style="width: 35%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+<th>Abbreviation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Read</td>
+<td>Level can only read contents of file</td>
+<td><code>r</code></td>
+<td>A list of users in a text file</td>
+</tr>
+<tr class="even">
+<td>Write</td>
+<td>Level can write to the file</td>
+<td><code>w</code></td>
+<td>Appending an entry to the end of a log</td>
+</tr>
+<tr class="odd">
+<td>Execute</td>
+<td>Level can run the file as an executable</td>
+<td><code>x</code></td>
+<td>samtools</td>
+</tr>
+</tbody>
+</table>
+<p>The cardinal rule to remember is that</p>
+<blockquote class="blockquote">
+<p>If you want to run a file as an executable, you need to have executable level permission.</p>
+</blockquote>
+<p>For example, if I want to run a script called <code>run_samtools.sh</code> in my directory like this:</p>
+<pre><code>./run_samtools.sh my_bam_file.bam</code></pre>
+<p>I will need to have execute privileges at the user, group, or others level.</p>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Helpful unix permissions situations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I tend to just go by memory when setting file permissions. If I have collaborators who just want to set</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Situation</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Only I can execute/read/write a file</td>
+<td><code>chmod 700 &lt;file&gt;</code></td>
+</tr>
+<tr class="even">
+<td>Only I and my group can read a file</td>
+<td><code>chmod 110 &lt;file&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>Grant a group read permissions</td>
+<td><code>chmod 710 &lt;file&gt;</code></td>
+</tr>
+<tr class="even">
+<td>Make executable/read/write by all</td>
+<td><code>chmod 777 &lt;file?</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Even if you don’t have execute permissions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>With bash scripts, you can still run them if you have <code>read</code> permissions. You can still run bash scripts by using the <code>bash</code> command:</p>
+<pre><code>bash run_samtools.sh my_bam_file.bam</code></pre>
+<p>This has saved me a number of times.</p>
+</div>
+</div>
+<section id="for-more-info" class="level3" data-number="5.8.1">
+<h3 data-number="5.8.1" class="anchored" data-anchor-id="for-more-info"><span class="header-section-number">5.8.1</span> For More Info</h3>
+<ul>
+<li><a href="https://mason.gmu.edu/~montecin/UNIXpermiss.htm" class="uri">https://mason.gmu.edu/~montecin/UNIXpermiss.htm</a></li>
+</ul>
+</section>
+</section>
+<section id="common-unix-directories" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="common-unix-directories"><span class="header-section-number">5.9</span> Common Unix Directories</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/1725596486922.gif" class="img-fluid figure-img"></p>
+<figcaption>Common Unix Directories across all systems (image via <a href="https://bytebytego.com/">ByteByteGo</a>)</figcaption>
+</figure>
+</div>
+</section>
+<section id="whats-next" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">5.10</span> What’s Next?</h2>
 <p>Now that we have learned the different filesystems and how to specify them and navigate them, we are now able to try out shell scripting (<a href="scripting-basics.html" class="quarto-xref"><span>Chapter 7</span></a>).</p>
 
 

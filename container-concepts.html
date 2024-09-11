@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>9&nbsp; Containers and Reproducibility – Bash for HPC</title>
+<title>9&nbsp; Container Basics – Bash for HPC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./container-concepts.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./container-concepts.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -172,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./container-concepts.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -207,8 +207,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#why-containers" id="toc-why-containers" class="nav-link" data-scroll-target="#why-containers"><span class="header-section-number">9.2</span> Why Containers?</a></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology"><span class="header-section-number">9.3</span> Terminology</a></li>
   <li><a href="#what-is-a-container" id="toc-what-is-a-container" class="nav-link" data-scroll-target="#what-is-a-container"><span class="header-section-number">9.4</span> What is a Container?</a></li>
-  <li><a href="#be-secure" id="toc-be-secure" class="nav-link" data-scroll-target="#be-secure"><span class="header-section-number">9.5</span> Be Secure</a></li>
-  <li><a href="#what-you-learned-in-this-chapter" id="toc-what-you-learned-in-this-chapter" class="nav-link" data-scroll-target="#what-you-learned-in-this-chapter"><span class="header-section-number">9.6</span> What you learned in this chapter</a></li>
+  <li><a href="#docker-vs.-apptainer" id="toc-docker-vs.-apptainer" class="nav-link" data-scroll-target="#docker-vs.-apptainer"><span class="header-section-number">9.5</span> Docker vs.&nbsp;Apptainer</a></li>
+  <li><a href="#be-secure" id="toc-be-secure" class="nav-link" data-scroll-target="#be-secure"><span class="header-section-number">9.6</span> Be Secure</a></li>
+  <li><a href="#what-you-learned-in-this-chapter" id="toc-what-you-learned-in-this-chapter" class="nav-link" data-scroll-target="#what-you-learned-in-this-chapter"><span class="header-section-number">9.7</span> What you learned in this chapter</a></li>
   </ul>
 </nav>
     </div>
@@ -217,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-containers" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Containers and Reproducibility</span></span></h1>
+<h1 class="title"><span id="sec-containers" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Container Basics</span></span></h1>
 </div>
 
 
@@ -258,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
 <div>
 <pre class="mermaid mermaid-js">graph TD
     A["Docker Image"] --"apptainer pull/apptainer build"--&gt; B
-    B["Docker Container"] --"apptainer run"&gt; C
+    B["Docker Container"] --"apptainer run"--&gt; C
     C["Snapshot"]
 </pre>
 </div>
@@ -285,6 +286,7 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Filesystem</strong> - containers have their own isolated filesystem that can be connected to the “outside world” - everything outside of the container. We’ll learn more about customizing these with bind paths (<a href="running_containers.html#sec-bindpaths" class="quarto-xref"><span>Section 10.4</span></a>).</li>
 </ul>
 <p>In short, the container has everything needed to run the software. It is not a full operating system, but a smaller mini-version that cuts out a lot of cruft.</p>
+<p>Containers are ephemeral. They leverage the the file system of their host to manage files. These are called both <em>Volumes</em> (the Docker term) and Bind Paths (the apptainer term).</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -295,14 +297,23 @@ What about Virtual Machines?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Virtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger</p>
-<p>Containers, by contrast, are ephemeral. Oftentimes in Bioinformatics analysis.</p>
+<p>Virtual Machines (such as Vagrant) tend to be much larger, containing a full operating system, such as Linux and Windows in addition to the software and dependencies. They are made to be persistent and resumable, which means that they tend to be much larger than containers.</p>
 </div>
 </div>
 </section>
-<section id="be-secure" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="be-secure"><span class="header-section-number">9.5</span> Be Secure</h2>
-<p>Before we get started, security is always a concern when running containers. The <code>docker</code> group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities.</p>
+<section id="docker-vs.-apptainer" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="docker-vs.-apptainer"><span class="header-section-number">9.5</span> Docker vs.&nbsp;Apptainer</h2>
+<p>There are two basic ways to run Docker containers:</p>
+<ol type="1">
+<li>Using the Docker software</li>
+<li>Using the Apptainer software (for HPC systems)</li>
+</ol>
+<p>In general, Docker is used on systems where you have a high level of access to the system. This is because docker uses a special user group called <code>docker</code> that has essentially root level privileges.</p>
+<p>This is not the case for HPC systems, which are shared. This is when we use Apptainer (which used to be called Singularity), which requires a much lower level of user privileges to execute tasks. For more info, see <span class="quarto-unresolved-ref">?sec-open-container</span> .</p>
+</section>
+<section id="be-secure" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="be-secure"><span class="header-section-number">9.6</span> Be Secure</h2>
+<p>Before we get started, security is always a concern when running containers. The <code>docker</code> group has elevated status on a system, so we need to be careful that when we’re running them, they aren’t introducing any system vulnerabilities. Note that on HPC systems, the main mechanism for running containers is <code>apptainer</code>, which is designed to be more secure.</p>
 <p>These are mostly important when running containers that are web-servers or part of a web stack, but it is also important to think about when running jobs on HPC.</p>
 <p>Here are some guidelines to think about when you are working with a container.</p>
 <ul>
@@ -310,13 +321,26 @@ What about Virtual Machines?
 <li><strong>Use container scanners to spot potential vulnerabilities</strong>. DockerHub has a vulnerability scanner that scans your Docker images for potential vulnerabilities.</li>
 <li><strong>Avoid kitchen-sink images</strong>. One issue is when an image is built on top of many other images. It makes it really difficult to plug vulnerabilities. When in doubt, use images from trusted people and organizations.</li>
 </ul>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Composing Containers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can connect multiple containers together using a technology called Docker Compose. This means that we can run software pipelines that involve multiple containers.</p>
+<p>For the most part, we don’t leverage Docker Compose, because it is usually used in putting together Web Application Stacks, though there are sometimes when it is helpful. In those cases, we can use <a href="https://singularityhub.github.io/singularity-compose/#/">Singularity compose</a> to do it.</p>
+</div>
+</div>
 </section>
-<section id="what-you-learned-in-this-chapter" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="what-you-learned-in-this-chapter"><span class="header-section-number">9.6</span> What you learned in this chapter</h2>
+<section id="what-you-learned-in-this-chapter" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="what-you-learned-in-this-chapter"><span class="header-section-number">9.7</span> What you learned in this chapter</h2>
 <ul>
 <li>How containers enable reproducibility</li>
 <li>Defined specific container terminology</li>
-<li></li>
 </ul>
 
 
